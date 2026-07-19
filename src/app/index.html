@@ -390,9 +390,6 @@
               <i class="fa-solid fa-earth-americas"></i> Fichier KML
             </button>
           </div>
-          <button class="jump-btn" style="width: 100%; padding: 8px; background: #d97706; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="openGearModal()">
-            <i class="fa-solid fa-toolbox"></i> Matériel & Éthique du Prospecteur
-          </button>
           <button class="jump-btn" style="width: 100%; padding: 8px; background: #0284c7; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="generateCurrentLocationReport()">
             <i class="fa-solid fa-file-pdf"></i> Générer Fiche de Terrain PDF
           </button>
@@ -496,41 +493,8 @@
   <!-- Map Canvas -->
   <div id="map"></div>
 
-  <!-- Field Gear & Ethics Modal -->
-  <div id="gearModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.85); backdrop-filter:blur(10px); z-index:2000; justify-content:center; align-items:center; padding:20px;">
-    <div class="modal-content" style="max-width:700px;">
-      <div class="modal-header">
-        <h2>🎒 Équipement Terrain & Charte du Prospecteur (Hérault)</h2>
-        <button class="close-btn" onclick="closeGearModal()">&times;</button>
-      </div>
-      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.85rem; color:#cbd5e1; line-height:1.4;">
-        <div style="background:#0f172a; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.08);">
-          <h3 style="color:#f59e0b; font-size:0.95rem; margin-bottom:6px;"><i class="fa-solid fa-screwdriver-wrench"></i> Matériel Indispensable dans le Sac</h3>
-          <ul style="margin-left:18px;">
-            <li><b>Marteau de Géologue Estwing (500g)</b> ou marteau de maçon à pointe plate/pic.</li>
-            <li><b>Burins plats & ciseaux à froid</b> (différentes tailles pour fendre la marne et le grès).</li>
-            <li><b>Lunettes de sécurité chocs</b> (projection obligatoire lors du martelage).</li>
-            <li><b>Loupe de botaniste/géologue (Grossissement 10x)</b> pour examiner les détails.</li>
-            <li><b>Sachets d'emballage zip & papier journal</b> pour préserver les spécimens fragiles.</li>
-            <li><b>Feutre indeleble & carnet de terrain</b> pour noter le point GPS et la formation.</li>
-          </ul>
-        </div>
-
-        <div style="background:rgba(239,68,68,0.1); padding:12px; border-radius:10px; border:1px solid rgba(239,68,68,0.3); color:#fca5a5;">
-          <h3 style="color:#ef4444; font-size:0.95rem; margin-bottom:6px;"><i class="fa-solid fa-scale-balanced"></i> Charte Éthique & Respect du Patrimoine</h3>
-          <ul style="margin-left:18px;">
-            <li><b>Respect des réserves naturelles</b> (ex: Réserve de Coumiac : observation seule).</li>
-            <li><b>Courtoisie avec les propriétaires privés</b> (demander l'autorisation en zone agricole).</li>
-            <li><b>Sécurité</b> : Ne pas s'approcher trop près des parois d'escarpement instables.</li>
-            <li><b>Signalement Scientifique</b> : En cas de découverte majeure (ex: os de dinosaure ou empreinte rare), prévénir la Société Languedocienne de Paléontologie ou le MNHN.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>📚 Guide d'Identification Visuelle — Fossiles de l'Hérault (34)</h2>
+  <!-- Guide Modal -->
+  <div id="guideModal">
         <button class="close-btn" onclick="closeGuideModal()">&times;</button>
       </div>
       <div class="guide-grid">
