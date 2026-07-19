@@ -297,6 +297,17 @@
         </div>
       </div>
 
+      <!-- PDF Export Button Card -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-file-pdf"></i> Rapport de Prospection PDF</div>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px;">
+          Générez une fiche de terrain PDF complète (contexte géologique, découvertes certifiées proches, guide d'identification) pour la zone observée.
+        </p>
+        <button class="jump-btn" style="width: 100%; padding: 8px; background: #0284c7; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="generateCurrentLocationReport()">
+          <i class="fa-solid fa-download"></i> Télécharger le Rapport PDF du Secteur
+        </button>
+      </div>
+
       <!-- Search Communes -->
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Rechercher un lieu / commune</div>
@@ -621,6 +632,33 @@
     function flyToLoc(lat, lng, zoom = 13) {
       map.flyTo([lat, lng], zoom, { duration: 1.2 });
     }
+
+    function generateCurrentLocationReport() {
+      const center = map.getCenter();
+      const url = `/api/report?lat=${center.lat.toFixed(4)}&lng=${center.lng.toFixed(4)}&name=${encodeURIComponent('Secteur Hérault')}`;
+      window.open(url, '_blank');
+    }
+
+    // Map Click Listener to inspect ANY point and download PDF
+    map.on('click', function(e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+      const pdfUrl = `/api/report?lat=${lat.toFixed(4)}&lng=${lng.toFixed(4)}&name=${encodeURIComponent('Point GPS ' + lat.toFixed(3) + ', ' + lng.toFixed(3))}`;
+
+      L.popup()
+        .setLatLng(e.latlng)
+        .setContent(`
+          <div class="popup-title">📍 Point GPS Sélectionné</div>
+          <div class="popup-meta">
+            <b>Coordonnées :</b> ${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E<br>
+            Cliquez ci-dessous pour générer le rapport de prospection complet pour ce point précis.
+          </div>
+          <a href="${pdfUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7; font-size:0.8rem; display:block; text-align:center; margin-top:8px;">
+            📄 Générer le Rapport PDF de ce Point
+          </a>
+        `)
+        .openOn(map);
+    });
 
     // Search Communes
     function handleSearch(e) {
