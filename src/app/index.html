@@ -440,22 +440,23 @@
         </div>
       </div>
 
-      <!-- Search & Formation Filter -->
+      <!-- Search & Formation / Period Filters -->
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Recherche Lieu & Formations Clés</div>
+        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Filtre par Époque & Période (Ma)</div>
+
+        <select id="periodSelect" onchange="filterByPeriod(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#f59e0b; font-family:inherit; font-size:0.82rem; outline:none; cursor:pointer; margin-bottom:8px;">
+          <option value="">⏳ Toutes les Époques Géologiques (Toutes périodes)</option>
+          <option value="permian">🔴 Permien (~299 - 252 Ma) — *Walchia*, *Thérapsides*</option>
+          <option value="jurassic">🐚 Jurassique (~201 - 145 Ma) — *Ammonites*, *Belemnites*</option>
+          <option value="cretaceous">🦖 Crétacé (~145 - 66 Ma) — *Dinosaures*, *Œufs*</option>
+          <option value="ordovician_devonian">🦂 Ordovicien / Dévonien (~485 - 358 Ma) — *Trilobites*</option>
+          <option value="cenozoic">🦴 Cénozoïque / Tertiaire (~66 - 2 Ma) — *Mammifères*</option>
+        </select>
+
         <div class="search-box" style="margin-bottom:8px;">
           <i class="fa-solid fa-location-dot"></i>
-          <input type="text" id="searchInput" placeholder="Ex: Mont Sénégra, Lodève, Salagou, Mèze..." onkeyup="handleSearch(event)">
+          <input type="text" id="searchInput" placeholder="Rechercher commune: Lodève, Salagou, Mèze..." onkeyup="handleSearch(event)">
         </div>
-
-        <select id="formationSelect" onchange="filterByFormation(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#38bdf8; font-family:inherit; font-size:0.82rem; outline:none; cursor:pointer;">
-          <option value="">🔎 Toutes les Formations Géologiques</option>
-          <option value="salagou">🔴 Permien : Ruffes du Salagou & Lodévois (~290 Ma)</option>
-          <option value="fontaneilles">🐚 Jurassique : Marnes de Fontaneilles (~170 Ma)</option>
-          <option value="schiste">🦂 Ordovicien : Schistes de Saint-Chinian / Landeyran (~470 Ma)</option>
-          <option value="gres">Dinosaures : Grès à Reptiles Mèze/Cruzy (~70 Ma)</option>
-          <option value="coumiac">⚡ Dévonien : Marbres & Calcaires de Coumiac (~370 Ma)</option>
-        </select>
 
         <div class="quick-jumps">
           <button class="jump-btn" onclick="flyToLoc(43.6820, 3.1250, 14)">📍 Mont Sénégra (MNHN)</button>
@@ -696,6 +697,17 @@
 
       fossilsData.forEach(item => {
         if (!activeCategories.has(item.category_id)) return;
+
+        // Filter by Period if selected
+        if (selectedPeriodFilter) {
+          const p = (item.period || "").toLowerCase();
+          if (selectedPeriodFilter === 'permian' && !p.includes('permian')) return;
+          if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic')) return;
+          if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous')) return;
+          if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian')) return;
+          if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene')) return;
+        }
+
         count++;
 
         const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
@@ -806,6 +818,11 @@
 
     function filterByFormation(val) {
       renderPredictiveGeology(val);
+    }
+
+    function filterByPeriod(val) {
+      selectedPeriodFilter = val;
+      renderFossils();
     }
 
     // Toggles & Controls
