@@ -1001,12 +1001,14 @@
         };
         const srcBadge = sourceBadges[src] || sourceBadges['PBDB'];
 
+        const catalogTag = item.mnhn_catalog ? `<br><b>N° Spécimen Muséum :</b> <span style="color:#c084fc; font-weight:600;">${item.mnhn_catalog}</span>` : '';
+
         const popupContent = `
           <div class="popup-title">${item.name}</div>
           <div style="margin-bottom:6px;">${srcBadge}</div>
           <div class="popup-meta">
             <b>Type :</b> <span style="color:${iconConfig.color}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name}</span><br>
-            <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span><br>
+            <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span>${catalogTag}<br>
             <b>Période :</b> ${item.period} (${item.max_ma ? item.max_ma + ' Ma' : 'N/A'})<br>
             <b>Formation :</b> ${item.formation || 'Non spécifiée'}<br>
             <b>Phylum / Classe :</b> ${item.phylum} / ${item.class_name}<br>
