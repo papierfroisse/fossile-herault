@@ -121,40 +121,76 @@
       #mobileNav {
         display: flex !important;
         position: fixed;
-        bottom: 12px;
-        left: 50%;
-        transform: translateX(-50%);
+        bottom: 0;
+        left: 0;
+        width: 100vw;
         z-index: 2000;
-        background: rgba(15, 23, 42, 0.92);
+        background: rgba(15, 23, 42, 0.95);
         backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 30px;
-        padding: 6px 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        gap: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 10px 22px 10px; /* Extra bottom padding for safe area */
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        justify-content: space-around;
       }
       .mobile-nav-btn {
-        background: #1e293b;
-        color: #f8fafc;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 8px 14px;
-        font-size: 0.8rem;
+        background: transparent;
+        color: #94a3b8;
+        border: none;
+        padding: 6px;
+        font-size: 0.65rem;
         font-weight: 600;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         cursor: pointer;
         user-select: none;
+        flex: 1;
+        transition: color 0.2s;
+      }
+      .mobile-nav-btn i {
+        font-size: 1.35rem;
+        margin-bottom: 2px;
       }
       .mobile-nav-btn.active {
-        background: #38bdf8;
-        color: #0f172a;
+        background: transparent;
+        color: #38bdf8;
+      }
+      #mapOverlayBtn {
+        top: 20px;
+        right: 15px;
+      }
+      .content {
+        gap: 20px; /* More space between cards on mobile */
       }
     }
 
     #mobileNav {
       display: none;
+    }
+    
+    #mapOverlayBtn {
+      position: absolute;
+      top: 90px;
+      right: 15px;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #38bdf8;
+      border-radius: 8px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+    #mapOverlayBtn:hover {
+      background: #38bdf8;
+      color: #0f172a;
     }
 
     .header {
@@ -673,16 +709,13 @@
   <!-- Mobile Floating Action Bar (Smartphones) -->
   <div id="mobileNav">
     <button class="mobile-nav-btn active" onclick="locateUserOnMap()">
-      <i class="fa-solid fa-crosshairs" style="color:#38bdf8;"></i> 🎯 GPS
-    </button>
-    <button class="mobile-nav-btn" onclick="toggleMobileMapMode()">
-      <i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 🎨 Époques
+      <i class="fa-solid fa-crosshairs"></i> GPS
     </button>
     <button class="mobile-nav-btn" onclick="openAddPersonalFindingModal()">
-      <i class="fa-solid fa-star" style="color:#a855f7;"></i> ➕ Trouvaille
+      <i class="fa-solid fa-star"></i> Trouvaille
     </button>
     <button class="mobile-nav-btn" onclick="toggleMobileSidebar()">
-      <i class="fa-solid fa-sliders" style="color:#10b981;"></i> ⚙️ Filtres
+      <i class="fa-solid fa-sliders"></i> Filtres
     </button>
   </div>
 
@@ -691,8 +724,12 @@
     <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
   </button>
 
-  <!-- Map Canvas -->
+  <!-- Map Canvas & Map Overlay Buttons -->
   <div id="map"></div>
+  
+  <div id="mapOverlayBtn" onclick="toggleMobileMapMode()" title="Basculer Couleurs (Époques / ML)">
+    <i class="fa-solid fa-layer-group"></i>
+  </div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
