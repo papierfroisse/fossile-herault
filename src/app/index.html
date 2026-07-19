@@ -522,6 +522,13 @@
     };
     L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
 
+    // CRITICAL FIX: Create custom Leaflet Panes to guarantee Fossil Markers are ALWAYS on top of polygons & 100% clickable
+    map.createPane('polygonsPane');
+    map.getPane('polygonsPane').style.zIndex = 400; // Underneath
+
+    map.createPane('fossilsPane');
+    map.getPane('fossilsPane').style.zIndex = 650; // On Top of Everything!
+
     // Layer Containers
     let fossilsData = [];
     let fossilsLayerGroup = L.layerGroup().addTo(map);
@@ -586,7 +593,7 @@
       <a href="https://sciencepress.mnhn.fr/sites/default/files/articles/pdf/comptes-rendus-palevol2013v12f2a02.pdf" target="_blank" class="popup-tag" style="color:#10b981; border-color:#10b981;">📄 Lire la publication MNHN (2013)</a>
     `).addTo(map);
 
-    // Render Fossils as FIXED PRECISE INDIVIDUAL POINTS
+    // Render Fossils as FIXED PRECISE INDIVIDUAL POINTS (Always on top of polygons via fossilsPane)
     function renderFossils() {
       fossilsLayerGroup.clearLayers();
       let count = 0;
@@ -594,7 +601,13 @@
         if (!activeCategories.has(item.category_id)) return;
         count++;
         const marker = L.circleMarker([item.lat, item.lng], {
-          radius: 5, fillColor: item.color, color: '#ffffff', weight: 1, opacity: 0.95, fillOpacity: 0.85
+          pane: 'fossilsPane', // GUARANTEES marker is above red/orange polygons!
+          radius: 6,
+          fillColor: item.color,
+          color: '#ffffff',
+          weight: 2,
+          opacity: 1.0,
+          fillOpacity: 0.9
         });
         const popupContent = `
           <div class="popup-title">${item.name}</div>
@@ -612,7 +625,7 @@
       document.getElementById('stat-fossils').innerText = count.toLocaleString('fr-FR');
     }
 
-    // Render Scored Predictive Geology Polygons with continuous gradient & slope filter
+    // Render Scored Predictive Geology Polygons in polygonsPane
     function renderPredictiveGeology() {
       if (!rawGeojsonData) return;
       if (geojsonLayer) map.removeLayer(geojsonLayer);
@@ -626,6 +639,7 @@
       });
 
       geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
+        pane: 'polygonsPane', // Keeps polygons underneath fossil points
         style: function(feature) {
           const score = feature.properties.score_potentiel || 40;
           let color = '#eab308';
@@ -634,7 +648,7 @@
           else if (score >= 55) color = '#f97316';
           else if (score >= 45) color = '#f59e0b';
 
-          const opacity = Math.min(0.6, 0.2 + ((score - 30) / 100) * 0.5);
+          const opacity = Math.min(0.5, 0.18 + ((score - 30) / 100) * 0.4);
           return { fillColor: color, color: color, weight: 1, fillOpacity: opacity };
         },
         onEachFeature: function(feature, layer) {
