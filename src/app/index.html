@@ -402,13 +402,23 @@
         </div>
       </div>
 
-      <!-- Search Communes -->
+      <!-- Search & Formation Filter -->
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Rechercher un lieu / commune</div>
-        <div class="search-box">
+        <div class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Recherche Lieu & Formations Clés</div>
+        <div class="search-box" style="margin-bottom:8px;">
           <i class="fa-solid fa-location-dot"></i>
           <input type="text" id="searchInput" placeholder="Ex: Mont Sénégra, Lodève, Salagou, Mèze..." onkeyup="handleSearch(event)">
         </div>
+
+        <select id="formationSelect" onchange="filterByFormation(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#38bdf8; font-family:inherit; font-size:0.82rem; outline:none; cursor:pointer;">
+          <option value="">🔎 Toutes les Formations Géologiques</option>
+          <option value="salagou">🔴 Permien : Ruffes du Salagou & Lodévois (~290 Ma)</option>
+          <option value="fontaneilles">🐚 Jurassique : Marnes de Fontaneilles (~170 Ma)</option>
+          <option value="schiste">🦂 Ordovicien : Schistes de Saint-Chinian / Landeyran (~470 Ma)</option>
+          <option value="gres">Dinosaures : Grès à Reptiles Mèze/Cruzy (~70 Ma)</option>
+          <option value="coumiac">⚡ Dévonien : Marbres & Calcaires de Coumiac (~370 Ma)</option>
+        </select>
+
         <div class="quick-jumps">
           <button class="jump-btn" onclick="flyToLoc(43.6820, 3.1250, 14)">📍 Mont Sénégra (MNHN)</button>
           <button class="jump-btn" onclick="flyToLoc(43.6533, 3.3478, 13)">📍 Salagou / Lieude</button>
@@ -722,16 +732,24 @@
     }
 
     // Render Scored Predictive Geology Polygons in polygonsPane
-    function renderPredictiveGeology() {
+    function renderPredictiveGeology(selectedFormation = "") {
       if (!rawGeojsonData) return;
       if (geojsonLayer) map.removeLayer(geojsonLayer);
 
       const filteredFeatures = rawGeojsonData.features.filter(f => {
         const scorePass = (f.properties.score_potentiel >= minScoreThreshold);
+        let slopePass = true;
         if (slopeOnlyFilter) {
-          return scorePass && (f.properties.pente_degres >= 14.0);
+          slopePass = (f.properties.pente_degres >= 14.0);
         }
-        return scorePass;
+
+        let formationPass = true;
+        if (selectedFormation) {
+          const desc = String(f.properties.DESCR || "").toLowerCase();
+          formationPass = desc.includes(selectedFormation.toLowerCase());
+        }
+
+        return scorePass && slopePass && formationPass;
       });
 
       geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
@@ -761,6 +779,10 @@
       }).addTo(map);
 
       document.getElementById('stat-zones').innerText = filteredFeatures.length.toLocaleString('fr-FR');
+    }
+
+    function filterByFormation(val) {
+      renderPredictiveGeology(val);
     }
 
     // Toggles & Controls
