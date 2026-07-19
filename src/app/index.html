@@ -441,6 +441,9 @@
           <button class="jump-btn" style="width: 100%; padding: 10px; background: #2563eb; color: #fff; font-weight: 700; text-align: center; border-radius: 8px; font-size: 0.88rem;" onclick="locateUserOnMap()">
             <i class="fa-solid fa-crosshairs"></i> 🎯 Ma Position GPS en Direct
           </button>
+          <button class="jump-btn" style="width: 100%; padding: 9px; background: #7c3aed; color: #fff; font-weight: 700; text-align: center; border-radius: 8px; font-size: 0.84rem;" onclick="openAddPersonalFindingModal()">
+            <i class="fa-solid fa-star"></i> ➕ Enregistrer une Découverte Personnel
+          </button>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
             <button class="jump-btn" style="padding: 9px; background: #15803d; color: #fff; font-weight: 600; text-align: center; border-radius: 8px; font-size: 0.78rem;" onclick="downloadGPXExport()">
               <i class="fa-solid fa-location-arrow"></i> Fichier GPX
@@ -544,6 +547,54 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Personal Finding Modal -->
+  <div id="personalFindingModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.85); backdrop-filter:blur(10px); z-index:3000; justify-content:center; align-items:center; padding:20px;">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h2 style="color:#a855f7;"><i class="fa-solid fa-star"></i> Enregistrer une Découverte Personnel</h2>
+        <button class="close-btn" onclick="closeAddPersonalFindingModal()">&times;</button>
+      </div>
+      <form onsubmit="savePersonalFinding(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Nom / Description de la Découverte :</label>
+          <input type="text" id="pf-name" required placeholder="Ex: Empreinte de Walchia, Ammonite Toarcien..." style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
+        </div>
+
+        <div>
+          <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Type / Catégorie :</label>
+          <select id="pf-category" style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
+            <option value="plants">🌿 Plante / Végétal (Walchia...)</option>
+            <option value="molluscs">🐚 Mollusque / Ammonite</option>
+            <option value="dinosaurs_reptiles">🦖 Reptile / Dinosaure / Empreinte</option>
+            <option value="arthropods">🦂 Trilobite / Arthropode</option>
+            <option value="mammals">🦴 Mammifère / Os</option>
+            <option value="others">💎 Minerai / Autre</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div>
+            <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Latitude :</label>
+            <input type="number" step="any" id="pf-lat" required style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
+          </div>
+          <div>
+            <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Longitude :</label>
+            <input type="number" step="any" id="pf-lng" required style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Notes & Remarques Terrain :</label>
+          <textarea id="pf-notes" rows="3" placeholder="Ex: Trouvé dans la ravine sud du Mont Sénégra, dans la dalle de siltite grise." style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none; resize:none;"></textarea>
+        </div>
+
+        <button type="submit" style="padding:10px; background:#a855f7; color:#fff; font-weight:700; border:none; border-radius:8px; cursor:pointer; margin-top:6px;">
+          💾 Sauvegarder dans Mon Carnet
+        </button>
+      </form>
     </div>
   </div>
 
@@ -951,11 +1002,77 @@
       );
     }
 
-    function downloadGPXExport() {
+    let personalFindingsLayerGroup = L.layerGroup().addTo(map);
+
+    function openAddPersonalFindingModal(lat = null, lng = null) {
+      const modal = document.getElementById('personalFindingModal');
+      modal.style.display = 'flex';
       const center = map.getCenter();
-      const url = `/api/export/gpx?lat=${center.lat.toFixed(4)}&lng=${center.lng.toFixed(4)}&radius=10`;
-      window.open(url, '_blank');
+      document.getElementById('pf-lat').value = lat ? lat.toFixed(5) : center.lat.toFixed(5);
+      document.getElementById('pf-lng').value = lng ? lng.toFixed(5) : center.lng.toFixed(5);
     }
+
+    function closeAddPersonalFindingModal() {
+      document.getElementById('personalFindingModal').style.display = 'none';
+    }
+
+    function savePersonalFinding(e) {
+      e.preventDefault();
+      const name = document.getElementById('pf-name').value;
+      const category = document.getElementById('pf-category').value;
+      const lat = parseFloat(document.getElementById('pf-lat').value);
+      const lng = parseFloat(document.getElementById('pf-lng').value);
+      const notes = document.getElementById('pf-notes').value;
+
+      const newFinding = { id: Date.now(), name, category, lat, lng, notes, date: new Date().toLocaleDateString('fr-FR') };
+
+      let saved = JSON.parse(localStorage.getItem('my_fossil_findings') || '[]');
+      saved.push(newFinding);
+      localStorage.setItem('my_fossil_findings', JSON.stringify(saved));
+
+      closeAddPersonalFindingModal();
+      document.getElementById('pf-name').value = '';
+      document.getElementById('pf-notes').value = '';
+
+      loadPersonalFindings();
+      map.flyTo([lat, lng], 14);
+    }
+
+    function loadPersonalFindings() {
+      personalFindingsLayerGroup.clearLayers();
+      let saved = JSON.parse(localStorage.getItem('my_fossil_findings') || '[]');
+
+      saved.forEach(item => {
+        const marker = L.marker([item.lat, item.lng], {
+          pane: 'fossilsPane',
+          icon: L.divIcon({
+            className: 'custom-personal-finding',
+            html: `<div style="background:#a855f7; color:#fff; width:26px; height:26px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 12px #a855f7; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fa-solid fa-star"></i></div>`,
+            iconSize: [26, 26], iconAnchor: [13, 13]
+          })
+        }).bindPopup(`
+          <div class="popup-title" style="color:#a855f7;">🌟 Ma Découverte : ${item.name}</div>
+          <div class="popup-meta">
+            <b>Date :</b> ${item.date}<br>
+            <b>GPS :</b> ${item.lat.toFixed(5)}, ${item.lng.toFixed(5)}<br>
+            <b>Notes :</b> ${item.notes || 'Aucune note'}
+          </div>
+          <button onclick="deletePersonalFinding(${item.id})" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:0.75rem; margin-top:8px; cursor:pointer;">🗑️ Supprimer de mon carnet</button>
+        `);
+        personalFindingsLayerGroup.addLayer(marker);
+      });
+    }
+
+    function deletePersonalFinding(id) {
+      let saved = JSON.parse(localStorage.getItem('my_fossil_findings') || '[]');
+      saved = saved.filter(x => x.id !== id);
+      localStorage.setItem('my_fossil_findings', JSON.stringify(saved));
+      loadPersonalFindings();
+      map.closePopup();
+    }
+
+    // Load personal findings on start
+    loadPersonalFindings();
 
     function downloadKMLExport() {
       const center = map.getCenter();
