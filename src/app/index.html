@@ -434,11 +434,8 @@
               <i class="fa-solid fa-earth-americas"></i> Fichier KML
             </button>
           </div>
-          <button class="jump-btn" style="width: 100%; padding: 8px; background: #0284c7; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="generateCurrentLocationReport()">
+          <button class="jump-btn" style="width: 100%; padding: 9px; background: #0284c7; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="generateCurrentLocationReport()">
             <i class="fa-solid fa-file-pdf"></i> Générer Fiche de Terrain PDF
-          </button>
-          <button class="jump-btn" style="width: 100%; padding: 8px; background: #475569; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="openGuideModal()">
-            <i class="fa-solid fa-eye"></i> Guide d'Identification Visuelle (Hérault)
           </button>
         </div>
       </div>
@@ -541,39 +538,6 @@
 
   <!-- Map Canvas -->
   <div id="map"></div>
-
-  <!-- Guide Modal -->
-  <div id="guideModal">
-        <button class="close-btn" onclick="closeGuideModal()">&times;</button>
-      </div>
-      <div class="guide-grid">
-        <div class="guide-card">
-          <h3>🌲 Walchia piniformis (Conifère Permien)</h3>
-          <p><b>Visuel :</b> Rameau feuillé avec petites aiguilles serrées recourbées en spirale.<br><b>Couleur :</b> Pellicule noire brillante (fusain).<br><b>Zone :</b> Mont Sénégra, Lodévois (Permien ~295 Ma).</p>
-        </div>
-        <div class="guide-card">
-          <h3>🍃 Rhachiphyllum lyratifolia (Fougère)</h3>
-          <p><b>Visuel :</b> Petite fougère dont les pinnules sont découpées en 3 lobes arrondis.<br><b>Support :</b> Siltites grises/ocres.<br><b>Zone :</b> Mont Sénégra, Usclas, Tuilières.</p>
-        </div>
-        <div class="guide-card">
-          <h3>🐊 Thérapsides & Pélycosaures (Reptiles)</h3>
-          <p><b>Visuel :</b> Empreintes de pas à 5 doigts ou dalles d'ichnofaciès <i>Scoyenia</i>.<br><b>Support :</b> Grès et ruffes rouges.<br><b>Zone :</b> La Lieude, Salagou, Rabéjac.</p>
-        </div>
-        <div class="guide-card">
-          <h3>🦖 Dinosaures & Œufs (Crétacé)</h3>
-          <p><b>Visuel :</b> Coquilles d'œufs arrondies ou os spongieux lourds.<br><b>Support :</b> Grès à reptiles et argiles rutilantes.<br><b>Zone :</b> Mèze, Cruzy, Villeveyrac.</p>
-        </div>
-        <div class="guide-card">
-          <h3>🐚 Ammonites & Belemnites (Jurassique)</h3>
-          <p><b>Visuel :</b> Coquilles en spirale striée ou "pointes de rostre" allongées.<br><b>Support :</b> Marnes de Fontaneilles, calcaires.<br><b>Zone :</b> Fontaneilles, Causses, Montpeyroux.</p>
-        </div>
-        <div class="guide-card">
-          <h3>🦂 Trilobites & Brachiopodes (Ordovicien)</h3>
-          <p><b>Visuel :</b> Carapaces articulées ovales à plusieurs segments.<br><b>Support :</b> Schistes et grès sombres.<br><b>Zone :</b> Saint-Chinian, Cabrières, Landeyran.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -715,22 +679,40 @@
       <a href="https://sciencepress.mnhn.fr/sites/default/files/articles/pdf/comptes-rendus-palevol2013v12f2a02.pdf" target="_blank" class="popup-tag" style="color:#10b981; border-color:#10b981;">📄 Lire la publication MNHN (2013)</a>
     `).addTo(map);
 
-    // Render Fossils as FIXED PRECISE INDIVIDUAL POINTS (Always on top of polygons via fossilsPane)
+    // Render Fossils with INTUITIVE VISUAL ICONS (Shells 🐚, Dinosaurs 🦖, Plants 🌿, Trilobites 🦂, Bones 🦴)
     function renderFossils() {
       fossilsLayerGroup.clearLayers();
       let count = 0;
+
+      const categoryIcons = {
+        'dinosaurs_reptiles': { icon: 'fa-dragon', color: '#ef4444', label: 'Dinosaures / Reptiles' },
+        'molluscs':           { icon: 'fa-note-sticky', color: '#0284c7', label: 'Mollusques / Ammonites' }, // 🐚
+        'plants':             { icon: 'fa-leaf', color: '#16a34a', label: 'Plantes / Walchia' },
+        'arthropods':         { icon: 'fa-bug', color: '#9333ea', label: 'Trilobites / Arthropodes' },
+        'mammals':            { icon: 'fa-bone', color: '#d97706', label: 'Mammifères' },
+        'fish':               { icon: 'fa-fish', color: '#0d9488', label: 'Poissons' },
+        'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
+      };
+
       fossilsData.forEach(item => {
         if (!activeCategories.has(item.category_id)) return;
         count++;
-        const marker = L.circleMarker([item.lat, item.lng], {
-          pane: 'fossilsPane', // GUARANTEES marker is above red/orange polygons!
-          radius: 6,
-          fillColor: item.color,
-          color: '#ffffff',
-          weight: 2,
-          opacity: 1.0,
-          fillOpacity: 0.9
+
+        const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
+        // Specific override for ammonites / bivalves
+        let faIcon = iconConfig.icon;
+        if (item.category_id === 'molluscs') faIcon = 'fa-ring'; // ammonite spiral look
+
+        const marker = L.marker([item.lat, item.lng], {
+          pane: 'fossilsPane',
+          icon: L.divIcon({
+            className: 'custom-fossil-icon',
+            html: `<div style="background:${iconConfig.color}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
+            iconSize: [22, 22],
+            iconAnchor: [11, 11]
+          })
         });
+
         const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
         const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
         const cleanName = item.name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
@@ -741,21 +723,19 @@
         const popupContent = `
           <div class="popup-title">${item.name}</div>
           <div class="popup-meta">
+            <b>Type :</b> <span style="color:${iconConfig.color}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name}</span><br>
             <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span><br>
-            <b>Catégorie :</b> ${item.category_name}<br>
             <b>Période :</b> ${item.period} (${item.max_ma ? item.max_ma + ' Ma' : 'N/A'})<br>
             <b>Formation :</b> ${item.formation || 'Non spécifiée'}<br>
             <b>Phylum / Classe :</b> ${item.phylum} / ${item.class_name}<br>
             <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
           </div>
 
-          <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;">
-            <!-- Wikipedia summary content populated on demand -->
-          </div>
+          <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;"></div>
 
           <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
             <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">
-              🖼️ Photos Google Images
+              🖼️ Photos Google
             </a>
             <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">
               🔍 Recherche Web
