@@ -554,6 +554,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
+    // Global Filter Variables
+    let selectedPeriodFilter = "";
+    let currentMapColorMode = "score"; // "score" or "period"
+
     // Initialize Map centered on Hérault with Canvas renderer
     const map = L.map('map', {
       center: [43.55, 3.45],
