@@ -28,9 +28,9 @@
       display: flex;
     }
 
-    /* Side Control Panel */
+    /* Collapsible Sidebar styling */
     #sidebar {
-      width: 390px;
+      width: 380px;
       height: 100%;
       background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
@@ -39,6 +39,50 @@
       flex-direction: column;
       z-index: 1000;
       box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+      transition: margin-left 0.3s ease;
+    }
+    #sidebar.collapsed {
+      margin-left: -380px;
+    }
+
+    /* Sidebar Toggle Floating Button */
+    #sidebarToggleBtn {
+      position: absolute;
+      top: 15px;
+      left: 395px;
+      z-index: 1100;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: left 0.3s ease;
+    }
+    #sidebar.collapsed + #sidebarToggleBtn {
+      left: 15px;
+    }
+
+    /* Species Guide Modal — True Overlay centered over map */
+    #guideModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
     .header {
@@ -490,6 +534,11 @@
     </div>
   </div>
 
+  <!-- Floating Sidebar Toggle Button -->
+  <button id="sidebarToggleBtn" onclick="toggleSidebar()" title="Masquer / Afficher le panneau latéral">
+    <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
+  </button>
+
   <!-- Map Canvas -->
   <div id="map"></div>
 
@@ -861,6 +910,18 @@
     // Modal Gear
     function openGearModal() { document.getElementById('gearModal').style.display = 'flex'; }
     function closeGearModal() { document.getElementById('gearModal').style.display = 'none'; }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const icon = document.getElementById('toggleIcon');
+      sidebar.classList.toggle('collapsed');
+      if (sidebar.classList.contains('collapsed')) {
+        icon.className = 'fa-solid fa-angles-right';
+      } else {
+        icon.className = 'fa-solid fa-angles-left';
+      }
+      setTimeout(() => { map.invalidateSize(); }, 350);
+    }
 
     // Modal Guide
     function openGuideModal() { document.getElementById('guideModal').style.display = 'flex'; }
