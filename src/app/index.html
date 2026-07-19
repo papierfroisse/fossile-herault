@@ -609,15 +609,38 @@
           opacity: 1.0,
           fillOpacity: 0.9
         });
+        const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
+        const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
+        const cleanName = item.name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+
         const popupContent = `
           <div class="popup-title">${item.name}</div>
           <div class="popup-meta">
             <b>Catégorie :</b> ${item.category_name}<br>
             <b>Période :</b> ${item.period} (${item.max_ma ? item.max_ma + ' Ma' : 'N/A'})<br>
             <b>Formation :</b> ${item.formation || 'Non spécifiée'}<br>
+            <b>Phylum / Classe :</b> ${item.phylum} / ${item.class_name}<br>
             <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
           </div>
-          <a href="https://paleobiodb.org/classic/basicCollectionSearch?collection_no=${item.id}" target="_blank" class="popup-tag">📄 Publication & Référence PBDB #${item.id}</a>
+
+          <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;">
+            <!-- Wikipedia summary content populated on demand -->
+          </div>
+
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+            <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">
+              🖼️ Photos Google Images
+            </a>
+            <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">
+              🔍 Recherche Web
+            </a>
+            <button onclick="loadWikiPreview('${cleanName}', ${item.id})" class="popup-tag" style="background:#15803d; color:#fff; border-color:#15803d; cursor:pointer;">
+              📖 Aperçu Wikipédia
+            </button>
+            <a href="https://paleobiodb.org/classic/basicCollectionSearch?collection_no=${item.id}" target="_blank" class="popup-tag" style="background:#1e293b; color:#94a3b8; border-color:#334155;">
+              📄 PBDB #${item.id}
+            </a>
+          </div>
         `;
         marker.bindPopup(popupContent);
         fossilsLayerGroup.addLayer(marker);
@@ -694,6 +717,37 @@
       const center = map.getCenter();
       const url = `/api/report?lat=${center.lat.toFixed(4)}&lng=${center.lng.toFixed(4)}&name=${encodeURIComponent('Secteur Hérault')}`;
       window.open(url, '_blank');
+    }
+
+    // Load Wikipedia Preview on demand inside Popup
+    function loadWikiPreview(speciesName, itemId) {
+      const box = document.getElementById(`wiki-box-${itemId}`);
+      if (!box) return;
+
+      box.style.display = 'block';
+      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Chargement de Wikipédia...`;
+
+      // Try French Wikipedia first, then English
+      const term = speciesName.split(" ")[0]; // Main genus or species name
+      fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(term)}`)
+        .then(res => {
+          if (res.ok) return res.json();
+          return fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(term)}`).then(r => r.json());
+        })
+        .then(data => {
+          if (data && data.extract) {
+            let imgHtml = '';
+            if (data.thumbnail && data.thumbnail.source) {
+              imgHtml = `<img src="${data.thumbnail.source}" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px; margin-bottom:6px;">`;
+            }
+            box.innerHTML = `${imgHtml}<div><b>${data.title}</b>: ${data.extract.substring(0, 220)}...</div>`;
+          } else {
+            box.innerHTML = `⚠️ Pas de résumé Wikipédia direct. Utilisez le bouton Google Images.`;
+          }
+        })
+        .catch(() => {
+          box.innerHTML = `⚠️ Recherche Wikipédia indisponible. Utilisez le bouton Google Images.`;
+        });
     }
 
     // Modal Guide
