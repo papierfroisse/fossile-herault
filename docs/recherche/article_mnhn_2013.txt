@@ -1,0 +1,919 @@
+--- PAGE 1 ---
+C. R. Palevol 12 (2013) 69–79
+Contents lists available at SciVerse ScienceDirect
+Comptes Rendus Palevol
+w w w.s  ciencedirect.com
+General Palaeontology, Systematics, Evolution (Palaeobotany)
+Discovery of an Autunian macroﬂora and lithostratigraphic
+re-investigation
+ on the western border of the Lodève Permian basin
+(Mont
+ Sénégra, Hérault, France). Paleoenvironmental implications
+Découverte d’une ﬂore autunienne et réinvestigation lithostratigraphique dans la
+bordure
+ occidentale du bassin permien de Lodève (mont Sénégra, Hérault, France).
+Conséquences
+ paléoenvironnementales
+Georges Gand a, Jean Galtier b,∗, Jacques Garric c, Pierre-Alexandre Teboul a,
+Pierre Pellenard a
+a UMR CNRS/uB 6282, laboratoire biogéosciences, université de Bourgogne, 6, boulevard Gabriel, 21000 Dijon, France
+b CNRS, UMR AMAP, CIRAD, TA-A51/PS2, université Montpellier-2, boulevard de la Lironde, 34398 Montpellier cedex 05, France
+c 16, rue des Azalées, La Chamberte, 34070 Montpellier, France
+a r t i c l e i n f o
+Article history:
+Received
+ 22 November 2012
+Accepted
+ after revision 15 January 2013
+Available
+ online 13 March 2013
+Presented
+ by Philippe Taquet
+Keywords:
+Sedimentary
+ unconformity
+Stephanian
+Basal
+ Autunian
+Asselian
+Coniferophytes
+Peltasperms
+a b s t r a c t
+Re-investigation of the western edge of the Lodève basin allows reassignment of one
+sandstone-conglomerate
+ formation previously identiﬁed as “terminal Stephanian” to Early
+Autunian.
+ The existence of two unconformable (Stephanian and Autunian) megasequences,
+separated
+ by a sedimentary gap, which had been rejected, is thus re-afﬁrmed. The authors
+also
+ found, less than 20 m above the basal Autunian conglomerate, a macroﬂora with taxa
+characteristic
+ of the famous Tuilières ﬂora from a site, located in the eastern part of the
+basin
+ near Lodève, in the Grey Autunian group. This conﬁrms that the new Mont Séné-
+gra
+ fossiliferous beds belong to the Lower Autunian. Moreover, the taxonomic differences
+between
+ these plants and those from the underlying coal-bearing Stephanian beds indi-
+cate
+ an important change in the vegetation between the Stephanian and the Autunian. The
+ﬁrst
+ Autunian sequences were initially deposited within a distal alluvial fan environment,
+which
+ developed vertically into a ﬂoodplain, within an active volcanic context.
+©
+ 2013 Académie des sciences. Published by Elsevier Masson SAS. All rights reserved.
+Mots clés :
+Discordance
+ sédimentaire
+Stéphanien
+Autunien
+ basal
+Assélien
+Coniférophytes
+Peltaspermes
+r é s u m é
+La ré-investigation de la bordure occidentale du bassin de Lodève a permis d’identiﬁer
+une
+ formation gréso-conglomératique de la base de l’Autunien à la place du « Stéphanien
+terminal
+ », précédemment décrit. L’existence de deux mégaséquences, stéphanienne puis
+autunienne,
+ discordantes et séparées par une lacune sédimentaire, est donc réafﬁrmée. Les
+auteurs
+ ont aussi découvert, à environ 20 m au-dessus du conglomérat basal de cette forma-
+tion
+ gréso-conglomératique, une macroﬂore identique à celle du site des Tuilières, localisée
+à
+ la base de l’Autunien gris, dans la partie orientale du bassin permien de Lodève. Outre
+le
+ fait que cette macroﬂore conﬁrme, au mont Sénégra, l’appartenance de cette nouvelle
+formation
+ fossilifère à l’Autunien, ses différents taxa indiquent un changement important
+∗ Corresponding author.
+E-mail address: jean.galtier@cirad.fr (J. Galtier).
+1631-0683/$ – see front matter © 2013 Académie des sciences. Published by Elsevier Masson SAS. All rights reserved.
+doi:10.1016/j.crpv.2013.01.003
+
+--- PAGE 2 ---
+70 G. Gand et al. / C. R. Palevol 12 (2013) 69–79
+de la végétation par rapport à celle du Stéphanien productif sous-jacent. Les premières
+séquences
+ autuniennes se sont d’abord déposées dans un environnement de cône allu-
+vionnaire
+ distal, passant verticalement à celui d’une plaine d’inondation évoluant dans un
+contexte
+ volcanique actif.
+© 2013 Académie des sciences. Publié par Elsevier Masson SAS. Tous droits réservés.
+1. Introduction
+Research in the Lodève Permian basin has been made
+possible by many natural outcrops and opencast ura-
+nium mines of Compagnie générale des matières nucléaires
+(COGEMA). This resulted in the establishment of a con-
+tinuous stratigraphic framework for the Lodève basin
+(Laversanne, 1976; Odin, 1986) and has allowed signiﬁcant
+discoveries in many ﬁelds, such as paleobotany (Galtier
+and Broutin, 1995, 2008), paleoichnology (Gand, 1987;
+Gand et al., 2000, 2008), paleoentomology (Béthoux, 2003),
+invertebrates (Gand et al., 1997a, b, 2008; Garric, 2000),
+vertebrates (Falconnet, 2006, 2010; Werneburg et al., 2007)
+and volcanism (Nmila, 1995). As a result, the Lodève basin
+was recently selected as a reference for studies of climate
+development of the continental Permian (e.g., Pochat and
+Van den Driessche, 2011; Schneider et al., 2006). However,
+the western area of the Lodève basin remains unstudied,
+with the exception of the work of Garric (2004, 2007, 2008).
+On the western side of Mont Sénégra, at the limit of
+the Graissessac Carboniferous and Lodève Permian basins
+(Fig. 1A, B), nine coal seams, referred to as the “Orb group”,
+are exposed. However, only coal seams numbered 3 to 7
+were worked by the coal-mine company (HBCM: Houillères
+des Bassins du Centre-Midi) in a very large opencast mine
+(Fig. 1D and 4A–C). These coal seams alternate with sand-
+stone and siltstone layers, which contain abundant and
+well-preserved ﬂoras (Martin-Closas and Galtier, 2005).
+They belong to a Stephanian unit, dipping towards the SSE,
+dated as Upper Pennsylvanian (= Gzhelian) on the basis of
+its paleoﬂoral content. Towards the south of Mont Séné-
+gra, these coal-bearing strata are uncomformably overlain
+by a grey conglomeratic-sandstone formation, about 50 m
+thick, which belongs to the Autunian (Figs. 1D and 2B)
+(Anonymous, 1988; Debriette and Gand, 1990; Garric,
+2004). This geological formation was also identiﬁed more
+formerly towards the southwest, from Lunas to Le Bouché
+(Fig. 2B) by the geologists making the “Bédarieux” map
+(Bogdanoff et al., 1984) and in several drillings by the
+Commissariat à l’énergie atomique (CEA) then by COGEMA
+(Jousseaume, 1969; Saint-Martin, 1993).
+However, in the Mont Sénégra area, the stratigraphic
+attribution to the Autunian of the formation above the
+unconformity was changed to Stephanian by Becq-
+Giraudon and Van den Driessche (1993), who mentioned
+the presence, under the Autunian formation, of “une
+série gréso-silteuse du Stéphanien terminal” overlain
+in conformity by the “Grès de la base de l’Autunien à
+ciment carbonaté et à clastes de dolomies cambriennes”.
+Recent study of the Mont Sénégra outcrops by the authors
+(Garric, 2004, and present work) did not allow us to dis-
+tinguish this “Stéphanien terminal”. Instead, we observed
+aggradational detrital formation of which the lower part
+consists of plurimetric conglomerates, such as mass- and
+debris-ﬂows,
+ alternating with sandstones and siltstones.
+It is near the top, within ﬁne grained siltstones, that
+we found a new macroﬂora. In the present paper, we
+provide the stratigraphical context of these fossiliferous
+levels, the description of the ﬂora, and a discussion of the
+stratigraphical and paleoenvironnemental implications of
+these other ﬁndings.
+2.
+ Description and stratigraphic location of the
+levels F1-F3 with macroﬂora
+2.1. Description
+A ﬁrst level of grey to greenish siltstones forming a wavy
+surface with centimeter-scale symmetrical ripple-marks,
+rich in carbon and plant debris, was ﬁrst discovered near
+the 572-m altitude location (F1, Fig. 1C). A few meters from
+this place, a new search conducted in the overlying 50 cm
+thick sandstone, allowed us to ﬁnd other plants on the
+surface of some sandstone-siltstone beds with a thickness
+ranging from 1 to 8 cm (F2, Figs. 1C and 2G). Examination of
+thin sections shows that these layers consist of millimeter-
+to centimeter-thick sequences, each starting with a bed
+of quartz often very angular, immediately topped by a
+clay-siltstone drape containing fusinized plant remains
+(Figs. 2I, J and 3A); the cement is more or less dolomitic; this
+last mineral forms thin layers in some sequences. During
+the excavation, the rather high whiteness of some siltstone
+levels suggested the presence of volcanic ash. However, a
+search for indicators (bubbles, glass) from three samples
+was negative (Teboul, 2010). Recently, another level with
+plants (F3, Fig. 1C and 2H) has been observed from grey
+and dolomitic siltstones located about 10 m from the F2
+site.
+2.2. Stratigraphic location of plant levels F1–F3 in the
+formation overlying the Stephanian (coal-bearing “Orb
+group”)
+A section of the lower part of this formation was studied
+from its contact with the Stephanian deposits, which is vis-
+ible on the slope of the former coal mining trail (A7, Fig. 1C,
+D). Although heavily fragmented up to point B (Fig. 1C), we
+have distinguished ﬁve positive sequences, from the base
+to the top.
+The ﬁrst sequence (1, Fig. 2D) is 5- to 6 m thick
+and begins with several meters of coarsely deposited
+conglomerate-sandstones. One of them is surmounted
+by a thin (less than 10 cm thick) lenticular bed of
+sand/siltstones. In the conglomeratic portion, the breccias
+contain abundant pebbles. These consist mostly of angular
+quartz mixed with pebbles of blavierite, migmatites and
+grey–black sandstones, the latter originating from the
+
+--- PAGE 3 ---
+G. Gand et al. / C. R. Palevol 12 (2013) 69–79 71
+Fig. 1. A, B. Graissessac Carboniferous and Lodève Permian basins. C. Location of F1–F3 levels with Autunian macroﬂora; A7-B-A6: location of the log section
+drawn
+ in Fig. 2D. D. Detail of the zone of contact between Stephanian and Autunian (stippled) in the Mont-Sénégra area; G1–G4: trails used in open pit
+during
+ the coal working; 3–8: coal seams of the Orb Group; A1, A2, A4, A7: Stephanian–Autunian contacts still visible; A5–A6: Autunian outcrops; dense
+stippling:
+ sandstones and mass/debris-ﬂow, of Early Autunian clearly visible.
+Fig.
+ 1. A, B. Les bassins carbonifère de Graissessac et permien de Lodève. C. Localisation des niveaux F1–F3 à macroﬂore autunienne ; A7-B-A6 : situation
+du
+ log D de la Fig. 2. D. Zone de contact entre le Stéphanien et l’Autunien dans le secteur du mont Sénégra ; G1-G4 : gradins/banquettes d’exploitation
+de
+ la houille ; 3–7 : couches de charbon du faisceau de l’Orb ; A1, A2, A4, A7 : contacts Stéphanien-Autunien visibles ; A5–A6 : afﬂeurements d’Autunien ;
+pointillés
+ serrés : grès et mass/débris-ﬂow de l’Autunien inférieur.
+Stephanian. Angular cavities also mark the location of dis-
+solved dolomitic breccias that were inherited from the local
+Cambrian basement. This basal conglomeratic part, charac-
+teristic of detrital material (mass debris-ﬂows) transported
+over a short distance, was also mentioned by Garric (2004),
+northwards in the slope of trails G1 and G2 (Fig. 1D), over-
+lying with unconformity the coal-productive Stephanian.
+Along trail G1, these conglomerates are also found between
+A1 and A2 (Fig. 4C), and continuously contact (Fig. 4D) the
+Stephanian basement with an unconformity of 40◦ (Fig. 4E,
+F). The contact boundary between this coarse formation
+and the underlying Stephanian is very irregular. Along the
+former coal mining track, from A7 to B (Fig. 1C), this detrital
+sequence No. 1 ends with an ochre siltstone layer, 1 m thick,
+very fractured and in which the sequential organization is
+difﬁcult
+ to interpret. This sequence No. 1 is also observable
+in the trail G2 at point A3 (Fig. 1D), where it has the same
+thickness but is much better preserved, and where it was
+also described by Garric (2004). In this place, at the base of
+the “siltite grise à rubans ocre” a volcanic-ash (“cinerite”)
+level was identiﬁed by Teboul (2010, sample 28).
+Sequences No. 2 and 3 (Fig. 2D) can be followed up
+to point B (Fig. 1C). Sequence 2 begins with a con-
+glomeratic bed showing cavernous brecciated parts (B,
+Fig. 2D) without apparent layering, and with polygenic,
+rounded to angular pebbles of the same type as those
+in the lower sequence, but with more dolomitic blocks
+up to 10 cm in diameter. All these clasts are distributed
+within a sandstone-dolomitic matrix. This conglomerate is
+topped by a thick sand-siltstone-dolomitic bed including
+
+--- PAGE 4 ---
+72 G. Gand et al. / C. R. Palevol 12 (2013) 69–79
+Fig. 2. A. Permian synthetic 1og of the Lodève basin eastern part (Fo: Formations; Ens: Ensembles; V. A.: volcanic-ashes; En: palaeoenvironments).
+B.
+ Geological map of the Lodève basin western part (after Garric, 2012), F1–F3: Autunian formations; F4–F5: Saxonian formations. C. Log of the LNS2
+boring,
+ volcanic-ashes are in roman ﬁgures, “bituminous shales” are in Arabic ﬁgures. D. Section of the Early Autunian between A7 and A6, detailed in
+Fig.
+ 1C (1–5: macroscopic sequences; St: Stephanian; C: conglomerates, debris/mass-ﬂows, FS–Si: ﬁne-grained sandstones/siltstones; B: Breccias with
+dolomitic
+ elements; S/Si: sand/siltstones; Va: volcanic-ash Ldci18; F1–F3 siltstones levels with Autunian macroﬂora). E. Sketch of the Early Autunian for-
+mation
+ from the GRS31bis boring; 1–3: sequences numbering. F. A6 outcrop showing the sequences Nos. 4 and 5 of Fig. 2D; B enlarged on the right side:
+dolomitic
+ breccias of sequence No. 4. G. Layers with plants of the site F2. H. Fossiliferous site F3. I, J. Microscopic thin sections of fossiliferous sequences
+from
+ site F2; detailed description in text.
+Fig.
+ 2. A. Log synthétique de la série permienne de la partie orientale du bassin de Lodève (Fo : formations ; Ens : Ensembles ; V. A : cinérites ; En : environ-
+nements).
+ B. Carte géologique de la partie occidentale du bassin de Lodève (d’après Garric, 2012), F1–F3 : formations de l’Autunien ; F4–F5 : formations du
+Saxonien.
+ C. Log du sondage LNS2, cinérites en chiffres romains, couches bitumineuses en chiffes arabes. D. Log de l’Autunien basal entre les points A7 et
+A6
+ de la Fig. 1C (1–5 : séquences macroscopiques ; St : Stéphanien ; C : conglomérats, débris/mass-ﬂows, FS–Si : grès ﬁns/siltites ; B : brèches à éléments
+dolomitiques
+ ; S/Si : grès/siltites ; Va : cinérite Ldci18 ; F1–F3 : niveaux de siltites à macroﬂore autunienne). E. Base de la formation autunienne dans le
+sondage
+ GRS31bis ; 1–3 : séquences. F. Afﬂeurement A6 (séquences 4 et 5 de la Fig. 2D) ; encart, à droite : agrandissement de la zone conglomératique et
+bréchique
+ dolomitique B (séquence 4). G. Niveaux à macroﬂore du site F2. H. Niveaux fossilifères F3. I, J. Lames minces de séquences du site F2 ; lits de
+quartz
+ anguleux alternant avec des siltites à ciment dolomitique ; abondance de débris végétaux charbonneux en noir ; fusain probable.
+
+--- PAGE 5 ---
+G. Gand et al. / C. R. Palevol 12 (2013) 69–79 73
+centimetric microconglomeratic layers with dolomite and
+quartz intraclasts. Sequence No. 3 has the same characters
+as No. 2.
+After a small gap, sequences No. 4 and 5 are visible in
+the slope of the trail G4 (A6, Figs. 1C, D and 2F). They are
+petrographically similar to the previous ones; nevertheless,
+in the lower part of No. 4, dolomitic breccia zones seem to
+be more frequent (Fig. 2D). The sandstone matrix shows
+abundant dolomite, quartz pebbles and volcanic-ash rock
+debris.
+Discontinuous
+ and fractured outcrops between the
+A6 exposure and those beds containing the Autunian
+macroﬂora (F1–F3, Figs. 1C, D and 2D) did not allow us to
+locate fossiliferous beds quite precisely in sequence No. 5,
+which is approximately 3.5 m thick. Considering the dip of
+the beds, we suggest that the succession of plant-bearing
+layers – from F1 to F3 – is about 2 m in thickness up to near
+the top of sequence No. 5. Actually, the top of this is not fully
+visible due to vegetation cover and is partially covered by
+colluvial deposits. The volcanic-ash Ldci 18 (Fig. 2D, Va),
+identiﬁed by Garric (2004) below layer F1, was conﬁrmed
+by Teboul (2010). It contains desiccation cracks, traces of
+roots and dolomitized seeds.
+3. The macroﬂora of the sites F1–F3
+The fossil plants are very fragmentary, none exceeding
+a few centimeters in length. In some levels, they even occur
+as accumulations of millimetric-sized pieces (Fig. 3A). It
+is noteworthy that, in this case, many fragments are of
+a bright black color, suggesting that they are burnt frag-
+ments of plants or fusain. This is supported by the fact
+that thin sections of these plants seen under reﬂected light
+are opaque (Fig. 2I, J). However, we did not succeed in
+isolating these fragments using acid maceration. Despite
+the unpromising facies, several attempts to extract paly-
+nomorphs have been carried out in different laboratories,
+but all have been unsuccessful. Fossil plants mainly occur
+in layers of ochreous color. Slightly larger plant fragments
+are found at the boundary of apparently grey beds of angu-
+lar quartz. But the largest fragments have been found in
+relatively soft grey siltites; it is only in these softer rocks
+(Fig. 3B) where it was possible to use the “dégagement”
+technique to expose the plant fragments.
+The identiﬁed plant assemblage consists of a small num-
+ber of taxa, all belonging to seed plants:
+• ﬁrstly we recognized leafy twigs of coniferophytes in
+the form of dispersed ultimate branches; due to their
+small size, they are attributed with some reservations
+to Culmitzschia frondosa (Fig. 3B), Hermitia schlotheimii
+(Fig. 3B, C) and Walchia piniformis (Fig. 3D). In addition,
+dwarf shoot scales similar to those of W. piniformis cones
+(Fig. 3J) and numerous dispersed ovules have been found,
+including Cordaicarpus sp. (Fig. 3I);
+• less
+ common are representatives of peltaspermous pteri-
+dosperms with characteristic frond fragments (Fig. 3A,
+G, F) and fertile parts attributed to Peltaspermum sp.
+(Fig. 3H). The specimen illustrated in Fig. 3 F is an ulti-
+mate pinna with a distinct rachis (more than 1 mm broad)
+bearing dissected sphenopteroid pinnules (5 mm long)
+as
+ well as small round intercalary lobes between the
+pinnules (white arrow, Fig. 3F). This specimen is sim-
+ilar to Gracilopteris bergeronii; however, if intercalary
+pinnules are present on the penultimate rachis, such
+intercalary lobes borne on the ultimate rachis have not
+been mentioned in this species (Doubinger, 1956; Kerp
+and Haubold, 1988). Alternatively, this specimen could be
+attributed to Arnhardtia mouretii, which possesses longer,
+but similar, pinnules and intercalary lobes on the ulti-
+mate pinna rachis (Zeiller, 1898). The pinna illustrated at
+the same magniﬁcation in Fig. 3G is either a large pin-
+nately compound pinnule or, more probably, an ultimate
+pinna with a narrow rachis bearing small three-lobed
+pinnules; it is tentatively attributed to Rhachiphyllum dia-
+bolica or to R. lyratifolia. The same taxonomic identity is
+proposed for the poorly preserved pinna with lobed pin-
+nules illustrated in Fig. 3A (arrow);
+• at last, one leaf fragment of the possible cycad Tae-
+niopteris is shown in Fig. 3E.
+4. Stratigraphic and paleoenvironmental results
+4.1. Stratigraphic attribution of F1–F3 levels with
+macroﬂora to Autunian
+4.1.1. Paleontological data
+The list of the macroﬂora results from a prelim-
+inary investigation. Though quantitatively small, it is
+nonetheless signiﬁcant that the ﬂora contains no element
+recognized in the underlying Stephanian coal-bearing lev-
+els (Martin-Closas and Galtier, 2005). Actually, all identiﬁed
+taxa of the new ﬂora have been described historically
+(Doubinger, 1956; Florin, 1938–1944; Grand’Eury, 1877;
+Zeiller, 1898) from the Tuilières fossiliferous site near
+Lodève, which contains the most diverse ﬂora known in
+Europe for the Early Autunian. This site is located in the
+eastern part of the Lodève basin and corresponds to the
+stratigraphic interval between “beds 45 and 48” of the
+Lodève basin stratigraphic column (Fig. 2A), i.e. to the basal
+Usclas–Saint-Privat Formation.
+Among the taxa identiﬁed in the new ﬂora of Mont Séné-
+gra, only two (W. piniformis and Taeniopteris sp.) have a
+relatively broad stratigraphic distribution, from the Late
+Stephanian–Gzhelian (of many Euramerican basins) to the
+Autunian/Lower Rotliegend (e.g. Lodève, Autun, Thuringia,
+Saar-Nahe basins) correlated with Asselian to Sakmarian
+times (Schneider et al., 2006). In contrast, the other taxa
+(C. frondosa, R. lyratifolia, G. bergeronii) are restricted to the
+Lodève, Autun, and Saar-Nahe basins (Broutin et al., 1999;
+Kerp and Fichter, 1985). Moreover, some taxa (A. mouretii,
+H. schlotheimii) are only known from the Tuilières local-
+ity. This supports the idea that on the western border of
+the Lodève basin, in the area of Mont Sénégra, the base
+of the sandstone conglomeratic formation containing the
+new ﬂora must be correlated with the basal Usclas–Saint-
+Privat Formation of the Lodève basin and considered as
+Early Autunian. This stratigraphic attribution conﬁrms the
+one previously based on paleoichnofauna by Debriette
+and Gand (1990) for similar levels located near Mont
+Sénégra.
+
+--- PAGE 6 ---
+74 G. Gand et al. / C. R. Palevol 12 (2013) 69–79
+Fig. 3. A. Siltstone surface showing abundant very small plant fragments including fusainized material (bright black) and Rhachiphyllum lyratifolia pinna
+(arrow),
+ SEN19. B. Leafy twigs of Culmitzschia frondosa (1) and Hermitia schlotheimii (2) SEN14. C. Hermitia schlotheimii, SEN20. D. Walchia piniformis, SEN09.
+E.
+ Taeniopteris sp., leaf fragment, SEN15. F. Gracilopteris bergeronii or Arnhardtia mouretii pinna, SEN 01. G. Rhachiphyllum diabolica or R. lyratifolia ultimate
+pinna,
+ SEN15 (same magniﬁcation as F). H. Peltaspermum sp., SEN12. I. Cordaicarpus sp. dispersed ovule, SEN 02. J. Dispersed dwarf shoot of W. piniformis
+cone,
+ SEN12. Palaeobotanical collections, Montpellier-2 University. Scale = 1 cm, except I and J, same scale = 5 mm.
+Fig.
+ 3. A. Surface d’une siltite montrant de nombreux petits fragments de plantes dont certains (noir brillant) transformés en fusain et penne de Rhachiphyl-
+lum
+ lyratifolia (ﬂèche), SEN19. B. Rameaux feuillés de Culmitzschia frondosa (1) et Hermitia schlotheimii (2) SEN14. C. Hermitia schlotheimii, SEN20. D. Walchia
+piniformis,
+ SEN09. E. Taeniopteris sp., fragment de feuille, SEN15. F. Penne de Gracilopteris bergeronii ou d’Arnhardtia mouretii, SEN 01. G. Rhachiphyllum
+diabolica ou R. lyratifolia, penne ultime, SEN15. H. Peltaspermum sp., SEN12. I. Cordaicarpus sp., ovule dispersé, SEN 02. J. Écaille ovulifère dispersée du cône
+de
+ W. piniformis, SEN12. Collections paléobotaniques de l’université Montpellier-2. Barre d’échelle = 1 cm, excepté pour I et J, dont l’échelle = 5 mm.
+
+--- PAGE 7 ---
+G. Gand et al. / C. R. Palevol 12 (2013) 69–79 75
+Fig. 4. A. Present view of the Stephanian and Autunian formations on the west slope of Mont Sénégra. B. Geological interpretation of Fig. A; Autunian:
+stippled,
+ and dash line: contact; f: possible fault; G1–G4: former mine trails; 1–9: coal seams numbers (see also Fig. 1D). C. Enlargement of ﬁg. A between
+coal
+ seams No. 3 to No. 6; St: Stephanian; Aut.: Early Autunian: mass/debris-ﬂows, sand/siltstones formation overlying in unconformity the Stephanian;
+A1,
+ A2: places showing clearly the Stephanian/Autunian contact. D–F. Detail of Stephanian–Autunian contact zones observed between A1 and A2. D,
+E.
+ Normal but discordant contact between the Stephanian sandstones (St.) and the Autunian (Aut.), the latter consists of mass/debris-ﬂows (DF) made
+of
+ angular/weathered blocks/pebbles of dolomite, quartz, quartzite, blavierite, Stephanian sand/siltstones spread into sandstone-dolomitic matrix (A1
+location
+ ** in Fig. 4C). D. Enlargement of the contact zone. E. General view of the same with dolomitic breccia zones (B) in mass/debris-ﬂows; D white bars:
+deepening.
+ F. Autunian/Stephanian contact on a lystric fault in A2 (*location in Fig. 4C); the Autunian conglomeratic formation slid on coal-seam 6.
+Fig.
+ 4. A. Vue actuelle du Stéphanien et de l’Autunien sur la pente ouest du mont Sénégra. B. Interprétation géologique de A, l’Autunien est ﬁguré en
+pointillés
+ ; mêmes abréviations que pour la Fig. 1D ; f : contact masqué, possible faille. C. Agrandissement de la zone A1-A2 ; faisceau stéphanien (St) de
+l’Orb
+ (couches 3 à 6), recouvert par l’Autunien (Aut.). D–F. Détails des zones du contact Stéphanien-Autunien, observées entre A1 et A2. D, E. Contact normal
+mais
+ discordant entre le Stéphanien gréseux (St.) et l’Autunien constitué de brèches (B) et de débris-ﬂows (DF) à galets/blocs anguleux/usés, de dolomie,
+quartz,
+ quartzite, blaviérite, grès/siltites stéphaniens, matrice gréso-dolomitique, vus entre A1 et A2 (** sur la Fig. 4C). D. Agrandissement d’une zone de
+contact.
+ E. Vue plus large de la même zone avec les brèches (B) ; barre blanche D : litage. F. Contact Stéphanien/Autunien sur une faille lystrique en A2 (*
+sur
+ Fig. 4C) ; la formation conglomératique autunienne a glissé sur la couche de charbon n◦ 6.
+
+--- PAGE 8 ---
+76 G. Gand et al. / C. R. Palevol 12 (2013) 69–79
+4.1.2. Corings and ﬁeld geological data
+The base of the Autunian megasequence consists of
+conglomeratic layers in sharp unconformity above the
+Stephanian. This was regularly observed in drill cores car-
+ried out in the Autunian of the western part of the Lodève
+basin for the research of uranium as summarized by Saint-
+Martin (1993).
+One of these corings (GRS 31bis), located to the south-
+west of Mont Sénégra (Fig. 2B), went through 691 m of
+rocks from the surface, across the Autunian, and into the
+Stephanian. In order to facilitate the comparison with our
+outcropping section of Mont Sénégra (between A7 and A6:
+Fig. 1D and illustration in Fig. 2D), we have reproduced
+at the same scale in Fig. 2E the ﬁrst 20 m of the Autu-
+nian Formation as exposed in the drill core. Lying with
+an unconformity of 10◦ on the Stephanian coal siltstones,
+the basal Autunian is represented by 8 m of mass/debris-
+ﬂows. They consist of a reddish sandstone and carbonate
+matrix including altered angular and rounded granite peb-
+bles up to 20 cm in diameter, as well as Stephanian debris,
+up to 5 cm long, as well as quartz. These data (Anonymous,
+COGEMA 1988–1989) were supplemented by Saint-Martin
+(1993), who produced a detailed study, including petro-
+graphic, sedimentological, and tectonic information.
+Above the basal conglomeratic beds, sequence No. 1
+(Fig. 2, E1) consists of alternating coarse sandstones and
+siltstones. It is overlain by sequences No. 2 and 3 of the
+same type, but that are less conglomeratic and coarse
+(Fig. 2E2–3). Such a vertical change was also noted in the
+A7–A6 section of Mont Sénégra (Fig. 2D).
+From the top of the conglomeratic part of sequence No. 1
+(level 117 m of the GRS 31bis core), Saint-Martin (1993)
+attributes the overlying beds (ranging from level 117 to
+36 m) to the “Grey Autunian Formation”. In the synthetic
+log of the Permian established by COGEMA for the east-
+ern part of the Lodève basin (Fig. 2A; Gand, 1994; Gand
+et al., 1997b), this “Grey Formation” represents the section
+extending between the basal conglomerate and bed No. 16.
+Saint-Martin (1993) attributed the uppermost part of
+the cored section to the “Grey and Red Autunian” ending
+at “mark 00” in the lithostratigraphic log in Fig. 2A. Based
+on the nomenclature of Odin (1986), the “Usclas–Saint-
+Privat (F1)” and “Tuilières-Loiras (F2)” Formations were
+included in the GRS 31bis core. This interpretation implies
+that the sequential organization of the Autunian series in
+the western part of the Lodève basin is similar to that of
+the eastern part. Similar sequential organization was also
+found in cores LNS1 and LNS2 (Fig. 2B) made in the Lunas
+area. The Jousseaume report (1969) indicates that the LNS1
+coring reached the basal Cambrian after coming through a
+large part of the Grey and Red Autunian and then the whole
+Grey Autunian, beginning with its basal conglomerate. The
+volcanic-ashes/cinerites IX and X were for the ﬁrst time
+discovered here, in the eastern part of the basin. The LNS2
+core (Fig. 2B, C) is more complete; it probably came through
+the beds No. 5 to 30 and cinerites V to X. In the Lunas area,
+some of these volcanic markers were also observed in out-
+crops by Garric (2008). In addition, based on the general
+eastward dip of the Autunian series and on the geographic
+location of cinerites V and X (about 1 km west of the Mont
+Sénégra), one can suggest that the Autunian levels, with
+the
+ macroﬂora described here, are underlying cinerite X.
+Therefore, they should be contemporary with those of the
+“Tuilières” site, which have provided a very diverse Autu-
+nian macroﬂora. As stated above, the levels containing the
+ﬂora also overlie fanglomerates with volcanic-ash layers
+that are currently impossible to correlate with those in the
+eastern part of the Lodève basin. But, on this western bor-
+der, Garric (2007) also identiﬁed similar volcanic rocks in
+the base of the Lower Autunian, along the D23 road, 250 m
+west of Le Bouché (Fig. 2B). Considering their metric thick-
+ness, this author believes that they are comparable to the
+cinerite markers XXIV to XII (Fig. 2A).
+4.2. Age of the Stephanian and overlying Autunian
+formation with macroﬂoras near Mont Sénégra
+The ﬂora found in the Stephanian of Mont Sénégra,
+between coal layers No. 3 to 7, has the same character-
+istics as the ﬂora of the Upper Stephanian (Stephanian
+B + C = “Forézien”) described in the Saint-Étienne coal basin
+and proposed as a reference in France by Doubinger et al.
+(1995). In Mont Sénégra, this Stephanian ﬂora has been
+dated as Upper Pennsylvanian (Martin-Closas and Galtier,
+2005) and can be more precisely attributed to a Gzhelian
+age, as suggested by Doubinger et al. (1995: 305) for the
+French Late Stephanian. The same age would be extended
+to the Latest Carboniferous deposits found at Mont Sénégra
+above the coal layers 3 to 7 (Fig. 4A, B) towards the South
+of the Graissessac Carboniferous basin.
+Importantly, in this same place, Brugier et al. (2003)
+have dated as 295.5 ± 5.1 Ma (using the zircon 206Pb/238U
+method) several samples of a bentonite located between
+coal seams 4a and 4b. This gives these coal seams an
+Asselian age (i.e. Early Permian), date based on the
+recent International Chronostratigraphic Chart of IUGS
+(Cohen et al., 2012), which provides a numerical age of
+298,9 ± 0.2 Ma for the Gzhelian/Asselian limit (or Carbonif-
+erous/Permian boundary) and of 295.5 ± 0.4 Ma for the top
+of the Asselian.
+Schneider et al. (2006: 172) attributed the whole coal-
+bearing sequence of Graissessac to the Stephanian C;
+however, taking into account geochronological results of
+Brugier et al. (2003), they dated the major coal seams at
+299 Ma (i.e. on the Carboniferous/Permian limit on their
+chart) and consider the top of the sequence (and accord-
+ingly the top of Stephanian C) as Early Asselian. This is
+in disagreement with the usage of Carboniferous chronos-
+tratigraphy (Heckel and Clayton, 2006), which includes the
+whole Stephanian within the Carboniferous and the top of
+the Stephanian as equivalent to the Gzhelian.
+In the Sénégra opencast mine, above coal seam 7, there
+is a thick sequence of detrital deposits in which coal beds
+are rare, thin and not worked (e.g., 8 and 9, Fig. 4A, B). From
+5 m above coal seam 7, plant remains become rare and sev-
+eral conglomeratic lenses with small quartz pebbles are
+visible. This would correspond to the top of the Stepha-
+nian C sensu Schneider et al. (2006) and perhaps, partly, to
+what was interpreted as “Terminal Stephanian” by Becq-
+Giraudon and Van den Driessche (1993). These authors
+studying the exposures of the Mont Sénégra opencast mine
+suggested a continuity of the sedimentation between the
+
+--- PAGE 9 ---
+G. Gand et al. / C. R. Palevol 12 (2013) 69–79 77
+Stephanian and the Permian. They described, as Termi-
+nal Stephanian (2 in their Fig. 2b), a sand-siltstone series
+extending northwards, within a very clear unconformity,
+on the coal seams No. 4–7 (see Fig. 4F for coal-seam 6).
+However they have drawn it overlain in conformity by the
+basal Autunian sandstones (3 in their Fig. 2b) with carbon-
+ate cement and Cambrian dolomite clasts. Actually neither
+Garric (2004) nor the authors of this paper recognized this
+sandstone-siltstone terminal horizon of the Stephanian. In
+its place, and particularly well exposed between A1 and
+A2 (Figs. 1D and 4A–C), this horizon corresponds to a con-
+glomerate of mass/debris-ﬂows with a carbonate matrix
+and breccias showing dolomitic angular elements, which
+are often dissolved (Fig. 4(?) D, E). These are characters that
+are precisely those of the Autunian conglomerate deﬁned
+in Becq-Giraudon and Van den Driessche (1993: 942).
+To summarize, as Saint-Martin (1993) and Garric (2007)
+have successively pointed out from petrographic, sedimen-
+tological and tectonic data, conﬁrmed by the GRS 31bis
+coring and observed to the south, in the Aire Raymond
+and Le Bouché areas, the two sedimentary megacycles
+Stephanian and Autunian are truly separated by a signif-
+icant discordance that corresponds to a major tectonic
+phase. The rubefaction of the Uppermost Stephanian lay-
+ers, the presence within basal Autunian conglomerates of
+pebbles of Stephanian origin and of others with dolomite,
+quartz, quartzite, blavierite and granite from the regional
+basement, all indicate the emersion and erosion of the
+Stephanian basin and its borders. The second Autunian
+cycle then took place eastwards within a new extensive
+basin (Saint-Martin, 1992, 1993). Based on paleontologi-
+cal correlations between various European Permian basins,
+Schneider et al. (2006, Fig. 9) proposed the beginning of this
+Autunian cycle in Lodève at the very end of the Asselian,
+after a long gap (about 6 Ma). However, the Asselian
+duration being reduced to 3.4 Ma (Cohen et al., 2012), it
+seems likely that the sedimentary gap has been shorter in
+time.
+5. Paleoenvironments and climate
+5.1. During the mass/debris-ﬂow deposits of Mont
+Sénégra
+The ﬁrst Autunian conglomeratic layers of Mont Séné-
+gra are mass/debris-ﬂows of alluvial fanglomerates. As the
+result of weathering, these were deposited at the foot of
+elevated areas along a fault scarp in a subsiding basin of
+tectonic origin. Such a mechanism still underway in semi-
+arid regions (Friedman and Sanders, 1978) was illustrated
+for the western part of the Lodève basin by Garric (2007).
+As for the Stephanian deposits, the active area was always
+located on the southern border of the basin. However,
+the presence of pebbles of Stephanian sandstones, gran-
+ite, blavierite and dolomite suggest that detrital sediments
+also come from the western and northern borders, espe-
+cially of the Mendic area. The size of pebbles, not more than
+10 cm long, suggests that the deposits were carried out in
+the distal part of an alluvial fan at the edge of the ﬂood
+plain.
+5.2.
+ Conditions during deposition of plant-bearing
+siltstones
+Overall, these fossiliferous rocks are constituted of
+regular, thin sequences with horizontal bedding. This orga-
+nization, as well as the millimeter-sized plant fragments
+observed in the inter-beds, but also in the clay-siltstone
+and the dolomitic matrix, suggests that sediment and
+plant debris were deposited in a rather low-energy ﬂood
+plain environment. Centimeter-scale wave lengths of sym-
+metric ripple-marks, as well as rare oblique lamination
+also demonstrate its shallowness and a moderate hydro-
+dynamism, the latter being shown by the fossil plants,
+which are not deformed. Desiccation cracks observed in
+some volcanic-ash layers with traces of roots suggest
+plant colonization of periodically exposed surfaces, close or
+within the sedimentary areas. The Autunian plants, mainly
+conifers and peltasperms, are considered to be mesophytic
+to xerophytic. They constitute evidence of a clear change
+in environment and climate compared to earlier Stepha-
+nian vegetation, which was dominated by a quite different
+ﬂora composed of mesophytic to hygrophytic sigillarians,
+calamiteans, ferns and pteridosperms (Martin-Closas and
+Galtier, 2005).
+5.3. Floral change and climate
+Similar ﬂoristic changes occur in other areas in the
+world, subject to well-known trends towards “drying”
+at the Pennsylvanian/Permian boundary. Representatives
+of conifers and peltasperms appear sporadically, dur-
+ing the Late Pennsylvanian, in tropical basinal lowlands
+where they become dominant during the Permian. This
+has been documented in detail, both in Europe and
+North America (e.g., Broutin et al., 1990; DiMichele
+and Aronson, 1992; Kerp and Fichter, 1985). Inversely,
+taxa from Carboniferous-type wetland biome, such as
+calamiteans, re-appear later (= “recurrence” of Broutin
+et al., 1990) in landscapes dominated by conifers and
+they are interpreted as stream and lake-side elements
+(DiMichele et al., 2006). Such occurrence of calamiteans in
+a plant assemblage dominated by conifers and peltasperms
+has been actually reported from younger Early Permian
+deposits of the same Lodève basin (Galtier and Broutin,
+1995). Recently, DiMichele et al. (2008) proposed that
+the Pennsylvanian/Asselian vegetational change is not an
+evolutionary one, but reﬂects tracking of climate change,
+with the conifer–peltasperm ﬂora tolerant to seasonal
+drought replacing a ﬂora with low drought tolerance.
+Therefore ﬂoral change reﬂects climate, but climate is
+highly geographically heterogeneous and can confound
+terrestrial plant biostratigraphy. We agree with this inter-
+pretation, but we consider that the newly described
+ﬂora from Mont Sénégra is the ﬁrst appearance, in the
+Lodève basin area, of such a conifer–peltasperm ﬂora. In
+the present example, we have no evidence that a simi-
+lar “dry ﬂora” was already somewhere in the landscape
+during the well paleobotanically documented (Martin-
+Closas and Galtier, 2005) Pennsylvanian time for this
+area.
+
+--- PAGE 10 ---
+78 G. Gand et al. / C. R. Palevol 12 (2013) 69–79
+6. Conclusions
+The authors have discovered, in the Mont Sénégra area,
+beds rich in fossil plants located about 20 m above the
+Stephanian/Autunian contact. From its taxonomic content,
+this plant assemblage is identical to the famous ﬂora of the
+Tuilières site, near Lodève, which comes from the lower
+part (Grey Autunian) of the Permian series and is con-
+sidered to be Asselian in age. We suggest that a similar
+age should be attributed to the here newly deﬁned, Autu-
+nian conglomeratic-sandstone formation of Mont Sénégra.
+This formation unconformably overlies the Stephanian
+coal-bearing Orb Group. Between the Stephanian and Autu-
+nian deposits, we have not found the sandstone-siltstone
+series of the Terminal Stephanian, as interpreted by Becq-
+Giraudon and Van den Driessche (1993), and we consider
+the continuity of sedimentation between Stephanian and
+Autunian as unproven. As a result, we conﬁrm the exist-
+ence of two unconformable sedimentary megasequences,
+one for the Stephanian and one for the Autunian, separated
+by a time gap (? a few Ma) during a part of the Asselian. It is
+expected that the real duration of this gap will be demon-
+strated, in the future, by dating of cinerites occurring locally
+in the basal Autunian.
+The discovery of plants in the Autunian near Mont
+Sénégra including conifers and peltasperms, which are
+interpreted as xerophilous to mesophilous plants, is impor-
+tant because it reﬂects a sharp change of vegetation
+compared to the underlying Stephanian coal group that
+is dominated by sigillarians, calamiteans, ferns and pteri-
+dosperms, mostly hygrophilous and mesophilous. In the
+Mont Sénégra area, as early as Early Permian, vegetation
+tolerant of periodic soil moisture deﬁcits had colonized
+alluvial fanglomerates and ﬂood plains, on the borders of
+a new sedimentary basin. This basin would develop during
+the Permian period into an increasingly larger area, moving
+progressively eastward relative to the former Carbonifer-
+ous basin of Graissessac.
+Acknowledgements
+We thank J. Broutin, W.A. DiMichele and an anony-
+mous reviewer for positive critical comments on this
+manuscript.
+References
+Anonymous., 1988. Étude de stabilité de la découverte d’Alzou (H.B.C.M.-
+U.E. Hérault), Rapport CERCHAR 88(1)88-71-1632 sept 1988, 32 p.
+Anonymous., 1988–1989 Coupe du sondage GRS31bis. Doc. inédit,
+COGEMA, Archives Centrales Mines, Razès, Limousin, 13 p.
+Becq-Giraudon, J.F., Van den Driessche, J., 1993. Continuité de la sédi-
+mentation entre le Stéphanien et l’Autunien dans le bassin de
+Graissessac-Lodève (Sud du Massif Central) implications tectoniques.
+C. R. Acad. Sci. Paris, Ser. II 317, 939–945.
+Béthoux, O., 2003. Évolution des Archaeorthoptera (Insecta : Neoptera)
+du Paléozoïque supérieur au Mésozoïque inférieur. Diversité tax-
+onomique, disparité morphologique, paléoécologie. Thèse Paléon-
+tologie, Muséum d’histoire naturelle de Paris, 2 tomes, 213 p. +
+300 p.
+Bogdanoff, S., Donnot, M., Ellenberger, F., 1984. Note explicative de la
+feuille de Bédarieux à 1/5000. BRGM, Orléans, 105 p.
+Broutin, J., Doubinger, J., Farjanel, G., Freytet, P., Kerp, H., Langiaux, J.,
+Lebreton, M.L., Sebban, S., Satta, S., 1990. Le renouvellement des
+ﬂores au passage Carbonifère-Permien : approches stratigraphique,
+biologique,
+ sédimentologique. C. R. Acad. Sci. Paris, Ser. II 311,
+1563–1569.
+Broutin, J., Chateauneuf, J.J., Galtier, J., Ronchi, A., 1999. L’Autunien d’Autun
+reste-t-il une référence pour les dépôts continentaux du Permien
+inférieur d’Europe ? Apport des données paléobotaniques. Geol. Fr.
+2, 17–31.
+Brugier, O., Becq-Giraudon, J.F., Champenois, M., Deloule, E., Ludden, J.,
+Mangin, D., 2003. Application of in situ zircon geochronology and
+accessory phase chemistry to constraining basin development dur-
+ing post-collisionnal extension: a case study from the French Massif
+Central. Chem. Geol. 201, 319–336.
+Cohen, K.M., Finney, S., Gibbard, P.L., 2012. International chronostati-
+graphic chart. IUGS-ICS. www.stratigraphy.org
+Debriette, P., Gand, G., 1990. Conséquences stratigraphiques et paléoen-
+vironnementales de nouvelles observations paléontologiques dans le
+Permien de la partie occidentale du bassin de Lodève, Sud du Massif
+Central. Geol. Fr. 1, 19–32.
+DiMichele, W.A., Aronson, R.B., 1992. The Pennsylvanian–Permian veg-
+etational transition: a terrestrial analogue to the onshore-offshore
+hypothesis. Evolution 46 (3), 807–824.
+DiMichele, W.A., Tabor, N.J., Chaney, D.S., Nelson, W.J., 2006. From
+wetlands to wet spots: environmental tracking and the fate of Car-
+boniferous
+ elements in Early Permian tropical ﬂoras. In: Greb, S.F.,
+DiMichele, W.A. (Eds.), Wetlands through time, 399. Geol. Soc. Am.
+Spec. Pap., pp. 223–248.
+DiMichele, W.A., Kerp, H., Tabor, N.J., Looy, C.V., 2008. The so-called
+“Paleophytic-Mesophytic” transition in equatorial Pangea–Multiple
+biomes and vegetational tracking of climate change through geologi-
+cal time. Palaeogeogr., Palaeoclimatol., Palaeoecol. 268, 152–163.
+Doubinger, J., 1956. Contribution à l’étude des ﬂores autuno-
+stéphaniennes. Mem. Soc. geol. France N.S. 35, 1–180.
+Doubinger, J., Vetter, P., Langiaux, J., Galtier, J., Broutin, J., 1995. La ﬂore
+fossile du bassin houiller de Saint-Étienne, 64. Mémoires du Muséum
+national d’histoire naturelle, Paris, pp. 1–355.
+Falconnet, J., 2006. Redescription d’Aphelosaurus lutevensis Gervais 1859
+(Diapsida, Araeoscelidia) du Permien de Lodève. Implications phy-
+logénétiques et morpho-fonctionnelles. Mémoire de Master 2, UMR
+5143 CNRS, Département Histoire de la Terre, Muséum national
+d’histoire naturelle, inédit, 43 p.
+Falconnet, J., 2010. Diversiﬁcation initiale des Amniotes : l’apport des
+Amniotes franc¸ ais. Thèse, Muséum national d’histoire naturelle, Paris,
+340 p.
+Florin, R., 1938–1944. Die Koniferen des Oberkarbons und des Unteren
+Perms. Palaeontographica B 85 (1-7), 1–654.
+Friedman, G.M., Sanders, J.E., 1978. Nonmarine Environments I, II. Princi-
+ples of Sedimentology. John Wiley & Sons, New York/Chichester, pp.
+199–269.
+Galtier, J., Broutin, J., 1995. La ﬂore de la zone de transition de l’Autunien
+supérieur de Lodève. Sci. Geol. 48, 83–93.
+Galtier, J., Broutin, J., 2008. Floras from red beds of the Permian basin of
+Lodève (Southern France). J. Iberian Geol. 34, 57–72.
+Gand, G., 1987. Les traces de Vertébrés tétrapodes du Permien franc¸ ais
+Paléontologie, Stratigraphie, Paléoenvironnements. Thèse d’État, uni-
+versité de Bourgogne. Edit. Centre des Sciences de la Terre, 341 p.
+Gand, G., 1994. Ichnocoenoses à Isopodichnus furcosus nov. ichnosp. dans
+le Permien du bassin de Lodève, Massif central, France. Geobios 27,
+74–86.
+Gand, G., Garric, J., Demathieu, G., Ellenberger, P., 2000. La palichnofaune
+de vertébrés tétrapodes du Permien supérieur du bassin de Lodève
+(Languedoc, France). Palaeovertebrata 29, 1–82.
+Gand, G., Garric, J., Lapeyrie, J., 1997a. Biocénoses à Triopsidés (Crustacea,
+Branchiopoda) du Permien du bassin de Lodève (France). Geobios 30,
+673–700.
+Gand, G., Lapeyrie, J., Garric, J., Nel, A., Schneider, J., Walter, H., 1997b.
+Découverte d’Arthropodes et de Bivalves inédits dans le Permien con-
+tinental (Lodèvois, France). C. R. Acad. Sci. Paris, Ser. IIa 325, 891–898.
+Gand, G., Garric, J., Schneider, J., Walter, H., Lapeyrie, J., Martin, J., Thiery,
+A., 2008. Notostraca trackways in Permian playa environments of the
+Lodève basin (France). J. Iberian Geol. 34, 73–108.
+Garric, J., 2000. Les rigoles fossilifères du Saxonien du bassin de Lodève
+(Languedoc, France). Bull. Soc. Hist. Nat. Autun 174, 7–48.
+Garric, J., 2004. Le passage du Stéphanien à l’Autunien dans la découverte
+des houillères (HBCM) du mont Sénégra, à la limite du bassin car-
+bonifère de Graissessac et du bassin permien de Lodève (Hérault). Bull.
+Soc. Hist. Nat. Autun 192, 29–40.
+Garric, J., 2007. Le passage du Stéphanien à l’Autunien au nord-ouest de
+La Tour-Sur-Orb, à la limite du bassin de Graissessac et du bassin
+permien de Lodève (Hérault-France). Bull. Soc. Hist. Nat. Autun 194,
+29–51.
+
+--- PAGE 11 ---
+G. Gand et al. / C. R. Palevol 12 (2013) 69–79 79
+Garric, J., 2008. Étude stratigraphique et tectonique de la partie
+nord de la bordure occidentale du bassin permien de Lodève,
+secteur de Lunas (Hérault-France). Bull. Soc. Hist. Nat. Autun 197,
+31–44.
+Garric, G., 2012. Données géologiques nouvelles sur la partie occidentale
+du Bassin Permien de Lodève (Hérault France) - première partie. Bull.
+Soc. Hist. Nat. Autun. 203, 25–40.
+Grand’Eury, C., 1877. Flore carbonifère du département de la Loire. Mem.
+Acad. Sci. Paris 24, 1–624.
+Heckel, P.H., Clayton, G., 2006. The Carboniferous system. Use of the new
+ofﬁcial names for the subsystems, series and stages. Geologica Acta 4
+(3), 403–407.
+Jousseaume, J., 1969. Campagne de sondages géologiques de Lunas. HER
+No. E 10 bis joint aux rapports 69.2 et 69. 3. Doc. du CEA inédits,
+Archives de la COGEMA, Razès, Limousin.
+Kerp, J.H.F., Fichter, J., 1985. Die Makroﬂoren des saarpfälzis-
+chen Rotliegenden (?Ober-Karbon-Unter-Perm; SW-Deutschland).
+Mainzer Geowiss. Mitt. 14, 159–286.
+Kerp, J.H.F., Haubold, H., 1988. Aspects of Permian palaeobotany and paly-
+nology. VIII. On the reclassiﬁcation of the west- and central European
+species of the form-genus Callipteris Brongniart 1849. Rev. Palaeobot.
+Palynol. 54, 135–150.
+Laversanne,
+ J., 1976. Sédimentation et minéralisation du Permien de
+Lodève Hérault. Thèse 3e cycle, université de Paris Sud-Orsay,
+300 p.
+Martin-Closas, C., Galtier, J., 2005. Plant Taphonomy and Paleoe-
+cology of Late Pennsylvanian Intramontane Wetlands in the
+Graissessac–Lodève Basin (Languedoc, France). Palaios 20, 249–265.
+Nmila, A., 1995. L’empreinte du volcanisme dans le remplissage per-
+mien du bassin de Lodève. Étude pétrographique et géochimique.
+Implication
+ métallogénique. Thèse d’État, université Pierre-et-Marie-
+Curie, Paris-6, 202 p.
+Odin, B., 1986. Les formations permiennes, Autunien supérieur à
+Thuringien, du « bassin » de Lodève, Hérault, France : stratigraphie,
+minéralogie, paléoenvironnement, corrélations. Thèse d’État, univer-
+sité Aix-Marseille, 375p.
+Pochat, S., Van den Driessche, J., 2011. Filling sequence in Late Paleozoic
+continental basins: a chimera of climate change? A new light given by
+the Graissessac-Lodève Basin (SE France). Palaeogeogr., Palaeoclima-
+tol., Palaeoecol. 302, 170–186.
+Saint-Martin, M., 1992. Genèse et évolution structurale du bassin permien
+de Lodève. Cuadernos de Geologica Iberica 16, 81–106.
+Saint-Martin, M., 1993. Évolution du bassin stéphanien de Graissessac en
+relation avec les tectoniques hercyniennes et tardi-hercyniennes de
+la Montagne Noire (Sud du Massif Central franc¸ ais). Thèse, université
+Montpellier-2, 235 p.
+Schneider, J., Körner, F., Roscher, M., Kroner, U., 2006. Permian cli-
+mate development peri-Tethys area. The Lodeve basin, French Massif
+Central, compared in a European and global context. Palaeogeogr.,
+Palaeoclimatol., Palaeoecol. 240, 161–183.
+Teboul, P.A., 2010. Caractérisation pétrographique et minéralogique de
+cinérites permiennes du bassin de Lodève (Hérault–France). Rapport
+de stage, inédit, UMR 6282, laboratoire de biogéosciences, université
+de Bourgogne, 24 p.
+Werneburg, R., Steyer, J.S., Sommer, G., Gand, G., Schneider, W.,
+Vianey-Liaud, M., 2007. The Earliest Tupilakosaurid amphibian with
+diplospondylous vertebrae from the Late Permian of southern France.
+J. Vertebr. Paleontol. 27 (1), 26–30.
+Zeiller, R., 1898. Contribution à l’étude de la ﬂore ptéridologique des
+schistes permiens de Lodève. Bull. Mus. Hist. Nat. Marseille 1, 6–69.

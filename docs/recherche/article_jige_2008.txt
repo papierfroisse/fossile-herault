@@ -1,0 +1,1766 @@
+--- PAGE 1 ---
+The playa environments of the Lodève Permian basin 
+(Languedoc-France)
+Los ambientes de playa de la Cuenca de Lòdeve (Languedoc-Francia)
+M. Lopez1, G. Gand2, J. Garric3, F. Körner4, J. Schneider4.
+1Laboratoire Dynamique de la Lithosphère, UMR 5573, Université de Montpellier II, Case 060, 34095 Montpellier 
+Cedex 05 (France), e-mail: Michel.lopez@dstu.univ-montp2.fr
+2 Laboratoire Biogéosciences, Université de Bourgogne, CNRS; 6, Bd Gabriel, 21000 Dijon (France)
+3Jacques Garric, 16 rue des Azalées, la Chamberte, 34070 Montpellier(France)
+4Freiberg University, Department of Palaeontology, Institute of Geology, Bernhard-von-Cotta street 2; 
+D-09596 Freiberg (Germany).
+Received: 13/05/07/ Accepted: 25/09/07
+Abstract
+The Lodève Permian synrift sequence is represented by thick stacked climate-controled playa cycles which have been constrained 
+by structural, sedimentological, geochemical and paleontological processes. The present paper merges the different results in order 
+to better constrain the dynamics and palaeoecologycal evolution of the playa system from Late Cisuralian to Early Lopingian time. 
+In this depositional environment, thining upwards sheet-ﬂood sequences represent ﬂooding events; they are relayed by ephemeral 
+ponding, suspension settling and limited carbonate precipitation accompanied by large amounts of shallow to subaerial sedimentary 
+structures (current and wind ripples, desiccation cracks, rain drops, etc.). The aridity of the climate contrasts with the surprising 
+abundance of the fauna encountered into carbonate-rich silty-clay playa-lake deposits. Ephemeral pools are colonized by numerous 
+shellﬁsh: Choncostraca, Triopsids, and Insects, which led to intense burrowing of the overbank deposits (
+Scoyenia facies). Tetrapods 
+are common and dominated by several types of reptiles after footprints: Pelycosauria, Parareptilia and Lepidosauria in the Rabejac 
+Fm, and Mammalian reptiles (Therapsida) on the top of the ﬂuvial deposits of the Salagou Fm near La Lieude farm. In addition, 
+elements of a weighty herbivorous Pelycosaurian and a small amphibian Tupilakosaurid, only described in the Triassic before, have 
+been also found in the Upper part of the Permian series of this sector.
+Keywords: Permian, Playa, Triopsids, Conchostraca, Vertebrates, 
+Scoyenia ichnofacies, footprints.
+Resumen
+El ciclo sedimentario sinrift del Pérmico de la cuenca de Lodève (Formaciones Rabéjac y Salagou) está representado por depósitos 
+cíclicos de playa que resultan de factores estrucrurales, sedimentológicos, geoquímicos y biológicos. En este trabajo se exponen 
+evidencias que permiten perﬁlar la evolución dinámica y palaeoecológica del ambiente de playa entre el Cisuraliense superior y el 
+Lopingiense inferior. En este marco sedimentario se desarrollaron sequencias estratodecrecientes de sheet-ﬂood que corresponden 
+a eventos de inundación. Con ellos alternaron episodios con desarollo temporal de charcas efímeras, en las que se generaron se
+-
+dimentos de grano ﬁno y escasos carbonatos. En estas facies se encuentran estructuras sedimentarias someras a subaéreas (riples 
+ISSN (print): 1698-6180. ISSN (online): 1886-7995
+www.ucm.es /info/estratig/journal.htm
+Journal of Iberian Geology 34 (1) 2008: 29-56
+Libro 34(1).indb   29 19/12/2007   20:36:37
+
+--- PAGE 2 ---
+30 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+vealed vertebrate remains which are excavate every year 
+by a French-German team (Dijon, Freiberg, Montpellier 
+Universities, MNHN and CNRS of Paris; Schleusingen 
+Museum, Thuringe).
+These paleontological studies, coupled with sedimen
+-
+tological and structural data help to constrain the overall 
+conditions of the Permian playa paleoenvironment. This 
+paper is an exhaustive synthesis of the physical, biologi
+-
+cal and geodynamical evolution of the Lodève Permian 
+playa system.
+2. General location
+The Lodève basin is a half-graben of Permian age, with 
+a 15-20° southward dipping continental inﬁlling that ex -
+tends over an area of about 150 km2, on the southern bor-
+der of the Massif Central (Fig. 1). The basin was sealed 
+by a thick horizontal Mesozoic cover which is presently 
+eroded, allowing the exposure of the basement and of the 
+lower Permian series on the northern border. It is sur
+-
+rounded by the Palaeozoic of the Montagne Noire to the 
+west, the Mesozoic Causses Plateau to the north, and the 
+Languedoc Tertiary plain to the south.  The Permian de
+-
+posits overlap both the Graissessac Stephanian deposits 
+which crop out westward in a narrow basin and folded 
+Cambrian carbonates which are exhumed in the North of 
+the basin (Lodève Ridge, Fig. 2). More precisely, four 
+domains demarcate the basin (Figs. 1, 2):
+Northward, the basin is bounded by the plateau of the 
+“Causse du Larzac” (700 m high) formed by a 400 m-thick 
+succession of Mesozoic limestone deposits (Jurassic), by 
+basal sandstone, mudstone and evaporite deposits (Trias
+-
+sic). These latters are subhorizontal and lie unconform -
+ably on the Permian and on the hercynian basement, 
+which outcrops directly to the north forming the “Lodève 
+Ridge”; to the south-west in the Montagne Noire, and to 
+the north-east in the Cévennes. 
+Westward, the basin is hidden by the north-south stretch 
+basaltic plateau of the Escandorgue (800 m high), which 
+underlines a volcanic main axis of Pliocene to Quater
+-
+nary age.
+1. Introduction
+Playa sequences represent one of the richest suites of 
+sedimentary facies and fossils stacked in the geological 
+record because of the overall periodic change of the dep
+-
+ositional system. This dry ﬂat-ﬂoored bottom depression 
+found in inner to coastal basins of arid and semiarid re
+-
+gions are periodically ponded by ephemeral shallow lakes 
+(Blackwelder, 1931) and shows multiple facies changes 
+from alluvial fan gravel and wadi poorly-sorted sand to 
+lacustrine laminated mud with possible evaporite depos
+-
+its, topped by desiccated surfaces and aeolian sand dunes. 
+A variety of ﬂora and fauna, carefully preserved, in the 
+ﬁne grained sediments of the playa-lakes reveal evidence 
+of life bloom during humid periods. Animal tracks and 
+other biogenic structures (bioturbations, burrows, pale
+-
+osoils) complete the paleoecological diversity on the wet 
+banks of the channels and standing waters.
+The Lodève Permian Basin, in the southern border of 
+the Massif Central, displays a particular well preserved 
+suite of playa sequences and associated paleontological 
+remains, because of both large continuous outcrops and 
+a dense mining network for uranium exploration. In par
+-
+ticular, large open mine quarries coupled with more than 
+40 km of galleries and thousand-km borehole revealed 
+complementary fossiliferous-rich layers which allow to 
+better constrain the structure and the geohistory of the 
+basin.
+Plant remains are of particular abundance in the lacus -
+trine blackshales of the lowermost part of the Autunian 
+Group and vanish progressively upwards because of the 
+low potential of preservation in the red playa/ﬂoodplain 
+pelites of the Saxonian Group. On the contrary, these red 
+sub-emersive facies present a high potential for vertebrate 
+footprints and ichnotraces preservation, associated locally 
+to invertebrate and plant debris accumulations in ﬂooding 
+rills. Thus, in them, Dr Jean Lapeyrie, surgeon in Lodève 
+discovered, about twenty years ago, an exceptional rich 
+suite of insects, conchostracans and triopsids in several 
+levels, ranging from the base to the top of the Salagou Fm 
+of the Saxonian Group. More recently this Formation re
+-
+de corriente acuáticos y eólicos, grietas de desecación, huellas de gotas de agua, etc.). La aridez general del clima contrasta con 
+la sorprendente abundancia de fauna encontrada, fosilizada en los depósitos ﬁnos, ricos en carbonato, de 
+playa-lake. Las zonas 
+encharcadas eran colonizadas por pequeños crustáceos: concostráceos, triópsidos e insectos que dejaron sus numerosas huellas de 
+actividad en los depósitos de 
+overbank (facies de Scoyenia). Los tetrápodos también eran abundantes, y se han reconocido, a partir 
+de sus huellas,  diferentes reptiles (Pelycosauria, Parareptilia y Lepidosauria en la Fm. Rabejac, y Therapsida en la parte superior 
+de los depósitos de la Fm. Salagou próximos a la granja de Lieude). Además, se describen elementos atribuibles a un 
+pelicosaurio 
+hervívoro de gran peso, y a un pequeño anﬁbio tupilakosaurio. Estos últimos eran conocidos solamente en el Triásico, antes de su 
+descubrimiento en la parte superior del Pérmico de la cuenca de Lodève.
+Palabras clave: Pérmico, playa, triópsidos, concostráceos, icnofacies de Scoyenia, huellas de pisadas.
+Libro 34(1).indb   30 19/12/2007   20:36:37
+
+--- PAGE 3 ---
+31Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Fig. 1.- Detailed geological map of the Lodève Permian basin. 1: Plio- Quaternary basaltic volcanism, 2: Tertiary to Quaternary 
+deposits, 3: Upper Jurassic, 4: Middle Jurassic, 5: Lower Jurassic, 6: Triassic, 7: Autunian Group: Lower Cisuralian, 8: Saxonian 
+Group: Upper Cisuralian to Lower Lopingian, 9: Gzhelian, 10: Hercynian basement, 11: Granites of Mendic, 12: Faults; from 
+Lopez and Petit (2003), modiﬁed.
+Fig. 1.- Mapa detallado de la Cuenca pérmica de Lòdeve. 1: V olcanismo basáltico Plio- Cuaternario. 2: Depósitos terciarios-cua
+-
+ternarios. 3: Jurásico Superior. 4: Jurásico Medio. 5:  Jurásico Inferior. 6: Triásico. 7: Grupo Autuniense: Cisuraliense inferior. 
+8: Grupo Saxoniense: Cisuraliense-Lopingiense inferior. 9: Gzeliense. 10: Basamento hercínico. 11 Granitos de Mendic. 12: 
+Fallas. Modiﬁcado de Lopez and Petit (2003).
+Fig. 2.-  N-S-cross-section of the Lodève Permian basin; from Lopez and Petit (2003), modiﬁed.
+Fig. 2.- Corte estratigráﬁco N-S de la Cuenca pérmica de Lòdeve. Modiﬁcado de Lopez y Petit (2003).
+Libro 34(1).indb   31 19/12/2007   20:36:42
+
+--- PAGE 4 ---
+32 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+South-westward, the hills of Cabrières (350 m high) 
+represent the eastern extremity of the Montagne Noire 
+hercynian folded belt. 
+Eastward, the basin is limited by the NNE-SSW trending 
+Cévennes Fault along which a slice of Lower Liassic car-
+bonates (Hettangian) is sandwiched between the Permian 
+and the Cenozoic deposits of the Hérault valley. There is no 
+information of the continuity of the Lodève basin eastward 
+of the Cévennes Fault. The Lergue valley at the “cluse de 
+Rabieux” constitutes the main access to the basin, when 
+coming from the south. Beyond the Cévennes fault limit, 
+the Tertiary molasses of the Hérault plain represent the 
+most important wine growing of the region.
+Southward, the basin is presently limited by the E-W 
+trending les Aires-Mas Blanc fault. This post-Bathonian 
+down-to-South normal fault precludes observations of 
+the southern border of the basin. V olcanic ashes beds (= 
+“cinérites) correlations between the Lodève and the Gabi
+-
+an basins, located 10 km southward, argue for the con -
+nection of both basins during the Lower Permian time. 
+However, the Pre-Anisian tilting of Permian deposits 
+implies that the basin registered a synsedimentary tilting 
+during the Middle/Upper Permian time in relation with 
+the activation of a north-dipping listric fault, south of “les 
+Aires-Mas Blanc fault”. The Lower to Middle Jurassic 
+carbonates of the Mourèze graben are characterized by 
+both slide blocks of Lower Liassic carbonates related 
+to Liassic extension and folds, related to later Pyrene
+-
+an shortening. At a general scale, the crustal extension 
+linked to the Cévennes fault is related to the thinning of 
+the crust, associated to the opening of the Ligurian Ocean 
+during the Early Jurassic time (Lemoine et al., 1984).
+3. Origin, palaeontology and stratigraphy of the 
+studied basin
+3. 1. Basin geohistory 
+3. 1. 1. Hercynian cycle 
+Over a Precambrian basement, the series are mainly 
+composed of shelf deposits (carbonate and siliciclastic 
+facies) in the Montagne Noire and a comprehensive se -
+ries of slope shales in the Cévennes. During the Lower 
+Carboniferous, the paroxysm of the Hercynian short
+-
+ening conduced to turbidite deposition in front of large 
+southward vergent recumbent folds, in the southern side 
+of the Montagne Noire. 
+The shortening stage is followed in the Montagne Noire 
+by the uplift of the gneiss dome in the axial zone, and the 
+associated collapse of the northern border with the open
+-
+ing of the extensional basin of Graissessac during the 
+Wesphalian time (Echtler and Malavieille, 1990). In this 
+E-W elongated basin, a high heat ﬂow was responsible 
+for coaliﬁcation of many lacustrine coal beds sandwiched 
+in coarse grained ﬂuvial to deltaic deposits (Becq-Girau
+-
+don, 1973; Saint-Martin, 1993). Eastward, the E-W trend-
+ing Graissessac basin is overlaid by the Permian deposits 
+of the Lodève basin (Garric, 1965; 2007). It forms a south 
+dipping half-graben necessary limited to the south by a 
+north dipping listric normal fault related to the late oro
+-
+genic extension. 
+3. 1. 2. Mesozoic sedimentation 
+At the base of the Mesozoic series, the Middle Trias -
+sic deposits, unconformably seal a major erosive surface 
+truncating the Permian half-graben and its basement at 
+the western margin of the South-East basin. The sili
+-
+coclastic continental platform of the Triassic (ﬂuvial to 
+playa-lake dominated systems, Lopez and Mader, 1985; 
+Lopez, 1987; Lopez et al., 2005) was invaded by a shal
+-
+low carbonate platform (stromatolithic dolomudstone 
+ﬂat) during the Lower to Middle Liassic time. The later 
+was drowned by pelagic marls at the Upper Liassic time. 
+During this period, the sedimentation was controlled by 
+NE-SW trending faults (in particular the Cévennes fault) 
+with an overall eastward deepening toward the South-
+East Basin. This crustal scale extension was associated to 
+the thinning of the crust during the opening of the Liguro-
+Tethysian ocean (Lopez, 1992). Upper Liassic marls grade 
+upward to an outer shelf marl-carbonate interbedding and 
+high energy shelf deposits during Middle Jurassic. Upper 
+Jurassic deposits are dominated by restricted inner to out
+-
+er carbonate platform sediments (Causses Gulf) (Lopez 
+et al., 1997).
+3. 2. Lithostratigraphy
+Permian deposits were subdivided for a long time (Feys 
+and Greber, 1972; Châteauneuf and Farjanel, 1989) into 2 
+large megasequences: Autunian and Saxonian, both lying 
+unconformably upon the Upper Carboniferous and on the 
+Hercynian basement.
+In the Lodève basin, the Permian deposits (Fig. 3, 4) 
+have been differently divided in accordance to differ -
+ent authors with slight modiﬁcations of the terminology 
+proposed by the Cogema (Uranium General Company) 
+which uses numerous key beds such as ash-layers (ciner
+-
+ites) and organic-rich layers (“faciès couche”), allowing 
+ﬁne correlations. In this sense, two main facies assem
+-
+blages have been distinguished which represent, both an 
+overall geodynamical and a paleoenvironmental change 
+in the basin geohistory.
+Libro 34(1).indb   32 19/12/2007   20:36:42
+
+--- PAGE 5 ---
+33Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+In the Lower part of the basin inﬁll the 730 m-thick Pre-
+rift series (Autunian according to Feys et al. (1972) or 
+Upper Autunian to Lower Thuringien according to Odin 
+(1986) = Autunian Group sensu Gand et al. (1997). It is 
+composed of ﬂuviatile to deltaïc sandstones (Usclas–St 
+Privat Fm = F 1) evolving into anoxic deep lacustrine 
+black shales with a high potential source rock for HC 
+(Tuillières-Loiras Fm = F 2); the later passing upward to 
+sub-emersive ﬂoodplain pelites (Viala Fm = F 3). 
+The Syn-rift Series (about 2000 m thick = Saxonian 
+Group sensu Gand et al. (1997) is evidenced by a region-
+al unconformity and by an overall southward thickening 
+of the deposits. This series begins with ﬂuviatile coarse 
+conglomerates evolving to sandstone deposits (Rabejac 
+Fig. 3.- General stratigraphy, 
+main lithofacies, palaeoenvi -
+ronments and geohistory of 
+the Permien deposits of the 
+Lodève Basin; U1, U2, U3 = 
+unconformities, lithology: Gr 
+= conglomerates, sand (c = 
+coarse, m = medium, f = ﬁne), 
+s = siltstone, cl = claystone; 
+m = thickness in metres; For
+-
+mations = F1-F5;  from Lopez 
+and Petit (2003), modiﬁed. 
+Fig. 3.- Estratigrafía general; 
+principales litofacies, pa
+-
+leoambientes y evolución de 
+los depósitos pérmicos de la 
+Cuenca de Lòdeve: U1, U2, 
+U3 = discordancias; Litolo
+-
+gías: Gr = conglomerados, 
+areniscas (c = gruesa, m = 
+media, F = ﬁna), s = limo, cl 
+= arcilla; m espesor (en me
+-
+tros); Formaciones = F1-F5; 
+modiﬁcado de Lopez and Pe
+-
+tit (2003).
+Libro 34(1).indb   33 19/12/2007   20:36:43
+
+--- PAGE 6 ---
+34 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Libro 34(1).indb   34 19/12/2007   20:36:44
+
+--- PAGE 7 ---
+35Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Fm: F 4) forming a key event into the sedimentary pile. 
+The later evolves rapidly to thick ﬂoodplain pelites (= 
+silty red mudstones) and thin playa-lake dolomites (Sala
+-
+gou Fm = F 5). In the western part of the basin, ﬂood -
+plain pelites pass directly to thick debris-ﬂow deposits 
+(La Tour-sur-Orb Member), related to the activity of the 
+bordering faults. The global evolution of the facies is 
+connected to the progressive climatic change from wet-
+tropical to semi-arid conditions, driven by the gradual 
+northward moving of the continental plate.
+3. 3. Palaeontology: ﬂora, fauna and palichnofauna
+Connected with the colour of the Formations , macro 
+and microﬂora is mostly present in grey levels of the Au-
+tunian: Usclas and St-Privat Fm (= F1), Tuilières-Loiras 
+Fm (= F2). Nevertheless, sometimes in red layers (Rab -
+ejac Fm = F4) and especially in green beds of the Salagou 
+Fm, macroﬂora may be found but is less determinable.
+3.3.1. Vertebrates 
+In the Autunian Group, vertebrates were mentionned, 
+for the ﬁrst time, during the 19
+th century. They consist of 
+a skeleton of an Araeoscelidian [Aphelosaurus luteven -
+sis (Gervais, 1859) (Thevenin, 1910), redescribed by 
+Falconnet, 2007], some remains of Amphibians (“ Bran-
+chiosaurus”, “Actinodon”, Discosauriscus, Eryops), and 
+of Pelycosauria (Heyler, 1969), Fishes with Acanthodes 
+sp. (Acanthodians), Pygopterus sp. (Palaeonisciforms 
+Actinopterygians) (Heyler, 1969) and Usclasichthys 
+macrodens Heyler, 1977. The Saxonian group supplies 
+bone-beds and some amphibians, found in the Rabejac 
+Fm (Heyler 1969) and also a small vertebral column of a 
+Tupilakosaurid (Werneburg et al., 2007) coming from the 
+Salagou Fm. A few years ago, Körner discovered in the 
+top of this last Fm, more precisely in la Lieude Member, 
+well preserved Pelycosaurian bones trapped in a debris-
+ﬂow deposit (under preparation).
+In the opposite, 
+footprints are rather widespread in all 
+the Formations (Fig. 5) with 3 remarkable sites: the Co -
+gema quarry (Mas d’Alary Member), the Rabejac quarry 
+(Rabejac Fm), and the paleontological slab of “la Lieude” 
+located at the top of the Salagou Fm.
+The ﬁrst observations on footprints were made by F. 
+and P. Ellenberger (1959) then new discoveries and stud-
+ies were supported by Heyler and Lessertisseur (1963) 
+who described “14 new genera and 16 new “species”. El
+-
+lenberger (1983-1984) distinguished and erected “almost 
+130 new ichnotypes”. Later, Gand (1987) revised and re-
+evaluated the French Permian footprints from prospect
+-
+ings in all the French basins and studies of  European 
+fossil collections or sites. Thus, he proposed only 14 
+ichnogenera and 22 ichnospecies for the Lodève basin. 
+Lately, the following list, still has been shortered with 16 
+ichnosp. (Gand and Durand, 2006) (Fig. 5). They are:
+A- Traces attributed to Temnospondyls (Branchiosauri
+-
+dea and Micromelerpetontidea) = Anthichnium (Geinitz, 
+1861) Haubold, 1971 = Batrachichnus (Geinitz, 1861) 
+Fig. 4.- (opposite page) Detailed stratigraphy and palaeontology of the Permian series, from Gand (1994), modiﬁed. Autunian group with F1-F3 
+Formations, and Saxonian Group with F4, F5 Formations (Odin, 1986); Stratigraphy: Cogema = “Général Company for Uranium Exploi -
+tation”, E = Members (Laversanne, 1976), V . a = volcanic-ashes indicated by roman numbers, Beds from 57 to 00 with alpha, béta, gamma 
+= bone beds, R = 100-1000 = marker beds; Palaeontology: Traces
+, Inv. = invertebrates with t = tubes and burrows, p = exogene resting, 
+furrowing, walking/crawling tracks; (i = Isopodichnus); Ver. = footprints; compilation from Heyler and Lessertisseur (1963), Laversanne 
+(1976), Ellenberger (1983ab), Gand (1986, 1987, 1990, 1994), Debriette and Gand (1990); Flora, M. f = macroﬂora, A-E from Cogema (unpu-
+blished), Doubinger (1956, 1963), Doubinger and Heyler (1959, 1975), Doubinger and Kruseman (1965), Galtier and Broutin (1995, C, D, E): 
+see Galtier and Broutin, 2008; A 45-48: Tuilières, B: = Mas d’Alary = typical Autunian ﬂora; P. a = palynology, LO1, LO2, LO3 = Doubinger 
+et al. (1987) associations; Fauna, Ver = vertebrates, F, G, H, I from Vetter et al. (1963), Doubinger and Heyler (1959, 1975), Heyler (1969), 
+Laversanne (1976), Cogema unpublished; F = “
+Branchiosaurs”, “Actinodon”, Aphelosaurus; G = ﬁshes; H = ﬁshes, “ Actinodon”, Eryops, 
+pelycosaurian remains; I = “Actinodon”, J = bone beds from Ellenberger (1983a). Faune Inv.: K-O = numerous Conchostracans levels, K + 
+L, c = gasteropod, Laversanne (1976), Ellenberger (1983a); ti = triopsids, a = insects, Gand et al. (1999), Nel et al. (1999 a-c), Béthoux et 
+al. (2001-2007).
+Fig. 4.- (página opuesta) Estratigrafía y paleontología detallada de las series del Pérmico de la Cuenca de Lòdeve. Modiﬁcado de Gand (1994). 
+Grupo Autuniense con las Formaciones F1-F3, y Grupo Saxoniense con las Formaciones F4-F5 (Odin, 1986); Estratigrafía: Cogema =  
+“Compañía General para la Explotación de Uranio”, E = Miembros (Laversanne, 1976), V . A = cenizas volcánicas indicadas con números 
+romanos, Capas de la 57 a la = con alpha, béta, gamma = niveles con huesos, R = 100-1000 = “capas guía”; Paleontología: Pistas; inv. = in
+-
+vertebrados, con t = tubos y perforaciones, P = diferentes tipos de pistas (indicando descanso, desplazamiento etc..); (i = Isopodichnus); Ver. 
+= impresiones por pisadas; recopilación efectuada por Heyler y Lessertisseur (1963), Laversanne (1976), Ellenberger, (1983a,b), Gand (1986, 
+1987, 1990, 1994), Debritte y Gand (1990), Flora, M. f = macroﬂora, A-E de Cogema (no publicado), Doubinger (1956, 1963), Doubinger 
+y Heyler (1959, 1975), Doubinger y Kruseman (1965), Galtier y Broutin (1995), C, D, E: ver Galtier y Broutin en este mismo volumen; A 
+45-48: Tuilìeres, B: 0 Mas d´Alary = ﬂora típica de Autún; P. A = palinología, LO1, LO2, LO3 = Doubinger and Heyler (1959, 1975), Heyler 
+(1959), Laversanne (1976), Cogema (no publicado); F = “Brachiosaurus”,“Actinodon”, Aphelosaurus; G = peces, H. Peces, “
+actinodon”, 
+Eryops, restos de pelicosaurio; I = “Actinodon”, J = niveles de huesos obtenido de Ellenberger (1983a). Fauna inv.: K-O = numerosos niveles 
+de concostraceos, K + L, c = gasterópodos, Laversanne (1976), Ellenberger (1983a); ti = triopsidos, a = insectos (Gand et al., 1999; Nel 
+et 
+al., 1999 a-c; Béthoux et al., 2001-2007).
+Libro 34(1).indb   35 19/12/2007   20:36:44
+
+--- PAGE 8 ---
+36 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Haubold, 1996 with undertracks Salichnium decessus or 
+S. pectinatus (Heyler and Lessertisseur, 1963); Eryopi -
+dea: Limnopus zeilleri (Delage, 1912) Gand, 1985; Am-
+phisauropus latus Haubold, 1970.
+B- Traces ascribable to Amniotes; Captorhinomorpha 
+or gracile reptiles with Hyloïdichnus major (Heyler and 
+Lessertisseur, 1963), Haubold, 1971; Varanopus curvi-
+dactylus Moodie, 1929 (Sarjeant, 1971), Microsauripus 
+acutipes Moodie, 1929 (Sarjeant, 1971); Varanopus rig-
+idus Gand, 1989; Pelycosauria with Dimetropus leisneri-
+anus (Geinitz, 1863) Haubold, 1971, Dimetropus nicolasi 
+Gand and Haubold, 1971 being its undertrack; Diadectids 
+(V oigt, 2004): cf. Ichniotherium cottae  (Pohlig, 1886) 
+Haubold, 1971; “Eosuchia” and Araeoscelids: Dromopus 
+lacertoides (Geinitz, 1863) Haubold, 1971; Dromopus di-
+dactylus (Moodie, 1930) Gand and Haubold, 1984; Ther-
+apsida or “Therosauria”: Lunaepes ollierorum, Merifon-
+tichnus thalerius, Planipes brachydactylus Gand et al. , 
+2000; Caseids or Therapsida: Brontopus circagiganteus 
+Gand et al., 2000, B. giganteus Heyler and Lessertisseur, 
+1963.
+3.3.2. Invertebrates
+Insects, Notostraca, and Conchostraca are also frequent, 
+mostly in the Salagou Formation (see infra). Notostraca 
+trackways are described by Gand et al. (2008).
+3. 4. Stratigraphical data (Fig. 4, 6)
+Autunian and Saxonian were regarded a long time as 
+continental stages. The ﬁrst, of gray colour, was charac -
+terised by its ﬂora and microﬂora suite, and the second, 
+with dominant redbeds deposits was only dated by a 
+“saxonian” footprint association rather similar to that ob
+-
+served in Thuringian Forest (Germany) (Haubold, 1974; 
+Gand, 1987).
+The exclusive use of marine stages in the international 
+stratigraphic scale involved de facto the abandonment of 
+the terms Autunian and Saxonian and the continental se -
+ries are nowadays reported to their marine equivalent by 
+radioisotopic data or to references to marine series show
+-
+ing fossiliferous continental intercalations. That is the 
+case for some US American and Russian. 
+3. 4. 1. Age of the Autunian Group
+For the Autunian Group of the Lodève basin, the K/Ar 
+radioisotopic datings, carried out on potassic feldspars 
+of XXIV , X, XI, V volcanic-ashes provided triassic and 
+jurassic ages. Successively, from the base to the top: 242 
+±7, 173 ± 5, 206 ± 6, 248 ±8, 248 ±8 Ma, i.e Anisian, 
+Aalenian, Norian, and  Olenekian; because of a probable 
+rejuvenation of the K/Ar system during the late tectono-
+sedimentary events.
+From these results, one of us (JS) undertook new dat -
+ings. Thus, the Viala Fm. is dated of 289.3 +/- 6.7 Ma 
+(U-Pb) (Schneider et al., 2006; Röscher and Schneider, 
+2006). This means an age included in a large interval: 
+Middle Asselian to Middle Artinskian.
+From palaeontological data: Zeiller (1898), Florin 
+(1938, 1944), Doubinger (1956, 1963 a, b), Doubinger 
+and Kruseman (1965), Doubinger et al. (1987), Galtier 
+and Broutin (1995) (see details 
+in Gand et al., 2004 a, 
+b) and Broutin et al. (1999), the Autunian Group could 
+be dated from the End Gzhelian to the Lower Sakmar -
+ian from the top of the Usclas and St-Privat Fm (F1) to 
+the Upper limit of  Tuilières-Loiras Fm (F2). This age is 
+supported from autunian ﬂora and microﬂora. The Viala 
+Fm (F3) would be partly of Artinskian according to the 
+occurrence of  Supaia.
+3. 4. 2. Age of the Saxonian group
+The Octon Member (Fig. 4) would be of  284 ± 4 Ma 
+in age (Schneider et al., 2006; Röscher and Schneider, 
+2006), therefore included between the Middle Sakmarian 
+to the Middle Artinskian interval. From magnetostrati
+-
+graphic investigations, the “la Lieude Member” would 
+be “in a position just around the Illawara reversal, that 
+is Lower Capitanian respectively Lower Tatarian age” 
+(Legler et al., 2004).
+Other ages are suggested by paleontologic data, de -
+pending of the taxa. According to:
+- The plant Supaia, the whole Rabejac Fm (F4) + 
+Salagou Fm (F5) is supposed to represent a part of the 
+Artinskian and the totality of the Kungurian (= Upper 
+Cisuralian).
+Fig. 5.- (opposite page) Permian footprints in the Lodève basin from Gand et al., 2004a,  F = Formations, M = Members, R = reper beds; Salagou 
+Fm: 1 = Merifontichnus thalerius, 2 = Lunaepes ollierorum, 3 = Planipes brachydactylus, 4 = Brontopus giganteus, 5 = B. circagiganteus; Rab-
+ejac Fm: 1 = Varanopus curvidactylus, 2 and 3 = Dimetropus leisnerianus; 4 = Batrachichnus salamandroides, 5 = Dromopus didactylus, 6 and 
+7 = Hyloidichnus major; 8 = Limnopus sp.; Viala Fm and Mas d’Alary Member: 1 and 2 = Salichnium decessus, 3 = Salichnium pectinatus, 4 
+and 5 = Batrachichnus salamandroides, 6 and 7 = Limnopus zeilleri, 8 = Limnopus regularis, 9 = Varanopus rigidus, 10 = Amphisauropus latus, 
+11 = Dimetropus leisnerianus, 12 = D. nicolasi, 13 = Dromopus lacertoides, 14 and 15 = cf Ichniotherium; Loiras Member: 1 and 2 = L. zeilleri, 
+3 and 5 = B. salamandroides, 4 = D. lacertoides, 6 = D. nicolasi; Formations F1 and F2, Usclas du Bosc Member: 1 and 3 = Limnopus zeilleri, 
+2 and 4 = B. salamandroides, 5 and 7 = cf Ichniotherium, 6 = Dromopus lacertoides, 8 = Dimetropus nicolasi.
+Fig. 5.- (página opuesta) Pisadas en el pérmico de la Cuenca de Lódeve obtenidas de Gand et al. (2004a): Ver nombres en la versión en inglés.
+Libro 34(1).indb   36 19/12/2007   20:36:44
+
+--- PAGE 9 ---
+37Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Libro 34(1).indb   37 19/12/2007   20:36:45
+
+--- PAGE 10 ---
+38 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+- Conchostracans, F4 and F5 would be deposited be -
+tween the Upper Sakmarian or Artinskian (Middle Cisur-
+alian) to the Tatarian (Capitanian).
+- Footprints, the Rabejac Fm + the Salagou Fm (till the 
+“la Lieude”) would be dated between the Late Sakmarian 
+(Middle Cisuralian ) to the Lower Guadalupian (= Word-
+ian/Roadien) (Gand and Durand, 2006).
+- Blattoids, the Salagou Fm (from the base to the Ar -
+ièges level) would be comprised between the Kungurian 
+(Late Cisuralian) to the Lower Lopingian (Schneider 
+in 
+Gand et al., 2004a, b).
+- Odonatoptera and Archaeorthoptera, the Salagou Fm, 
+between R 300-R 800 the reper levels, could be dated be-
+tween the Artinskian (Middle Cisuralian) to the Kazanian 
+(Guadalupian) (Nel et al., 1999a-c; Béthoux, 2003).
+4. The playa systems of the Saxonian Group 
+(syn-rift series) 
+During the deposition of the Saxonian Group, the in -
+tense activity of the southern bordering fault linked with 
+differential subsidence, and coupled with semi-arid cli
+-
+Fig. 6.- Geochemical and Chronostratigraphical data of the Lodève Permian basin serie; Körner and Schneider in Legler et al. (2004); 
+IR = Illawara reversal.
+Fig. 6.- Datos geoquímicos y cronoestratigráﬁcos de la serie de la Cuenca pérmica de Lódeve: Corner y Scheneider en Legler et al.  
+(2004); IR = el reverso de Illawarra.
+Libro 34(1).indb   38 19/12/2007   20:36:45
+
+--- PAGE 11 ---
+39Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+matic conditions, was periodically compensated by large 
+ﬂooding inputs from the western source areas, leading to 
+a large terminal sub-emersive muddy fan. Under these 
+conditions, the basin acted as a ﬂat-ﬂoored bottom de
+-
+pression, periodically ponded by ephemeral shallow 
+lakes during a water-table rise or during direct ﬂooding 
+allowing playa development.
+4. 1. The Rabejac Fm: an alluvail fan conglomerate 
+system
+The Rabejac Fm overlies the Viala Fm with an angular 
+unconformity clearly visible along the road from Salelles 
+to Loiras village (Fig. 7 A, B), where the mud-supported 
+conglomerates and unsorted coarse sandstones of the 
+Rabejac Fm erode the ﬂoodplain pelites of the Viala Fm. 
+This regional unconformity, with a preserved thickness of 
+the Viala Fm, from 50 m near Lunas village in the western 
+part of the basin, to 330 m near St-Jean-de-la-Blaquière 
+in the east, marks the beginning of the activity of the Mas 
+Blanc, les Aires, Cévennes bordering faults with the half 
+graben differentiation of the Lodève basin. 
+This increasing tectonic activity at the southern and 
+the eastern borders was accompanied by a sudden uplift 
+of the hercynian ranges in the western limit of the basin 
+(Montagne Noire domain) with an overall progradation 
+of alluvial fan systems and debris-ﬂows at the base of the 
+Rabejac Fm.
+The Rabejac Fm (= F4) was subdivided, from the west-
+ern to the eastern part of the basin by Odin (1986), suc -
+cessively in the St-Xist, Rabejac and Lafont “facies”. 
+This Formation starts with ﬂuvial basal conglomerates 
+erosive on the Viala Fm. They extend on the entire basin 
+but are thicker and coarser from East to West. Near la 
+Tour-sur-Orb area, they display a fan conglomerates as
+-
+semblage (St-Xist facies), revealing the tectonic activity 
+of the Bousquet d’Orb / la Tour-sur-Orb border fault, and 
+the uplift of the hercynian domain that provides a persist
+-
+ent supply of coarse debris spreading out to the east. 
+The Rabejac Fm consists of coarse alluvial fan depos -
+its in the western border, passing toward the basin to red 
+sandstones and mudstones with abundant sedimentary 
+structures (ripple marks, desiccation cracks, footprints 
+and invertebrates tracks), indicating long subaerial expo
+-
+sure. These alluvial fan deposits may be connected with 
+the Saalian volcano-tectonic events.
+In this Formation, little Branchiosauridae / Temno -
+spondyls have been mentionned by Heyler (1969). Foot -
+prints are numerous with Batrachichnus salamandroides 
+(undertracks = Salichnium decessus or S. pectinatus, 
+Limnopus zeilleri, Amphisauropus latus, frequent Hy-
+loïdichnus major , Varanopus curvidactylus / Microsau-
+ripus acutipes, Dimetropus leisnerianus and Dromopus 
+didactylus. Isopodichnus furcatus Gand, 1994, is very 
+abundant. It is an invertebrate resting trace (cf. infra. 
+Gand et al., 2008).
+Macroﬂora is often well kept. It is described by Galtier 
+and Broutin (2008).
+4. 2. The Salagou Formation: permanent ﬂoodplain and 
+playa-lake system
+4. 2. 1. The physical environment in the Mérifons area
+The hills of Mérifons expose the Salagou Fm that char
+-
+acterizes the most important syn-rift inﬁll. In this area, 
+the ﬁne green carbonate-rich layers hardened regularly 
+the surface, causing beautifull arabesques with high con
+-
+trats of colors (Fig. 8).
+Stratigraphical and sedimentological organisation
+The Salagou Fm (F5) corresponds to a 2000 m-thick 
+vertical accretion on the hanging wall of the Aires-Mas 
+Blanc fault (Fig. 3). It consists of dominant pelites in 
+submersive ﬂoodplain to playa-lake environment. Dur
+-
+ing this period, the activity of the “les Aires-Mas Blanc” 
+fault controlled the incremental inﬁlling of the basin, and 
+led to an overall divergent (fan-shape) geometry of the 
+deposits (Fig. 2).
+The following facies sensu Kruseman (1962) have been 
+distinguished:
+The “Octon facies” is made of ﬁned grained depos -
+its outcropping widely in the western part of the basin 
+(“Ruffes” landscape). It corresponds to a vertical cyclic 
+alternation of meter- to decameter-thick red massive 
+pelites with cm-thick, yellowish-gray carbonaceous silt
+-
+stone horizons with desiccation cracks, ripples marks, in-
+vertebrate tracks, and rarely, arthropod remains. Some of 
+these latters horizons were mapped, and numbered as R 
+100 to 1000 reper-marks in ﬁgure 4 by Henriot (Cogema, 
+1988; unpublished document).
+Desiccation cracks indicate period of intense evapora -
+tion causing water level fall, shrinkage and ﬁnely expo -
+sure (Fig. 9). During this time, ponds are isolated from 
+terrigenous input, and the carbonates precipitated from 
+the standing water by the related increase of salinity. The 
+gray to green dolomitic intervals are thinly laminated and 
+generally topped by oscillation ripples (wind effect) (Po
+-
+chat et al., 2005), polygonal cracks and footprints. Pelites 
+correspond to extensive sheet ﬂoods mobilizing large 
+amount of ﬁne detritus from the source area, and spread
+-
+ing it throughout the basin. On more proximal of zones 
+debris-ﬂow deposits, isolated channel ﬁlls develop at the 
+Libro 34(1).indb   39 19/12/2007   20:36:45
+
+--- PAGE 12 ---
+40 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Fig. 7.- A: General view (7A), and detailed log (7B) of the angular unconformity between the Viala Fm (top of the Autunain Group) 
+and the Rabejac Fm (base of the Saxonian Group), along the road from Salelles to Loiras village. 
+Fig. 7.- A: Vista general (7A), y columna detallada (7B) de la discordancia angular entre la Formación Viala (techo del Grupo Autu-
+niense) y la Formación Rabejac (base del Grupo Saxoniense), por la carretera que une Salelles y Loiras.
+A
+B
+Libro 34(1).indb   40 19/12/2007   20:36:46
+
+--- PAGE 13 ---
+41Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+base of the ﬂooding event (Fig. 10). In such environment, 
+regular cyclicity could indicate monsoon-like regimes.
+Westward to the Octon village, the transition of the Oc-
+ton facies to the “Merifons facies” is observed. The fre -
+quence of the cycles increases drastically. The red mud -
+stones/siltstones part decreased to decimetres, and the 
+carbonaceous desiccation crack-horizons are, apparently, 
+more frequent. The colour of the latter one changes to 
+pale green; often they form large surfaces with beautiful 
+desiccation cracks. The base of the “la Lieude facies”, in 
+the top of the “Merifons facies”, is marked by the sudden 
+shedding of debris ﬂow conglomerates after hundreds of 
+meters of nearly exclusive pelitic sediments. At this level, 
+Therapsid footprints occur (Gand et al., 2000). Higher, 
+in the proﬁle, the pelitic intercalations disappear between 
+stacked conglomerates and sandstone horizons. The very 
+coarse “la Tour-sur-Orb facies”, in the south-west corner 
+of the basin, represents the proximal fan deposits of the 
+“la Lieude facies”. The drastical change from the Meri
+-
+fons to the La Lieude facies is still under discussion now:  
+climatic change and/or tectonic activation (Körner et al.,
+ 
+2003; Legler et al., 2004). 
+La Lieude facies: typology of sandstone sequences
+Origin of red pelites
+Red pelites are mainly composed of clay minerals (in 
+particular kaolinite), ﬁne silt, Fe +++ oxides and addition -
+al dolomite coming from the erosion of a thick lateritic 
+crust developed on the emerged hercynian belt, and un -
+der tropical dry climatic conditions (ferallitisation, Fig. 
+10). In this sense, the red colour already existed in the 
+transported sediment. It differs from the green colour that 
+indicates syn- to post-depositional diagenetic processes. 
+Three main types of green horizons are visible:
+- Mottled green/red pelites: mark the imprint of ﬂuctu
+-
+ating paleo-watertables;
+- Coarse to very ﬁne sandstone beds forming extensive 
+laterally-migrating ﬂuvial channels. The ﬂux of water in 
+these channels is supposed more continuous, with a per
+-
+manent low-oxygenated water body, allowing early re -
+duction of iron oxides;
+-Thin and continuous carbonate-rich layers. This par -
+ticular facies indicates the development of isolated ponds, 
+were low-oxygenated standing waters evaporate, resulting 
+in carbonate precipitation. Locally, some joints and frac
+-
+tures in red pelites show a centimetre-thick green fringe 
+related to present day drainage by meteoric waters.
+Channel sequences
+Two main types are sandwiched in the red pelites of la 
+Lieude:
+1) The type I visible in front of la Lieude farm, cor -
+responds to isolated decametre-wide and metre-thick red 
+sandstone lenses (Fig. 11A). The base of the channel is en
+-
+trenched on a dolocrete paleosoil (with numerous rootlet 
+prints and nodules = a). It displays discontinuous pelite- 
+and yellow carbonate-supported (= paleosoil reworking) 
+conglomerates (b) passing to ungraded pelite-rich coarse 
+sandstone (c). The upper part of the channel inﬁll is more 
+organized with trough cross-bedding or plane-parallel 
+bedding (e), indicating sheet-ﬂood processes after the 
+channel abandonment and plugging (d).
+This type of isolated channel is supposed to form on 
+the alluvial fan fringe by the development of an ephem -
+eral channel network that deeply incises the emerged 
+and highly weathered red pelites above the regional base 
+level.
+2) The type II outcrops north-eastward the footprint 
+surface of la Lieude farm. It corresponds to a meter-thick 
+green-coloured sand layers. From the base to the top, it 
+is composed of medium to coarse, poorly graded clayed 
+sandstones, and locally lag conglomerates that ﬁll desic
+-
+cation cracks (Fig. 11B), passing to massive or planar-
+laminated, medium to ﬁne grained sandstone beds (Fig. 
+12), with possible lateral accretion.
+This type of sequence indicates the periodic develop -
+ment of wide shallow channels and sand sheets on the 
+central part of the playa during ﬂooding periods. In this 
+zone, the ﬂuvial network does not entrench, because the 
+base level is at (or just above) the topographic surface. 
+The continuous existence of a shallow to sub-emerging 
+watertable is indicated by the dominance of the green 
+iron-reduced facies.
+Ponded ﬁne to very ﬁne green sandstones are associat -
+ed with the last channel sequence and correspond to cm- 
+to dm-thick non-erosive massive to graded beds, with a 
+lenticular shape. The lateral pinch-out of the sandstone 
+layer displays often desiccation cracks on carbonate-rich 
+silts, indicating the rapid exposure of the margins. Such 
+ponded beds are possibly topped by symmetrical ripples, 
+formed by wind-driven oscillatory processes on very 
+shallow standing waters.
+The fossiliferous rills: nature and origin
+These sandy bodies were discovered by Jean Lapeyrie 
+who found inside numerous and new well preserved fos-
+sils, mainly crustaceans and insects (Gand et al., 1997; 
+Garric, 2001). In the Mérifons area, these bodies called 
+“rills / drains” display a typical network organization.
+The typical rill vertical section shows three parts (Fig. 13).
+- The upper part is widened, U- or V-shaped, and cor -
+responds to the rill sensu stricto. The U-shaped rill, more 
+resistant, is generally found intact, while the V-shaped 
+Libro 34(1).indb   41 19/12/2007   20:36:46
+
+--- PAGE 14 ---
+42 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+ones are dislocated into thin slabs.
+- The lower part is narrower and sub-rectilinear. In 
+some cases, it resembles a plant root or a vein. The inter-
+mediate zone is well marked by a collar and is of a clear 
+green-grey colour and contrasts on the red brown pelite 
+background.
+In transverse section, rills appear as sedimentary bodies 
+of small dimensions. Most of the U-shaped rills are iso -
+diametrical (10 cm or a little more), while the V-shaped 
+rills are larger than high. Sometimes, a rill can exceed one 
+meter in overall directions. On the other hand, the lower 
+part or “root” is disproportionate, reaching 2 to 4 m in 
+height for a width not exceeding 10 cm.
+In its horizontal plane, the rill is longer than broad -
+er; the visible length may reach 10 meters. Exception -
+ally, the main rill of “les Vignasses” site extends up to 
+86 m. The U- and the V-shaped rills correspond to well 
+distinct deposits. The U-shaped ones are constituted of 
+poorly graded siltites. They contain green, clayey chlo
+-
+ritic pellets and various intraclasts representing a poorly 
+cross-bedded microbreccia facies. They are often very 
+resistant and do not show stratiﬁcation. They are rich in 
+recrystallized carbonates. The V-shaped rill is formed by 
+ﬁnely graded siltites. When the sediment is grey-green, a 
+clear stratiﬁcation with alternating light and dark laminae 
+(representing periodic kerabitume deposition) is visible. 
+When the sediment is reddish, bedding is less visible but 
+millimetric laminations are obvious in thin section. The 
+ﬁne alternation results in a fragmentation into slabs rec
+-
+ognizable by their curved form and their shiny surface. 
+Sediments of the root are identical to those of the up -
+per part. Siltites can be homogeneous and well graded. 
+However, in the deepest roots, the grain-size can vary. 
+When coarse, the ﬁne alternation disappears and a clayish 
+cement gives weak consistency to this structure. Some
+-
+times, red argilitic joints connect the enclosing sediment. 
+In the veins, the siltites are red and more resistant. Bed
+-
+Fig. 9.- Desiccation cracks de -
+veloped on an exposed do -
+lomite-rich thin layer of the 
+Salagou Fm.
+Fig. 9.- Grietas de desecación 
+desarrolladas en un nivel con 
+alto contenido dolomítico en 
+la Formación Salagou.
+Fig. 8.- Typical landscape of the 
+Salagou Fm. showing thick red 
+pelite packets alternating with thin 
+and regular grey to green carbon
+-
+ate layers with mud-cracks; thick -
+ness of these latters = 5 cm..
+Fig. 8.- Típico paisaje de la Forma -
+ción Salagou mostrando un potente 
+paquete de pelitas rojas alternando 
+con delgados y regulares niveles 
+de carbonatos grises y verdes con 
+grietas de desecación. El espesor 
+de los últimos es de 5 cm.
+Libro 34(1).indb   42 19/12/2007   20:36:48
+
+--- PAGE 15 ---
+43Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+ding is clearly concave and connected to the enclosing 
+sediment. By intervals, there are joints corresponding to 
+a deposition of whitish, phyllitic (clays) or reddish (ferric 
+oxides) minerals. Those rill structure and inﬁll are inter
+-
+preted to be made by rainwater entrenchment on desic -
+cation cracks and/or open fractures. They are scattered 
+in claystones, representing former sediments which were 
+formed in a playa environment under semi-arid tropical 
+conditions.
+The abundance of fossils in the rills is supposed to be 
+due to washing/streaming power of rainwater on desic -
+cated surfaces, and to the action of the wind which could 
+concentrate their body fragments, scattered on the sur
+-
+face of the playa. It is probably the case for the insect 
+wings. The presence of Triopsids and Conchostracans 
+may be explained by the deposit of their remains after 
+their death.
+Evidences for volcanic activity during the deposition of 
+the playa sediments
+In the Salagou Fm, some playa sequences contain pyro-
+clastic material, indicating the permanence of a volcanic 
+activity in the Lodève basin as precised by Nmila et al. 
+(1992) and Nmila (1995). The tuffaceous material mixed 
+with detrital sediments
+, was observed in marker beds 
+R 100 to R 1000 (cf supra). After Nmila et al. (1992): 
+“In thin section, these levels display the following main 
+characteristics: quartz typically of volcanic origin (iso
+-
+morphous faces, volcanic glass inclusions), numerous 
+stretched crystals of feldspar showing more or less ad
+-
+vanced degrees of alteration, volcanic glass shards and 
+pumice fragments with I, T, Y , X, etc… type perlite, and 
+oval glass stones formed at the same time showing a de
+-
+gree of alteration. Analcime developed from fragments 
+of acidic volcanic glass during diagenesis. These charac
+-
+teristics are typical of ash falls and provide evidence for 
+the volcanic origin of these marker horizons”. The trace 
+elements and the zircon typology demonstrate also an al
+-
+kaline volcanisme typical of the second French Permian 
+sedimentary cycle (= “ Saxonian”).
+Cyclicity and geochemistry: the climate during the Sala-
+gou formation deposition
+Sedimentological, geochemical, mineralogical, palae -
+oecological investigations were carried out in the Lodève 
+basin in order to reconstruct the climatic processes which 
+Fig. 10.- Elementary sequences and facies relationship model for the Salagou Fm. (from Lopez and Petit, 2003); Fot the lithology, see ﬁg. 3 (C 
+= carbonates).
+Fig. 10.- Secuencias elementales y modelo de relación de facies en la Formación Salagou (modiﬁcado de Lopez y Petit, 2003). Para la litología 
+ver la ﬁgura 3, C = carbonatos.
+Libro 34(1).indb   43 19/12/2007   20:36:49
+
+--- PAGE 16 ---
+44 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Fig. 11.- Exemples of the two major channel ﬁll sequence types. A: Proximal channel ﬁll sequence entrenched on a paleosoil interval (a = root 
+prints and dolomitic concretions). It is composed of a basal debris-ﬂow deposit (b), passing to muddy coarse sandstone (c) and ﬂoodplain pelites 
+(d). A new sequence develops above with a slight lateral migration of the channel axis (e); 11B: Detailed view of the base of a ﬂooding sequence 
+composed of multi-storey channel ﬁlls sealing a partly preserved desiccation surface.
+B: Ejemplos de las dos principales secuencias de relleno de canales ﬂuviales. A: Secuencia de relleno de canal proximal intercalada con un nivel 
+de desarrollo de paleosuelo (a = impresión de raíces y concreciones dolomíticas). Está compuesto de depósitos debris-ﬂow en la base (b), evolu
+-
+cionando hacia una arenisca de tamaño de grano grueso y con lodos (c) y pelitas de llanura de inundación (d). Una nueva secuencia se desarrolla 
+arriba mostrando una ligera tendencia de migración lateral del eje del canal (e); B: Vista en detalle de la base de una secuencia de inundación 
+compuesta de canales de tipo multi-storey mostrando una superﬁcie parcialmente desecada. 
+A
+B
+Libro 34(1).indb   44 19/12/2007   20:36:51
+
+--- PAGE 17 ---
+45Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+control the litho- and biofacies patterns during an Ice -
+house/Greenhouse transition, as well as the correlation of 
+marine and continental climatic signals. Based on Odin 
+(1986), Henriot (1988), and Nmila (1995), 250 m of the 
+Usclas-St-Privat, Tuilières-Loiras and Viala Fm, as well 
+as 1600 m red beds of Rabejac, and Salagou Fm have 
+been documented. In this last one, about 5.000 cycles 
+have been measured for the cyclostratigraphy (Körner 
+1999a, b; Körner et al., 2003).
+The climatic signal could be characterized as follows 
+(Figs. 6, 15, 16). From the Upper Tuilières-Loiras Fm to 
+the Lower Viala Fm., a transition from warm-humid to 
+semi-arid conditions occured. Gypsum-pseudomorphs, 
+desiccation cracks, xeromorphic calcisols and vertisols 
+as well as mesophile fauna and ﬂora were characteristic 
+of the red, brown ﬂood plain deposits of the Viala and the 
+Rabejac Fm. For the Salagou Fm, during the Octon Mem
+-
+ber deposit, the aridity increased then decreased while the 
+Upperlaying Mérifons Member. At this period, palaeoen
+-
+vironment and climate of the Lodève basin were prob -
+ably the following: periodic or episodic strong rain falls, 
+temporary water ﬁlled channels contain mass occurences 
+of xerophile organisms (Conchostracans, Triopsids, In
+-
+Fig. 12.- General view of superposed distal wide-channel ﬂooding se-
+quences (Type II channel sequence); with local conglomerate and 
+debris-ﬂow deposits; cliff height about 10 m.
+Fig. 12.- Vista general de secuencias que representan relleno de inun
+-
+dación de canales amplios y distales (tipo II de secuencia de canal), 
+con conglomerados locales y depósitos de tipo debris-ﬂow. Altura 
+del acantilado = 10m.
+Fig. 13.- Typical rill with a more than one meter root.
+Fig. 13.- Sección de un arroyo con niveles de raíces de más de un 
+metro.
+Libro 34(1).indb   45 19/12/2007   20:36:53
+
+--- PAGE 18 ---
+46 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+sects). The same results are known from observations in 
+modern playa and sabkha environments, e.g. in Jordan 
+and Tunisia.
+The sedimentary architecture of the la Lieude facies/
+Member indicates a fast change of sediment supply. 
+These coarse clastics appear suddenly above 2000 m of 
+nearly exclusive ﬁne grained sediments! They result from 
+rapid increasing precipitations and consequently from 
+prograding alluvial fans. Linked to that is the appearance 
+of very diverse tetrapod tracks and the re-occurrence of 
+mesophile ﬂora and invertebrate burrows (
+Scoyenia). 
+This climate change could be  possibly the effect of Up -
+per Permian transgressions (Bellerophon Fm, Zechstein-
+transgression). 
+4. 2. 2. The life in the playa. 
+Palaeontological content
+In the Lodève Basin, ﬂora, invertebrate and vertebrate 
+remains (ﬁshes, amphibians, reptiles) have been princi -
+pally collected in the Lower part of the Permian series: 
+grey Formations F1-F2, L1, L2 Members. Higher, vari
+-
+ous traces of biological origin have been found in the red 
+facies which began at F2-L3 Fm (Fig. 4).
+Invertebrate, and vertebrate tracks, burrows, common in 
+the Autunian Group, were a long time only mentionned at 
+the base of the Rabejac Fm. and at the top of the Salagou 
+Fm. (Saxonian Group) (Fig. 4). As the deposits between 
+the two Fm. lacked of fossils, it was generally accepted 
+that the “Saxonian” was azoic, probably because of arid 
+conditions. In fact, it was not the case like shown by the 
+important discoveries of  Dr Jean Lapeyrie happened in 
+small silstone rill lenses of the Salagou Fm (Gand et al.,
+ 
+1997).
+ Invertebrates (Fig. 17)
+   Conchostracans
+They have been found in many levels from the base of 
+the Usclas and St-Privat Fm up to the lower part of the 
+la Lieude Fm. (Fig. 4, 17. 13-14). Species from Salelles 
+and Arieges seem to be somewhat more developed than the 
+Conchostracans of the Upper Rotliegend I, Tambach Fm 
+(Martens, 1983) and Müritz Fm (Germany) dated of Sak
+-
+marian/Artinskian (Schneider in Hoffmann et al., 1989; 
+Schneider et al., 1995). One form from Arieges is possi -
+bly derived from Lioestheria andreevi of the Tambach Fm, 
+dated of Wolfcampian from vertebrates (Sumida et al.,  
+1996). Specimens from Sallèles area could be compared 
+with Isaura harveyi and Palaeolimnadiopsis brevis of the 
+Wellington Fm, (Leonardian of Kansas). Most interesting 
+Conchostracans are found, short below and above the basal 
+fanglomerates of the La Lieude Fm. The 3 mm to 5, 5 mm 
+large forms show a delicate meshwork between the grow
+-
+ing lines, a feature also seen in Mesozoic species. This sug-
+gests, eventually, a latest Permian age for these beds.
+Fig. 14.- General cross-section of two superposed rill levels in the Mérifons area; rill section lengths between 0. 5 – 2 meters.
+Fig. 14.- Corte a través de dos niveles superpuestos a lo largo de arroyos en el átrea de Mérifons. La longitud de cada sección oscila entre 0.5 – 2 m.
+Libro 34(1).indb   46 19/12/2007   20:36:53
+
+--- PAGE 19 ---
+47Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Fig. 15.- Lithological and clay mineral comparison of two typical sequences. Fig. 15. 1 = Octon Facies, Carols area, Fig. 15. 2: Méri-
+fons Facies, Montagne de la Boutine area; Schneider et al., 1999, Schneider and Körner in Gand (2004b); lithology: FS, MS, CS = 
+ﬁne, middle, coarse sand, FK, MK, CK = idem for conglomerates .
+Fig. 15.- Comparación litológica y e los minerales de arcilla de dos secuencias típicas. 1: Facies de Octon, área de Carols. 2: Facies de 
+Mérifons, área de la Montaña de la Boutine; Schneider et al. (1999); Schneider y Corner en Gand (2004b); litología: FS, MS, CS = 
+arena ﬁna, media y gruesa, FK, MK, CK = idem para los conglomerados.
+   Triopsids and their tracks
+Body-fossils: Triops cancriformis permiensis and Lepi-
+durus occitaniacus  have been described, from a large 
+sample composed of thousands of carapaces, thoraco-
+abdominal fragments and more rarely from intact speci -
+mens. They are similar to modern species (Gand et al., 
+1997) (Fig. 17).
+On the basis of the ecological preferences of modern 
+Triopsids and of the sedimentological characteristics of 
+their environment during the Permian, occurrence of shal
+-
+low, temporary lakes during the deposition of the Salagou 
+Formation was conﬁrmed. These pools, either neutral or 
+slightly alkaline, were scattered across a playa type envi
+-
+ronment and lasted with the same characteristics during 
+the deposition of the formation which is 2000m thick in 
+the southern part of the basin. Aridity during this long 
+period of sedimentation had been suggested also from 
+sedimentological data (dessication cracks, rubefaction).
+   Trails
+Numerous invertebrate traces (Gand et al., 2004; 2008) 
+have been found (Fig. 17). Some of them are Endichnia: 
+endogenic traces (tubes and burrows) among them delicat 
+Scoyenia gracilis common and beautifull in
+ Rabejac For-
+mation. They are probably due to burrowing Insects.
+Others are Epichnia: exogene ichnites:  
+- Furrowing bilobate ﬁne striked tracks Isopodichnus 
+eutendorfensis Linck, 1942 from the Mas d’Alary Mem -
+ber levels in Fialhomme wood (Debriette and Gand, 
+Libro 34(1).indb   47 19/12/2007   20:36:54
+
+--- PAGE 20 ---
+48 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+1990) and the Salagou Fm. (near Octon).
+- Resting coffee bean-shaped traces Isopodichnus minu-
+tus Debriette and Gand, 1990, and Isopodichnus furcosus 
+Gand, 1994 from the Rabejac and Salagou Fm.
+- Walking/nating tracks: Acripes (Matthew, 1910) Wal-
+ter 1983 also found in the whole  Permian series are parti-
+curlarly common in the Salagou Formation. Triopsids are 
+the trackmakers; (See Gand et al., 2008).
+Insects
+   Blattodea
+Five species of Phyloblatta and one of Opsimylacris 
+species are recognized (Fig. 17), similar to those observed 
+at the Obora locality of the Boskovice Furrow (Czech) 
+and in the Wellington Fm of the Kansas (Schneider, 1980, 
+1984a, b). Fragments of about 2 cm long fore wings from 
+Arieges show ﬁ  rst indications of a V-shaped cross-venea-
+tion pattern, which is typical of the genus 
+Aisoblatta. This 
+latter appears, possibly, ﬁ  rst in the Uppermost Kungurian 
+and is typical of  the German Zechstein and the Upper 
+Permian of China (Schneider, 1983, 1996). Blattoid in-
+sects of the Salagou Fm suggest a Kungurian to lower 
+Lopingian age.
+   Others taxa 
+The fossil-bearing strata are distributed between the R 
+300-R 800 reper levels (Fig. 4). The palaeoentomofauna is 
+known from more than 700 specimens, and appears very 
+diverse. Around 12 orders are represented, 3 Palaeoptera 
+(Palaeodictyoptera, Odonatoptera, Diaphanopterodea), 
+9 Neoptera (Blattaria, Orthoptera, Glosselytrodea, Neu-
+roptera, “Protorthoptera”, Caloneurodea, Miomoptera, 
+Protelytroptera, Hemiptera). Four others are of uncertain 
+afﬁ  nities.
+The following insects were described from the Sala-
+gou Fm; Lapeyria magniﬁ  ca 
+Nel et al., 1999a (Odonat-
+optera: Panodialata: Lapeyriidae); Epilestes gallica Nel 
+et al., 1999c (Protozygoptera: Permolestidae); Lodevia 
+longialata Nel et al., 1999c (Protozygoptera: Permepal-
+lagidae), Saxonagrion minutus Nel et al., 2000b (Odo-
+natoptera: Panodonata: Zygoptera: Saxonagrionidae); 
+Orthoptera: Tettigoniidea; Glosselytrodea…(Béthoux, 
+2001-2005). 
+The Odonatoptera are mainly ‘Meganisoptera’ with 
+several new species of Meganeuridae: Typinae (See Nel 
+et al., 2008). If Protozygoptera are represented, although 
+less abundant than the Typinae, the Permian suborder 
+Protanisoptera is still unknown in the outcrops.
+Fig. 16.- Na20/Al203 ratio for estimation of the Chemical Index of Alteration (CIA), Schneider et al. (1999); Schneider and 
+Körner in Gand (2004b). High Na 20/Al203 ratios stand for a weak inﬂ  uence of chemical weathering in the source area. 
+Climatic path (respectively with regard to the other Fm): highest precipitation rate in Viala Fm; in Rabejac Fm slightly 
+dryer; maximum of aridity in Octon Facies and in Merifons facies slightly more humid.
+Fig. 16.- Relación Na 2O/Al2O3 para la estimación de los Índices Químicos de Alteración (CIA), Schneider et al., (1999); 
+Schneider y Corner en Gand (2004b). La relación alta de Na2O/Al2O3 indicaría una débil inﬂ  uencia de alteración química 
+en el área fuente. Clima (de unas unidades respecto a otras): alta precipitación en la Formación Viala; ligeramente seco 
+para la formación Rabejac; aridez máxima in las facies Octon y ligeramente más húmedo en la facies Merifon.
+Libro 34(1).indb   48 19/12/2007   20:36:54
+
+--- PAGE 21 ---
+49Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Fig. 17.- Invertebrates of the Salagou Fm. Triopsids: 1 = carapace, 2 = abdomen, 5 = ventral view, 3 and 6 = repichnia, Acripes, 4 = Cruzia-
+na problematica (pascichnia), 7 = Rusophycus eutendorfensis, 8: R. furcosus both being cubichnia; 9-12: insects, 8: Lapeyria magniﬁca 
+(Panodialata), 10: Epilestes gallica (Protozygoptera), 11: Archaeorthoptera, 12: Meganisoptera; 13-14: Chonchostraca; scale = 1 mm for 
+1, 5, 7, 8, 13, 14; = 5 mm for 2, 4; and = 1 cm for 3, 6, 9-12.
+Fig. 17.- Invertebrados de la Formación Salagou: Ver nombres en la versión en inglés.
+Libro 34(1).indb   49 19/12/2007   20:36:55
+
+--- PAGE 22 ---
+50 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Archaeorthoptera are represented by several families 
+and species, described in numerous papers by Béthoux et 
+al. (2001-2004).
+Hemiptera occur in the shape of a ‘cercopoid-like’ wing 
+and a Cicadomorpha: Prosbolidae, the latter being already 
+known from the Late Permian of Russia and Siberia. The 
+same is true for Protelytroptera which are reported for the 
+ﬁrst time in France.
+The Endopterygota include several species of Mecop
+-
+terida and Neuroptera. Coleoptera, Raphidioptera, Mega-
+loptera have still not been found in the Lodève basin sites 
+whereas they exist in the Early and Middle Permian of 
+Siberia and of USA.
+Trails 
+Curiously, for this time, only a few samples of 
+Lithographus, a walking insect track, were found,  al-
+though numerous wings and sometimes body fossils have 
+been gathered in the Saxonian Group (Gand et al., 1987; 
+see Gand et al., 2008).
+Taphonomy
+For this time, the palaeoentomofaunal material is almost 
+limited to wings, broken frequently. The body remains 
+found in rills/channels belong to adults. Current tapho
+-
+nomic hypothesis concerning the Salagou Fm formation 
+suggests that animals were dislocated before fossilisation 
+and exposed for a variable time, on areas, close to the 
+fossiliferous sites. After that, sedimentologic events con
+-
+centrated insects in rills/channels. Possibly, rain and wind 
+or running waters accumulated organic remains in small 
+depressions, during drying periods. 
+Absence of larvae, in spite of numerous remains of 
+Odonatoptera, should have several possible origins. They 
+could be developped in different areas or fossiliferous 
+events could have been seasonal, when larvae were ab
+-
+sent. But, this seems unlikely because of various differ -
+ent living insect larvae are developing during all the year. 
+May be, also, the delicate larvae bodies were easily de
+-
+stroyed by necrophagous than those of adults.
+Fig. 18.- Permian footprints of la Lieude Member. 1, 5, 6: Planipes brachydactylus, 1, 6: manus (M) and pes (P); 2, 8: Merifontichnus tha -
+lerius manus-pes couple; 3, 9: Brontopus giganteus manus-pes couple for 3, probably only  2 pes traces for 9; 4, 7: Lunaepes ollierorum 
+manus-pes; 5-8: traces probably due to Therapsida; 9 being ascribed to Therapsida or Pareiasauria; scale = 30 cm for 7 and 5 cm for 6-9.
+Fig. 18.- Impresiones de pisadas pérmicas del Miembro Lieude: Ver nombres en la versión en inglés.
+Libro 34(1).indb   50 19/12/2007   20:36:55
+
+--- PAGE 23 ---
+51Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Vertebrates
+Footprints (Figs. 5, 18, 19).
+Near “la Lieude”, on a slab surface, more than one 
+thousand of footprints are distributed in twenty track -
+ways which mesures to 220 m in length. They have been 
+found on one calcareous siltstone level in the site. This 
+latter is located in the Saxonian summit of the Salagou 
+Formation, Fig. 4, 5). 
+Gand et al. (2000) have distinguished following ich -
+notaxa: Lunaepes ollierorum, Merifontichnus thalerius , 
+Planipes brachydactylus and Brontopus circagiganteus. 
+All are attributed (with possibility or probability) to Ther-
+apsida or to “Therosauria”, except Brontopus circagigan-
+teus that could be due to Caseids. All these animals of 1 
+to 5 m long, lived in a playa environment. The biological 
+and sedimentological data infered from “la Lieude” foot
+-
+print levels compared with those provided by the track 
+orientations, suggest that most of the animals crossed a 
+sandy channel bank with plants and walked toward the 
+South for the majority. They could go to the lake of the 
+playa, close to “la Lieude” footprints area, they have just 
+trampled on.
+Fig. 19.- Tentative reconstruction of the physical and biological environment by J. Garric when animals made footprints near la Lieude (Gand 
+et al., 2000). To obtain the full landscape, put the ﬁg 19. 2 at the rigt of the ﬁg. 19. 1. Fig. 19. 2: the biggest animal, possibly a Dinocephal-
+ian, about 5 m long, is walking to the SE. It is the trackmaker of Brontopus giganteus, B. circagiganteus. In front, two Titanosuchians, 
+2 m long, are moving southward, leading Planipes brachydactylus. Behind the Dinocephalians are trackmakers of Lunaepes ollierorum 
+(Therapsida of 1, 20 m long); Fig. 19. 1: Above the largest pond, three trackmakers of Merifontichnus thalerius: Therapsida possibly, 
+Dicynodonts of 1,50 m long. The biggest animals marks P . brachydactylus; Note in ponds, Triopsids and plants: Calamariacea and Gym-
+nosperms.
+Fig. 19.-Reconstrucción tentativa de del ambiente físico-biológico por J. Garric en el momento en el que los animales producían las pisadas 
+en las proximidades de L Lieude  (Gand et al., 2000). Para obtener una completa reconstrucción del paisaje, colocar la ﬁgura 19.2 a la 
+derecha de la 19.1. La ﬁgura 19.2 muestra al animal más grande, posiblemente un Dinocephalian, aproximadamente de 5 m de longitud, 
+que estaba andando hacia el SE. El que realiza la impresión es Brontopus giganteus, B. Circagiganteus. En frente, dos Titanosuchidos de 
+unos 2 m de longitud y moviéndose hacia el S, y por delante, Planipes brachydactylus. Detrás de Dinocephalian los que imprimen las huel
+-
+las de Lunaepes ollierorum (Therapsida de 1,20 m de longitud); En la ﬁgura 19.1: sobre la charca más grande, aparecen tres impresores de 
+pisadas de Merifontichnus thalerius, posiblemente Therapsida, Dicynodont de 1,50 m de longitud. La impresiones del animal más grande 
+P . Brachydactylus; en las charcas aparecen también Triopsidos y plantas: Calamariacea y Gimnospermas.
+Libro 34(1).indb   51 19/12/2007   20:36:59
+
+--- PAGE 24 ---
+52 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+   Body-fossils 
+In the “la Lieude Member”, Ellenberger (1983a) men -
+tionned some bone beds, but without giving precise loca-
+tions. In 2001, Frank Körner discovered elements of a 
+probable Pelycosauria in the Salagou river border. Under 
+a working European convention (Gand et al., 2000), since 
+this discovery, excavations are organized  by one of us 
+(GG) to extract other skeletal remains. Thus a Tupilako
+-
+saurid amphibian have been recently found and described 
+(Werneburg 
+et al., 2007).
+5. Conclusions
+Large, continuous outcrops and dense borehole net -
+work for Uranium exploration, allow to constrain the 
+second sedimentary cycle of the Lodève Permian basin. 
+This latter corresponds to a large playa system bordered 
+to the south by a major synrift normal fault, and onlap
+-
+ping both previous Upper Carboniferous sediments and 
+the Hercynian basement in the Northern and the Eastern 
+part of the basin. 
+Playa sediments of the central part of the E-W elon -
+gated half-graben basin turn westward in stacked, thick 
+debris-ﬂow dominated alluvial fan sequences sealing 
+the hanging-wall of an active normal fault along the Orb 
+valley. Alternating arid and humid cycles, on the thick 
+lateritic proﬁles developed on the drainage basin of the 
+Montagne Noire Hercynian belt controled the periodic 
+ﬂooding of the playa system. During more humid peri
+-
+ods, large amount of debris and red clays are vehicled as 
+high density bedload by an ephemeral stream network, 
+and they are expended as extensive thinning upward 
+sheetﬂood sequences at the playa base level. This metre 
+to decametre-thick climatic cycles record successive in
+-
+undation-emersion sequences (moonson-like regime?), 
+with a global increase of aridity during the deposition of 
+the lower part of the Salagou Fm, followed by a reverse 
+tendency on the upper part.
+The playa sequences reach about 2000 m of total thick-
+ness in the hanging-wall of the southern bordering fault, 
+recording the overall synrift differential subsidence of the 
+basin during about the Upper Cisuralian to Lower Lop
+-
+ingian time.
+Traces of life of the Lodève Permian playa were ﬁrstly 
+described, in part, as animal tracks and feeding burrows 
+developed on sub-emersive surfaces, and as roots and 
+poorly preserved plant debris at the top of ﬂooding se
+-
+quences. More recently, a particularly abundant and well 
+preserved invertebrate fauna (thousands of body-fossils, 
+and hundreds of insect wings) were discovered, trapped 
+in silty fossiliferous rills associated to watertable rise and 
+subtile washing and streamean power cleaning of rainwa
+-
+ters on desiccated surfaces. All the insect orders described 
+elsewhere (USA, Russia) are represented here by several 
+families and species. In particular, a 50 cm wingspread 
+Odonata have been discovered in these traps.
+This ephemeral ponded micro-environments favoured 
+the seasonal development of small crustaceans like Con-
+chostraca and Notostraca. The latter gives numerous swim-
+ming and furrowing traces on subaerial surfaces, delicately 
+ﬁxed by cyanobacterial mats. These short-live blums argue 
+for the aridity of the climate during this period.
+Subaerial surfaces expose numerous vertebrate tracks, 
+and more particularly reptilian footprints, with an enig
+-
+matic overall increase of their size from the base to the 
+top of the series. At the base, in the Rabejac Fm, both 
+reptilians (Pelycosauria, Parareptilia, Lepidosauria), and 
+amphibians (Temnospondyls) show a moderate size rang
+-
+ing from decimetric to metric; the latters being less abun-
+dant and diversiﬁed. On the contrary, the upper part of 
+the Salagou Fm is dominated by mammalian reptiles and 
+in particular, pluri-decimetric footprints of large, weighty 
+herbivorous preserved on river bank deposits. Recent 
+European ﬁeldworks, in the vicinity of the outcrops of 
+vertebrate tracks, yielded Pelycosauria bones dispersed 
+into a muddy, debris-ﬂow deposit, arguing for the peri
+-
+odic colonization of vegetaded areas of the playa by her-
+bivorous herds.
+References
+Becq-Giraudon, J. F. (1973): Etude géologique du bassin 
+houiller de Graissessac. Bulletin du Bureau de la Recherche 
+Géologique et Minière, 2 (1): 151-163.
+Béthoux, O. (2003): Evolution des Archaeorthoptera (Insecta: 
+Neoptera) du Pal éozoïque sup érieur au M ésozoïque inf é-
+rieur. Diversité taxonomique, disparité morphologique, pa-
+léoécologie. Thèse de Paléontologie présentée au Muséum 
+d’Histoire Naturelle de Paris, 2 tomes: 213 p + 300 p.
+Béthoux, O., Nel, A., Gand, G., Lapeyrie, J. (2001): Surijoka 
+lutevensis nov. sp.: the ﬁrst Glosselytrodea (Insecta) from the 
+Upper Permian of France (Lodève basin). Geobios, 34 (4): 
+405-413.
+Béthoux, O., Nel, A., Gand, G., Lapeyrie, J., Galtier, J. (2002): 
+Discovery of the genus Iasvia Zalessky, 1934 in the Upper 
+Permian of France (Lodève basin) (Orthoptera: Ensifera: 
+Oedischiidae). Geobios, 35: 293-302.
+Béthoux, O., Nel, A., Lapeyrie, J., Gand, G., Galtier, J. (2002): 
+Raphogla rubra n. gen., n. sp.: the oldest representative of 
+the clade of modern Ensifera (Orthoptera: Tettigoniidea and 
+Gryllidea). European Journal of Entomology, 99: 111-116.
+Béthoux, O., Nel, A., Lapeyrie, J., Gand, G., Galtier, J. (2003): 
+New Martynoviidae from the Permian of Southern France 
+(Lodève basin) (Insecta: Palaeoptera: Diaphanopterodea). 
+Geobios, 36: 131-139.
+Libro 34(1).indb   52 19/12/2007   20:36:59
+
+--- PAGE 25 ---
+53Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Béthoux O., Nel A., Galtier, J., Lapeyrie, J., Gand, G., (2003): 
+A new Tococladidae (Insecta: Archaeorthoptera) from the 
+Permian of south France. Geobios, 36, 3: 275-283.
+Béthoux O., Nel, A., Lapeyrie J., Gand, G., (2003): The Per -
+mostridulidae fam. n., a new enigmatic insect family from 
+the Upper Permian of France. European Journal of Entomol-
+ogy, 100 (4): 581-585.
+Béthoux, O., Nel, A., Lapeyrie, J. (2004): The extinct order 
+Caloneurodea (Insecta): Pterygota: Panorthoptera): wing ve-
+nation, systematics and phylogenetic relationships. Annales 
+Zoologici, 54 (2): 289-318.
+Béthoux O., Nel, A., Lapeyrie, J., Gand, G. (2005): New data 
+on Paleozoic Grylloblattid insects (Neoptera). Journal of 
+Paleontology, 79 (1, 3): 125-138, 629-630.
+Béthoux, O., Nel, A., Schneider, J., Gand, G. (2007): Lodetielle 
+magniﬁca nov.gen. and nov.sp. (Insecta: Palaeodictyoptera; 
+Permian), an extrem situation in wing morphology of palae
+-
+opterous insects. Geobios, 40: 181-189.
+Blackwelder, E. (1931): Desert Plains. Journal of Geology, 39: 
+133-40.
+Broutin J., Ch âteauneuf J., Galtier, J., Ronchi, A. (1999): 
+L’Autunien d’Autun rest-t-il une r éférence pour les d é-
+pôts continentaux du Permien inf érieur d’Europe? Apport 
+des donn ées pal éobotaniques. Géologie de la France , 2: 
+17-31.
+Châteauneuf, J.J, Farjanel, G. (1989): Synthèse géologique des 
+bassins permiens français, Mémoire du Bureau de la Recher-
+che Géologogique et Mini ère, Orléans la Source, 128: 288 
+p.
+Debriette P., Gand, G. (1990): Conséquences stratigraphiques 
+et paléoenvironnementales de nouvelles observations pa -
+léontologiques dans le Permien de la partie occidentale du 
+bassin de Lodève (Sud du Massif Central). 
+Géologie de la 
+France, 1: 19-32.
+Delage, A. (1912): Empreintes de grands pieds de quadrup è-
+des de l’H érault. Mémoire de l’Académie des Sciences et 
+Lettres de Montpellier, 49 p.
+Doubinger, J. (1956): Contribution à l’étude des ﬂores Autuno-
+Stéphaniennes. Mémoires Société Géologique de France, 35 
+(75): 180 p. 
+Doubinger, J. (1963a): Notes palynologiques sur le Permien 
+de Lodève (Hérault). Compte Rendu  sommaire de la Société 
+Géologique de France, 6: 201-203.
+Doubinger, J. (1963b): Nouvelles observations sur la ﬂore fos-
+sile de l’Autunien de Lodève. Compte Rendu  sommaire de 
+la Société Géologique de France, 3: 74-75.
+Doubinger, J, Heyler, D. (1959): Note paléontologique sur le 
+Permien de Lodève et de Bourbon-L’Archambault. Bulletin 
+de la Sociéte Géologique de France, 7 (1): 304-311.
+Doubinger, J, Heyler, D. (1975): Nouveaux fossiles dans le 
+Permien français. Bulletin de la Société Géologique de Fran-
+ce,17: 1176-1180.
+Doubinger, J., Kruseman, G. P. (1965): Sur la ﬂore du Permien 
+de la région de Lodève «zone de transition» et Saxonien in -
+férieur. Bulletin de la Soci éte Géologique de France, 7 (7): 
+541-548.
+Doubinger, J., Odin, B., Conrad, G. (1987): Les associations 
+sporopolliniques du Permien continental du bassin de Lodè -
+ve Hérault, France: caractérisation de l’Autunien supérieur, 
+du «Saxonien» et du Thuringien. Annales de la Soci
+été Géo-
+logique du Nord, 56: 103-109.
+Echtler, H., Malavieille, J. (1990): Extensional tectonics, ba -
+sement uplift and Stephano-Permian collapse basin in a 
+late Variscan metamorphic core complex (Montagne Noire, 
+southern Massif Central), Tectonophysics, 177: 125-138.
+Ellenberger, F., Ellenberger P. (1959): Quelques pistes de ver-
+tébrés du Permien inférieur de Lodève. Comptes Rendus de l’ 
+Académie des Sciences, Paris, Paris, 248: 437.
+Ellenberger, P. (1983a): Sur la zonation ichnologique du 
+Permien moyen (Saxonien du bassin de Lodève, Hérault). 
+Comptes Rendus de l’ Acad
+émie des Sciences, Paris, 297, 
+série II: 553-558.
+Ellenberger, P. (1983b): Sur la zonation ichnologique du Per -
+mien inférieur (Autunien du bassin de Lodève, Hérault). 
+Comptes Rendus de l’ Acad
+émie des Sciences, Paris, 297 (II) 
+vena transversa (sub-): 631-636.
+Ellenberger, P. (1984): Données complémentaires sur la zona-
+tion ichnologique du Permien du Midi de la France (bassins 
+de Lodève, St Affrique et Rodez). Comptes Rendus de l’ Aca
+-
+démie des Sciences, Paris, 299, II, 9: 581-586.
+Falconnet, J. (2006): Redescription d’ Aphelosaurus lutevensis 
+Gervais 1859 (Diapsida, Araeoscelidia) du Permien de Lo -
+dève. Implications phylogénétiques et morpho-fonctionnel -
+les. Mémoire de Master 2, UMR 5143 CNRS, Département 
+Histoire de la Terre, Muséum national d’Histoire naturelle , 
+inedit, 43 p.  
+Feys, R., Greber, C. (1972): L’Autunien et le Saxonien en Fran-
+ce. In: H. Falke (ed.), Rotliegend. Essays on european Lower 
+Permian. E. J. Brill, Publisher, Leiden: 114-136.
+Florin, R. (1938-1945): Die Koniferen des Oberkarbons und 
+des unteren Perms. Palaeontographica, B, 85, 1-8, 1 - 729.
+Galtier, J., Broutin, J. (1995): La ﬂore de la Zone de Transition 
+de l’Autunien Supérieur de Lodève. Sciences Géologiques, 
+48 (1-3): 83-93.
+Galtier, J., Broutin, J. (2008): Floras from red beds of the Per-
+mian Basin of Lodève (Southern France). Journal of Iberian 
+Geology, 34(1): 57-72.
+Gand, G. (1985): Signiﬁcations paléobiologique et stratigra -
+phique de Limnopus zeilleri dans la partie nord du bassin de 
+Saint-Affrique. Geobios, 18 (2): 215-227.
+Gand, G. (1986): Interprétations paléontologique et paléoéco -
+logique de quatre niveaux à traces de vertébrés observés dans 
+l’Autunien du Lodèvois Hérault. 
+Géologie de la France, 2: 
+155-176.
+Gand, G. (1987): Les traces de Vert ébrés tétrapodes du Per -
+mien français Paléontologie, Stratigraphie, Paléoenvironne-
+ments. Thèse de Doctorat d’Etat, Université de Bourgogne. 
+Edit. Centre des Sciences de la Terre
+, 341 p.
+Gand, G. (1990): Essai de reconstitution paléoenvironnemen -
+tale et paléoécologique d’une partie du Nord du bassin de 
+Lodève (Hérault, France) au Permien Inférieur. 
+Géologie de 
+la France, 4: 17-30.
+Libro 34(1).indb   53 19/12/2007   20:36:59
+
+--- PAGE 26 ---
+54 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Gand, G. (1994): Ichnocoenoses à Isopodichnus furcosus nov. 
+ichnosp.dans le Permien du bassin de Lodève, Massif Cen -
+tral, France. Geobios, 27 (1): 74-86.
+Gand, G., Durand, M. (2006): Tetrapod footprint ichno-asso -
+ciations from French Permian basins. Comparisons with the 
+Euramerican ichnofaunas. In: S. G. Lucas, G. Cassinis, J. W. 
+Schneider (eds.), Non-Marine Permian Biostratigraphy and 
+Biochronology. Geological Society, London, Special Publi
+-
+cations, 265: 157-177.
+Gand, G., Galtier, J., Garric, J., Schneider, J., Körner, F., Bét -
+houx, O. (2004a): Les bassins carbonifère de Graissessac et 
+permien de Lodève. Livret-guide de l’excursion n° 3, Con -
+grès de Sienne sur l’évolution structurale et stratigraphique 
+des successions marines et continentales entre le Carbonifère 
+tardif et le Trias, mai 2001. Bulletin de la Soci
+été d’Histoire 
+Naturelle d’Autun, 185: 7-40.
+Gand, G., Galtier, J., Garric, J., Schneider, J., Körner, F., Bé -
+thoux, O. (2004b): Les bassins carbonifère de Graissessac et 
+permien de Lodève. Livret-guide de l’excursion n° 3, Con
+-
+grès de Sienne sur l’évolution structurale et stratigraphique 
+des successions marines et continentales entre le Carbonifère 
+tardif et le Trias, mai 2001. Bulletin de la Soci
+été d’Histoire 
+Naturelle d’Autun, 186: 9-40.
+Gand, G., Garric, J., Demathieu, G., Ellenberger, P. (2000): La 
+palichnofaune de vertébrés tétrapodes du Permien Supérieur 
+du bassin de Lodève (Languedoc, France). 
+Palaeovertebra-
+ta, 29: 1: 1-82.
+Gand, G., Garric, J., Lapeyrie, J., (1997): Biocénoses à Triop-
+sidés (Crustacea, Branchiopoda) du Permien du bassin de 
+Lodève (France), Geobios, 30 (5): 673-700.
+Gand, G., Garric, J., Lapeyrie, J. (2000): Convention d’étude 
+du Permien des bassins de Lodève et de Saint-Affrique. Bul-
+letin de la Société d’Histoire Naturelle d’Autun, 171: 7-16. 
+Gand, G., Haubold, H. (1984): Traces de Vertébrés du Permien 
+du bassin de Saint-Affrique Description, datation, comparai-
+son avec celles du bassin de Lodève. Géologie m éditerra-
+néenne, Marseille, 11 (4): 321 348.
+Gand, G., Lapeyrie, J., Garric, J., Nel, A., Schneider, J., Walter, 
+H. (1997): Découverte d’Arthropodes et de Bivalves inédits 
+dans le Permien continental (Lodévois, France). Comptes 
+Rendus de l’Académie des Sciences,Paris, 325, 891-898.
+Gand, G., Garric, J., Schneider, J., Walter, H.  Lapeyrie, J.,  
+Thiery, A., Martin, C. (2008):   Notostraca trackways in Per-
+mian playa environments of the Lodève basin (France). Jour-
+nal of Iberian Geology, 34(1): 73-108.
+Garric, J. (1965): L’uranium dans le carbonifère et le Permien 
+de Lodève. Les minerais uranifères français. Institut national 
+des Sciences et Techniques nucléaires, Presses Universitaires 
+de France, Paris: 149-265.
+Garric, J. (2001): Les rigoles fossilifères du Saxonien du bas -
+sin de Lodève. Bulletin de la Soci été d’Histoire Naturelle 
+d’Autun, 173: 7-48
+Garric, J. (2007): Le passage du Stéphanien à l’Autunien au 
+nord-ouest de La Tour-Sur-Orb, à la limite du bassin de 
+Graissessac et du bassin Permien de Lodève (Hérault- Fran
+-
+ce). Bulletin de la Société d’Histoire Naturelle d’Autun, 194: 
+29-51.
+Geinitz H.B. 1861. Dyas oder die Zechsteinformation und das 
+Rothliegende, Volume 1, Die Animalischen Ueberreste der 
+Dyas. Wilhelm Engelmann, Leipzig, 130 p.
+Haubold, H. (1970): Versuch einer Revision der Amphibien 
+Fährten des Karbon und Perm. Freiberger Forschungshefte, 
+Leipzig, C 260: 83-109.
+Haubold, H. (1971): Ichnia Amphibiorum et Reptiliorum fossi-
+lium. In: G. Fischer (ed.), Handbuch der Palaoherpetologie. 
+Encyclopedia of Paleoherpetology. Stuttgart, 18: 123 p.
+Haubold, H. (1984): Die Fossilen Saurierfahrten. Wittenberg 
+Lutherstadt, Neue Brehm Bücherei, 230 p.
+Haubold, H. (1996): Ichnotaxonomie und Klassiﬁkation von 
+Tetrapodenfâhrten aus den Perm. Hallesches Jahrbuch f ür 
+Geowissenschaften, Halle, B 18: 23-88.
+Henriot, O. (1988): Permis de Mérifons. Etude géologique du 
+Saxonien, Rapport ﬁnal Cogema, inédit: 39 p.
+Heyler, D. (1969): Vertébrés de l’Autunien de France. Cahiers 
+de Paléontologie du Centre National de la Recherche Scien-
+tiﬁque, Paris: 255 p.
+Heyler, D. (1997): Les vertébrés permiens du bassin de Lodève 
+(Hérault): bilan. Bulletin de la Soci été d‘Histoire Naturelle 
+d‘Autun, 157, 23-24, 5-28.
+Heyler, D., Lessertisseur, J. (1963): Pistes de tétrapodes per -
+miens dans la région de Lodève Hérault. Mémoire du Mu -
+séum d‘Histoire Naturelle de Paris, C, 11, 2: 100 p.
+Hoffmann, N., Kamps, H. J., Schneider, J. (1989): Neuerkennt-
+nisse zur Biostratigraphie und Paläodynamik des Perms in der 
+Norddeutschen Senke ein Diskussionsbeitrag. Zeitschrift f
+ür 
+Angewandre Geologie, 35 (7): 198-207.
+Kruseman, G. P. (1962): Etude paléomagnétique et sédimento-
+logique du bassin de Lodève Hérault. Thèse de l’Université 
+d’Utrecht: 65 p.
+Körner, F. (1999a): Dokumentation von Zyklen und Fazies -
+mustern in der Viala-, Rabejac-und Salagou Formation 
+des Lodève-Beckens, S-Frankreich. Diploma-Geologe 
+(in
+édit), Technische Universit ät, Berakademie of Frei -
+berg, Saxe : 87 p.  
+Körner, F. (1999b): Sedimentologie und Geochemie der Perm-
+Klastite des Lodève Beckens (S-Frankreich): Fazies, Klima, 
+Genese. Diplomarbeit, 87, TU-Bergakademie Freiberg.
+Körner, F. Schneider, J. W., Hoernes, S., Gand, G., Kleebert, 
+R. (2003): Climate and continental sedimentation in the Per-
+mian of the Lodève Basin (Southern France). Bolletino della 
+Societa Geologica Italaina,, V olume spéciale, 2: 185-191.
+Laversanne, J. (1976): Sédimentation et minéralisation du Per-
+mien de Lodève Hérault. Thèse de troisième cycle, Univer -
+sité de Paris sud, inédit: 300 p.
+Legler, B., Schneider, J., Gand, G., Kôrner, F. (2004): Playa 
+and sabkha from northern Germany and Southern France. 
+Workshop, IGCP 469 Central European Meeting „Freiberg 
+2004“, Freiberg University, 64-82.
+Linck, O. (1942): Die Spur Isopodichnus. Senkenbergiana, 25: 
+233-255.
+Lopez, M. (1992): Dynamique du passage d’un appareil terri-
+gène à une plate-forme carbonatée en domaine semi-aride: 
+Le Trias de Lod ève, Sud de la France. Thèse de Doctorat, 
+Université de Montpellier 2, 403 p.
+Libro 34(1).indb   54 19/12/2007   20:36:59
+
+--- PAGE 27 ---
+55Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+Lopez, M., Gand, G., Garric, J., Galtier, J. (2005): Playa en-
+vironments in the Lodève Permian Basin and the Triassic 
+cover (Languedoc- France). Excursion, 10-12 may 2005, 
+Association des Sédimentologistes français: 54 p.
+Lopez, M., Mader, D. (1985): Gravelly and sandy braidplain, 
+evolving into ﬂoodplain and playa-lake deposition and vice 
+versa, in the Bundsanstein facies sediments and marine incur
+-
+sions, in the Triassic of the Lodève region (southern France). 
+In: D. Mader (ed.), Lecture Note in Earth Sciences , Berlin, 
+Heidelberg, 4: 509-518.
+Lopez, M., Marza, P., Merzeraud, G., Moussine, A. Seguret, M. 
+(1997): Passage terrigène-carbonaté et cyclostratigraphies en 
+plate-forme interne: la transition Trias/Lias sur la bordure des 
+Causses et ennoiement de la plate-forme liasique. Congrés de 
+l’ Association des S
+édimentologistes Français, Montpellier, 
+livret-guide: 49 p.
+Lopez, M., Petit, J-P. (2003): Outcrop analogues for Carbo -
+niferous and Rotliegende Dutch Oilﬁels in the Lod ève Per-
+mian Basin, South of France. Fieldtrip guidebook, in édit, 
+Laboratoire Dynamique de la Lithosph ère, Montpellier II,  
+84 p.
+Martens, T. (1983): Zur Taxonomie und Biostratigraphie der 
+Conchostraca (Phyllopoda, Crustacea) des Jungpaläozoikums 
+der DDR, Teil 1. Freiberger Forschungshefte
+, C 382: 7-105.
+Matthew, G.F. (1910): Remarkable forms of the little River Group. 
+Royal Society of Canada Transactions, 3 (3-4): 115-125.
+Moodie, R.L. (1929): Vertebrate footprints from the Red Beds 
+of Texas I. American Journal of Sciences, New-Haven, 5, 17, 
+352-368.
+Nel, A., Gand, G., Garric, J. (1999a): A new family of Odonat-
+optera from the continental upper Permian: the Lapeyriidae 
+(Lodève basin, France). Geobios, 32, 1: 63-72.
+Nel, A., Gand, G., Fleck, G., Béthoux, O., Lapeyrie, J., Garric, 
+J. (1999b): Saxonagrion minutus nov. gen. nov. sp., the old-
+est damselﬂy from the Upper Permian of France (Odonatop-
+tera, Panodonata, Saxonagrionidae fam. nov.). Geobios, 32, 
+6: 883-888.
+Nel, A., Gand, G., Garric, J., Lapeyrie, J. (1999c): The ﬁrst 
+recorded Protozygopteran insects from the Upper Permian of 
+France. Palaeontolgy, 42 (1): 83-97.
+Nel, A.N., Fleck, G., Garrouste, R., Gand, G. (2008): The Odo-
+natoptera of the Late Permian Lodève Basin (Insecta). J our-
+nal of Iberian Geology, 34(1): 115-122.
+Nesbitt, H. W., Young, G. M. (1982): Early Proterozoic cli -
+mates and plate motions inferred from major element chem -
+istry of lutites. Nature, 299: 715-717.
+Nmila A., Cabanis, B., Leroy, S., Henriot, O., Mathis, V . (1992): 
+Découverte de nouveaux horizons tufﬁques dans le Permien 
+rouge supérieur du bassin de Lodève Hérault, France. Essai 
+de caractérisation du volcanisme. Comptes Rendus de l’Aca
+-
+démie des Sciences, Paris, 315 (II): 689-696.
+Nmila, A. (1995): L’empreinte du volcanisme dans le remplis-
+sage permien du bassin de Lodève. Etude pétrographique et 
+géochimique. Implication métallogénique . Th
+èse de Docto -
+rat en Sciences, Universit é Pierre et Marie Curie, Paris VI  
+(inédit): 202 p.
+Odin, B. (1986): Les formations permiennes Autunien supé -
+rieur à Thuringien du «bassin» de Lodève (Hérault, France). 
+Thèse de Doctorat de l’Université de Marseille III, spécialité 
+Géologie, 392 p.
+Pochat, S., Van Den Driessche, J., Mouton, V ., Guillocheau, 
+F. (2005): Identiﬁcation of Permian palaeowind direction 
+from wave-dominated lacustrine sediments (Lodève Basin, 
+France). Sedimentology, 52: 809-825
+Pohlig, H. (1886): Saurierfährten im unteren Rotliegenden von 
+Friedrichroda. Verhandlungen naturhistorische. Vereins der 
+Preussischen Rheinlande und Westfalens , Bonn, 43: 277-
+279.
+Roscher, M., Schneider, J. (2006): Permo-Carboniferous cli -
+mate: Early Pennsylvanian to Late Permian climate develop-
+ment of central Europe in a regional and global context. In: 
+S. G. Lucas, G. Cassinis, J. W. Schneider (eds.), 
+Non-Marine 
+Permian Biostratigraphy and Biochronology . Geological 
+Society, London, Special Publication, 265: 95-136.
+Saint-Martin, M.  (1993): Evolution du bassin st éphanien de 
+Graissessac en relation avec les tectoniques hercyniennes 
+et tardi-hercyniennes de la Montagne Noire (Sud du Mas
+-
+sif Central fran çais). Thèse de l’Université de Montpellier 
+(inédit), 234 p.
+Sarjeant, W.A.S. (1971): Vertebrate Tracks from the Permian 
+of Castle Peak, Texas. The Texas Journal of Science , 22, 4, 
+344-366.
+Schneider, J. (1980): Zur Entomofauna des Jungpaläozoikums 
+der Boskovicer Furche (CSSR), Teil 1: Mylacridae (Insecta, 
+Blattodea). Freiberger Forschungshefte, Leipzig, H., C 357: 
+43-55.
+Schneider, J. (1983): Die Blattodea (Insecta) des Paläozoikums, 
+Teil 1: Systematik, Ökologie und Biostratigraphie. Freiber-
+ger Forschungshefte, Leipzig, H C 382: 106-145.
+Schneider, J. (1984a): Die Blattodea (Insecta) des Paläo -
+zoikums, Teil 2: Morphogenese der Flügelstrukturen und 
+Phylogenie. Freiberger Forschungshefte, Leipzig , C 391: 
+5-34.
+Schneider, J. (1984b): Zur Entomofauna des Jungpaläozoi
+-
+kums der Boskovicer Furche (CSSR), Teil 2: Phyloblattini -
+dae (Insecta, Blattodea). Freiberger Forschungshefte, Leip-
+zig, C 395: 19-37.
+Schneider, J. (1996): Biostratigraphie des kontinentalen Ober -
+karbon und Perm im Thüringer Wald, SW-Saale-Senke - 
+Stand und Probleme. 
+Beiträge zur Geologie von Th üringen, 
+N.F., 3: 121-151.
+Schneider, J., Gebhardt, U., Gaitzsch, B. (1995): Fossilführung 
+und Biostratigraphie. In: E. Pleine (ed.), Stratigraphie von 
+Deutschland I. Norddeutsches Rotliegendbecken. Rotlie -
+gend-Monographie Teil II. Cour. Forsch.-Inst. Senckenberg, 
+183: 25-39.
+Schneider, J., Körner, F, Hoernes, S. T., Gand, G., Schaeben, 
+H., Kleeberg, R. (1999): Projekt Schu 408/7-1: Referenz -
+proﬁl Kontinentales Oberkarbon bis Untertrias f ür die Syn-
+these Klima-relevanter geochemister, sedimentologischer 
+und pal
+äontologischer Daten.  Teil 1. Perm-red beds des 
+Lodève-Beckens. Geochimie, Bio-/lithofazies, Zyklostrati -
+Libro 34(1).indb   55 19/12/2007   20:36:59
+
+--- PAGE 28 ---
+56 Lopez et al. / Journal of Iberian Geology 34 (1) 2008: 29-56
+graphie, Klima. Freiberg University, Allemagne (Unpublis -
+hed): 48 p.
+Schneider, J., Körner, F., Roscher, M., Kroner, U. (2006): Per-
+mian climate development in the northern peri-Tethys area: 
+the Lodève Basin, French Massif Central, compared in a Eu-
+ropean and global context. Palaeogeography, Palaeoclima-
+tology, Palaeoecology, 240: 161-183.
+Sumida, S., Berman, D. S., Martens, Th. (1996): Biostrati -
+graphic correlations between the Lower Permian of North 
+America and Central Europe using the ﬁrst record of an as
+-
+semblage of terrestrial tetrapods from Germany. PaleoBios, 
+17 (2-4): 1-12.
+Vetter, P. (1963): Le bassin de Decazeville. Voyage d’étude 
+n° 4, livret-guide du Vème congrés du Carbonifère (Inédit): 
+63- 80.
+V oigt, S. (2004): Die Tetrapodenichnofauna des kontinentalen 
+Oberkarbon und Perm im Thüringer Wald-Ichnotaxonomie, 
+Paläoökologie und Biostratigraphie. Cuvillier Verlag G
+ôttin-
+gen, 300 p.
+Walter, H. (1983): Zur Taxonomie, Ökologie und Biostratigra-
+phie der Ichnia limnisch-terrestrischer Arthropoden des Mit-
+teleuropäischen Jungpaläozoikums. Freiberger Forschung-
+sheft, C 382: 146-193.
+Werneburg, R., Steyer, J-S., Sommer, G. Gand, G., Schneider, 
+W., Vianey-Liaud, M. (2007): The Earliest Tupilakosaurid 
+amphibian with diplospondylous vertebrae from the Late 
+Permian of Southern France. Journal of Vertebrate Paleon
+-
+tology, 27 (1): 26-30.
+Zeiller, R. (1898): Contribution à l’étude de la ﬂore ptéridolo -
+gique des schistes permiens de Lodève. Bulletin du Muséum 
+de Marseille, 1: 68 p.
+Libro 34(1).indb   56 19/12/2007   20:37:00
