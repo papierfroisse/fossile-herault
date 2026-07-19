@@ -829,11 +829,47 @@
       }
     });
 
+    // Major Cities Landmarks (Hérault)
+    const majorCities = [
+      { name: "MONTPELLIER", lat: 43.6108, lng: 3.8767, main: true },
+      { name: "BÉZIERS", lat: 43.3442, lng: 3.2158, main: true },
+      { name: "SÈTE", lat: 43.4053, lng: 3.6975, main: true },
+      { name: "AGDE", lat: 43.3108, lng: 3.4758, main: false },
+      { name: "LODÈVE", lat: 43.7311, lng: 3.3200, main: true },
+      { name: "CLERMONT-L'HÉRAULT", lat: 43.6275, lng: 3.4303, main: false },
+      { name: "BÉDARIEUX", lat: 43.6167, lng: 3.1583, main: false },
+      { name: "GANGES", lat: 43.9358, lng: 3.7083, main: false },
+      { name: "PÉZENAS", lat: 43.4608, lng: 3.4225, main: false }
+    ];
+
+    const citiesLayerGroup = L.layerGroup().addTo(map);
+    majorCities.forEach(city => {
+      L.marker([city.lat, city.lng], {
+        interactive: false,
+        icon: L.divIcon({
+          className: 'city-label-icon',
+          html: `<div style="background:rgba(15,23,42,0.85); color:#f8fafc; border:1px solid rgba(56,189,248,0.6); padding:2px 7px; border-radius:4px; font-size:${city.main ? '11px' : '10px'}; font-weight:700; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.6); letter-spacing:0.5px;"><i class="fa-solid fa-city" style="font-size:9px; color:#38bdf8; margin-right:3px;"></i>${city.name}</div>`,
+          iconAnchor: [30, 10]
+        })
+      }).addTo(citiesLayerGroup);
+    });
+
     fetch('processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
       riversLayer = L.geoJSON(data, {
-        style: { color: '#38bdf8', weight: 1.8, opacity: 0.6 },
+        style: { color: '#0284c7', weight: 1.2, opacity: 0.35 },
         onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
-      }).addTo(map);
+      });
+      if (map.getZoom() >= 11) riversLayer.addTo(map);
+    });
+
+    map.on('zoomend', function() {
+      if (riversLayer) {
+        if (map.getZoom() >= 11) {
+          if (!map.hasLayer(riversLayer)) map.addLayer(riversLayer);
+        } else {
+          if (map.hasLayer(riversLayer)) map.removeLayer(riversLayer);
+        }
+      }
     });
 
     fetch('processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
@@ -1115,13 +1151,19 @@
               html: `<div style="background:#2563eb; color:#fff; width:26px; height:26px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 15px #2563eb; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fa-solid fa-crosshairs"></i></div>`,
               iconSize: [26, 26], iconAnchor: [13, 13]
             })
-          }).bindPopup(`<b>🎯 Votre Position GPS en Direct</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`).addTo(map);
+          }).bindPopup(`
+            <b>🎯 Votre Position GPS en Direct</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br>
+            <div style="margin-top:8px; display:flex; flex-direction:column; gap:4px;">
+              <a href="#" onclick="generateCustomLocationReport(${lat}, ${lng}); return false;" class="popup-tag" style="background:#0284c7; color:#fff; text-align:center;">📄 Rapport PDF Ma Position</a>
+              <button onclick="togglePointSelectionMode()" style="background:#a855f7; color:#fff; border:none; padding:4px; border-radius:4px; font-size:0.75rem; cursor:pointer;">📌 Activer Sélection Autre Point</button>
+            </div>
+          `).addTo(map);
 
           map.flyTo([lat, lng], 14, { duration: 1.5 });
           userLocationMarker.openPopup();
         },
         err => {
-          alert("Impossible d'obtenir votre position GPS. Veuillez autoriser l'accès à la géolocalisation.");
+          alert("Impossible d'obtenir votre position GPS. Astuce: Vous pouvez faire un appui long sur la carte pour placer un point.");
         },
         { enableHighAccuracy: true }
       );
@@ -1318,28 +1360,65 @@
       if (!box) return;
 
       box.style.display = 'block';
-      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Chargement de Wikipédia...`;
+      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Recherche scientifique...`;
 
-      // Try French Wikipedia first, then English
-      const term = speciesName.split(" ")[0]; // Main genus or species name
-      fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(term)}`)
-        .then(res => {
-          if (res.ok) return res.json();
-          return fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(term)}`).then(r => r.json());
-        })
+      // Clean taxon name
+      let cleanName = speciesName.replace(/["'()]/g, '').replace(/\b(sp|cf|var|subsp)\b\.?/gi, '').trim();
+
+      const googleImgUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(cleanName + ' fossile')}`;
+      const mnhnUrl = `https://science.mnhn.fr/institution/mnhn/collection/f/item/list?full_text=${encodeURIComponent(cleanName)}`;
+
+      const extraLinksHtml = `
+        <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+          <a href="${googleImgUrl}" target="_blank" class="popup-tag" style="background:#1e293b; color:#38bdf8; border-color:#0284c7; margin:0; font-size:0.75rem;">🖼️ Google Images</a>
+          <a href="${mnhnUrl}" target="_blank" class="popup-tag" style="background:#1e293b; color:#34d399; border-color:#059669; margin:0; font-size:0.75rem;">🏛️ MNHN Paris</a>
+        </div>
+      `;
+
+      // Search French Wikipedia using Search API first to get real article title
+      fetch(`https://fr.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName)}&format=json&origin=*`)
+        .then(res => res.json())
         .then(data => {
-          if (data && data.extract) {
-            let imgHtml = '';
-            if (data.thumbnail && data.thumbnail.source) {
-              imgHtml = `<img src="${data.thumbnail.source}" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px; margin-bottom:6px;">`;
-            }
-            box.innerHTML = `${imgHtml}<div><b>${data.title}</b>: ${data.extract.substring(0, 220)}...</div>`;
+          if (data && data.query && data.query.search && data.query.search.length > 0) {
+            const pageTitle = data.query.search[0].title;
+            return fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageTitle)}`).then(r => r.json());
           } else {
-            box.innerHTML = `⚠️ Pas de résumé Wikipédia direct. Utilisez le bouton Google Images.`;
+            // Try English Wikipedia Search
+            return fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName)}&format=json&origin=*`)
+              .then(r => r.json())
+              .then(enData => {
+                if (enData && enData.query && enData.query.search && enData.query.search.length > 0) {
+                  return fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(enData.query.search[0].title)}`).then(r => r.json());
+                }
+                return null;
+              });
+          }
+        })
+        .then(summary => {
+          if (summary && summary.extract) {
+            let imgHtml = '';
+            if (summary.thumbnail && summary.thumbnail.source) {
+              imgHtml = `<img src="${summary.thumbnail.source}" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px; margin-bottom:6px;">`;
+            }
+            box.innerHTML = `
+              ${imgHtml}
+              <div style="font-size:0.8rem; line-height:1.3;">
+                <b>${summary.title}</b>: ${summary.extract.substring(0, 200)}...
+              </div>
+              ${extraLinksHtml}
+            `;
+          } else {
+            box.innerHTML = `
+              <div style="font-size:0.8rem; color:#cbd5e1;">ℹ️ Pas d'article Wikipédia direct. Consultez les bases certifiées :</div>
+              ${extraLinksHtml}
+            `;
           }
         })
         .catch(() => {
-          box.innerHTML = `⚠️ Recherche Wikipédia indisponible. Utilisez le bouton Google Images.`;
+          box.innerHTML = `
+            <div style="font-size:0.8rem; color:#cbd5e1;">ℹ️ Recherche distante indisponible. Liens directs :</div>
+            ${extraLinksHtml}
+          `;
         });
     }
 
@@ -1374,17 +1453,38 @@
     function openGuideModal() { document.getElementById('guideModal').style.display = 'flex'; }
     function closeGuideModal() { document.getElementById('guideModal').style.display = 'none'; }
 
-    // Map Click Listener
+    let isPointSelectionActive = false;
+
+    function togglePointSelectionMode() {
+      isPointSelectionActive = !isPointSelectionActive;
+      if (isPointSelectionActive) {
+        alert("📍 Mode Sélection Activé : Touchez un endroit précis sur la carte pour générer son rapport PDF.");
+      }
+    }
+
+    // Map Click Listener (no auto popup on normal tap)
     map.on('click', function(e) {
-      // Close sidebar if mobile
+      // Close mobile sidebar if open
       if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('mobile-open');
       }
 
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
+      // Only show point popup if point selection mode is active
+      if (isPointSelectionActive) {
+        isPointSelectionActive = false;
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        openCustomPointPopup(lat, lng, e.latlng);
+      }
+    });
 
-      L.popup().setLatLng(e.latlng).setContent(`
+    // Long press on map (contextmenu event) to drop intentional pin
+    map.on('contextmenu', function(e) {
+      openCustomPointPopup(e.latlng.lat, e.latlng.lng, e.latlng);
+    });
+
+    function openCustomPointPopup(lat, lng, latlng) {
+      L.popup().setLatLng(latlng).setContent(`
         <div class="popup-title">📍 Point GPS Sélectionné</div>
         <div class="popup-meta">
           <b>Coordonnées :</b> ${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E<br>
@@ -1394,7 +1494,7 @@
           📄 Générer le Rapport PDF de ce Point
         </a>
       `).openOn(map);
-    });
+    }
 
     // Search
     function handleSearch(e) {
