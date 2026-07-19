@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦕 Fossile — Cartographie prédictive de l'Hérault (34)</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+    }
+
+    /* Side Control Panel */
+    #sidebar {
+      width: 380px;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .header {
+      padding: 20px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header p {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .content {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Section Cards */
+    .card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Search Input */
+    .search-box {
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-box input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    .search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+    }
+
+    /* Slider styling */
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+    .slider-header span.val {
+      color: #38bdf8;
+      font-weight: 600;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: #38bdf8;
+    }
+
+    /* Checkbox Group */
+    .filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      user-select: none;
+      color: #e2e8f0;
+    }
+    .filter-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #38bdf8;
+      cursor: pointer;
+    }
+    .badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Explanatory Help Card */
+    .help-card {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.82rem;
+      color: #bae6fd;
+      line-height: 1.4;
+    }
+    .help-card b {
+      color: #fff;
+    }
+
+    /* Stats Bar */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat-item {
+      background: #0f172a;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .stat-val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .stat-lbl {
+      font-size: 0.72rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Map container */
+    #map {
+      flex: 1;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Custom Leaflet Tooltip & Popup */
+    .leaflet-popup-content-wrapper {
+      background: rgba(15, 23, 42, 0.95) !important;
+      color: #f8fafc !important;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px !important;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+    }
+    .leaflet-popup-tip {
+      background: rgba(15, 23, 42, 0.95) !important;
+    }
+    .popup-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 6px;
+    }
+    .popup-meta {
+      font-size: 0.83rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .popup-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-top: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* Quick jump buttons */
+    .quick-jumps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .jump-btn {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .jump-btn:hover {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Control Panel -->
+  <div id="sidebar">
+    <div class="header">
+      <h1><i class="fa-solid fa-bone"></i> Fossile Hérault</h1>
+      <p>Cartographie prédictive & découpes fossilifères (34)</p>
+    </div>
+
+    <div class="content">
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-val" id="stat-fossils">2 818</div>
+          <div class="stat-lbl">Fossiles certifiés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="stat-zones">535</div>
+          <div class="stat-lbl">Zones cibles prédictives</div>
+        </div>
+      </div>
+
+      <!-- Search Communes -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Rechercher un lieu / commune</div>
+        <div class="search-box">
+          <i class="fa-solid fa-location-dot"></i>
+          <input type="text" id="searchInput" placeholder="Ex: Lodève, Mèze, Salagou, Cruzy..." onkeyup="handleSearch(event)">
+        </div>
+        <div class="quick-jumps">
+          <button class="jump-btn" onclick="flyToLoc(43.7317, 3.3192, 13)">Lodève</button>
+          <button class="jump-btn" onclick="flyToLoc(43.6533, 3.3478, 13)">Lac Salagou</button>
+          <button class="jump-btn" onclick="flyToLoc(43.4278, 3.6056, 13)">Mèze</button>
+          <button class="jump-btn" onclick="flyToLoc(43.3625, 2.9375, 13)">Cruzy</button>
+          <button class="jump-btn" onclick="flyToLoc(43.6108, 3.8767, 12)">Montpellier</button>
+        </div>
+      </div>
+
+      <!-- Predictive Threshold Slider -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-sliders"></i> Sensibilité du Scoring Prédictif</div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Seuil de potentiel minimal :</span>
+            <span class="val" id="scoreVal">50 / 100</span>
+          </div>
+          <input type="range" id="scoreSlider" min="30" max="80" value="50" step="5" oninput="updateScoreFilter(this.value)">
+        </div>
+      </div>
+
+      <!-- Category Filter Checkboxes -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-filter"></i> Filtrer par catégorie de fossile</div>
+        <div class="filter-list">
+          <label class="filter-item">
+            <input type="checkbox" checked onchange="toggleCategory('dinosaurs_reptiles', this.checked)">
+            <span class="badge-dot" style="background:#ff3333;"></span> Dinosaures & Reptiles (159)
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" checked onchange="toggleCategory('molluscs', this.checked)">
+            <span class="badge-dot" style="background:#3388ff;"></span> Mollusques & Ammonites (542)
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" checked onchange="toggleCategory('mammals', this.checked)">
+            <span class="badge-dot" style="background:#ffaa00;"></span> Mammifères (281)
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" checked onchange="toggleCategory('plants', this.checked)">
+            <span class="badge-dot" style="background:#28a745;"></span> Plantes & Végétaux (114)
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" checked onchange="toggleCategory('arthropods', this.checked)">
+            <span class="badge-dot" style="background:#9c27b0;"></span> Trilobites & Arthropodes (224)
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" checked onchange="toggleCategory('fish', this.checked)">
+            <span class="badge-dot" style="background:#00bcd4;"></span> Poissons (85)
+          </label>
+        </div>
+      </div>
+
+      <!-- Explanatory Guide -->
+      <div class="help-card">
+        <b>💡 Comment lire la carte :</b><br>
+        • <b>Marqueurs / Puces</b> : Coordonnées GPS réelles d'un fossile documenté en publication scientifique (PBDB).<br>
+        • <b>Cercle numéroté</b> : Regroupement (cluster) de fossiles proches. Zoomer pour séparer.<br>
+        • <b>Zones colorées (Rouge/Orange)</b> : Formations géologiques sédimentaires prédictives calculées par l'algorithme.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Map Canvas -->
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <script>
+    // Initialize Map centered on Hérault
+    const map = L.map('map', {
+      center: [43.55, 3.45],
+      zoom: 10,
+      zoomControl: false
+    });
+
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
+    // Base Layers
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    });
+
+    const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Esri Satellite'
+    });
+
+    const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB Voyager (Noms des villes & villages)'
+    }).addTo(map);
+
+    // Layer Control Top-Right
+    const baseMaps = {
+      "🗺️ Carte Villes & Villages (CartoDB)": cartoPositron,
+      "🛰️ Vue Satellite (Esri)": esriSat,
+      "🌐 OpenStreetMap Standard": osm
+    };
+    L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
+
+    // Data Containers
+    let fossilsData = [];
+    let geojsonLayer = null;
+    let rawGeojsonData = null;
+    let clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 45,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false
+    }).addTo(map);
+
+    let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammals', 'plants', 'arthropods', 'fish', 'others']);
+    let minScoreThreshold = 50;
+
+    // Load Fossils JSON
+    fetch('/processed/fossils_herault.json')
+      .then(res => res.json())
+      .then(data => {
+        fossilsData = data;
+        renderFossils();
+      })
+      .catch(err => console.error("Erreur chargement fossiles:", err));
+
+    // Load Scored Geology GeoJSON
+    fetch('/processed/herault_geologie_scored.geojson')
+      .then(res => res.json())
+      .then(data => {
+        rawGeojsonData = data;
+        renderPredictiveGeology();
+      })
+      .catch(err => console.error("Erreur chargement géologie prédictive:", err));
+
+    // Render Fossils on Map
+    function renderFossils() {
+      clusterGroup.clearLayers();
+      let count = 0;
+
+      fossilsData.forEach(item => {
+        if (!activeCategories.has(item.category_id)) return;
+
+        count++;
+        const marker = L.circleMarker([item.lat, item.lng], {
+          radius: 7,
+          fillColor: item.color,
+          color: '#ffffff',
+          weight: 1.5,
+          opacity: 0.9,
+          fillOpacity: 0.85
+        });
+
+        const popupContent = `
+          <div class="popup-title">${item.name}</div>
+          <div class="popup-meta">
+            <b>Catégorie :</b> ${item.category_name}<br>
+            <b>Période :</b> ${item.period} (${item.max_ma ? item.max_ma + ' Ma' : 'N/A'})<br>
+            <b>Formation :</b> ${item.formation || 'Non spécifiée'}<br>
+            <b>Phylum/Classe :</b> ${item.phylum} / ${item.class_name}<br>
+            <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
+          </div>
+          <span class="popup-tag">Découverte certifiée PBDB</span>
+        `;
+
+        marker.bindPopup(popupContent);
+        clusterGroup.addLayer(marker);
+      });
+
+      document.getElementById('stat-fossils').innerText = count.toLocaleString('fr-FR');
+    }
+
+    // Render Scored Predictive Geology Polygons
+    function renderPredictiveGeology() {
+      if (!rawGeojsonData) return;
+      if (geojsonLayer) map.removeLayer(geojsonLayer);
+
+      const filteredFeatures = rawGeojsonData.features.filter(f => f.properties.score_potentiel >= minScoreThreshold);
+
+      geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
+        style: function(feature) {
+          const score = feature.properties.score_potentiel || 50;
+          const isHigh = score >= 70;
+          return {
+            fillColor: isHigh ? '#ff3300' : '#ff9900',
+            color: isHigh ? '#cc0000' : '#d97706',
+            weight: 1.5,
+            fillOpacity: 0.35
+          };
+        },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties;
+          layer.bindTooltip(`
+            <div style="font-family: Outfit, sans-serif;">
+              <b style="color:#38bdf8;">Zone Prédictive (${p.niveau_potentiel || ''})</b><br>
+              <b>Code :</b> ${p.NOTATION || 'N/A'}<br>
+              <b>Description :</b> ${p.DESCR || 'Formation sédimentaire'}<br>
+              <b>Score de Potentiel :</b> <span style="color:#ff9900; font-weight:bold;">${p.score_potentiel} / 100</span>
+            </div>
+          `, { sticky: true });
+        }
+      }).addTo(map);
+
+      document.getElementById('stat-zones').innerText = filteredFeatures.length.toLocaleString('fr-FR');
+    }
+
+    // Interactive Controls
+    function toggleCategory(catId, isChecked) {
+      if (isChecked) activeCategories.add(catId);
+      else activeCategories.delete(catId);
+      renderFossils();
+    }
+
+    function updateScoreFilter(val) {
+      minScoreThreshold = parseInt(val);
+      document.getElementById('scoreVal').innerText = val + ' / 100';
+      renderPredictiveGeology();
+    }
+
+    function flyToLoc(lat, lng, zoom = 13) {
+      map.flyTo([lat, lng], zoom, { duration: 1.2 });
+    }
+
+    // Search Communes
+    function handleSearch(e) {
+      if (e.key === 'Enter') {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) return;
+
+        // Geocoding simple via Nominatim
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Hérault, France')}`)
+          .then(res => res.json())
+          .then(results => {
+            if (results && results.length > 0) {
+              const r = results[0];
+              flyToLoc(parseFloat(r.lat), parseFloat(r.lon), 13);
+            } else {
+              alert("Lieu introuvable dans l'Hérault.");
+            }
+          })
+          .catch(err => console.error("Erreur recherche :", err));
+      }
+    }
+  </script>
+</body>
+</html>
