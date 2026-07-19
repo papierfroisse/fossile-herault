@@ -367,6 +367,17 @@
         </div>
       </div>
 
+      <!-- Seasonality & Erosion Weather Widget -->
+      <div class="card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.25);">
+        <div class="card-title" style="color: #34d399;"><i class="fa-solid fa-cloud-sun-rain"></i> Indice d'Érosion & Prospection Météo</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:0.82rem; color:#cbd5e1;">Mois de <b id="season-month">Juillet</b> :</span>
+          <span id="season-score" style="font-size:0.95rem; font-weight:700; color:#f59e0b; background:rgba(0,0,0,0.3); padding:2px 8px; border-radius:12px;">35 / 100</span>
+        </div>
+        <div id="season-condition" style="font-size:0.8rem; font-weight:600; color:#e2e8f0; margin-bottom:4px;">Chaleur / Fort Ensoleillement</div>
+        <div id="season-advice" style="font-size:0.75rem; color:#94a3b8; line-height:1.35;">Conditions difficiles. Privilégier les zones ombragées et les lits de ruisseaux asséchés.</div>
+      </div>
+
       <!-- Guide & PDF Buttons -->
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-book-bookmark"></i> Outils & Rapports de Terrain</div>
@@ -544,6 +555,20 @@
     // Load Data
     fetch('/processed/fossils_herault.json').then(res => res.json()).then(data => { fossilsData = data; renderFossils(); });
     fetch('/processed/herault_geologie_pentes.geojson').then(res => res.json()).then(data => { rawGeojsonData = data; renderPredictiveGeology(); });
+
+    fetch('/api/seasonality').then(res => res.json()).then(data => {
+      if (data && data.mois) {
+        document.getElementById('season-month').innerText = data.mois;
+        document.getElementById('season-score').innerText = data.score_saison + ' / 100';
+        document.getElementById('season-condition').innerText = data.condition;
+        document.getElementById('season-advice').innerText = data.conseil;
+
+        const scoreEl = document.getElementById('season-score');
+        if (data.score_saison >= 80) scoreEl.style.color = '#34d399';
+        else if (data.score_saison >= 60) scoreEl.style.color = '#f59e0b';
+        else scoreEl.style.color = '#ef4444';
+      }
+    });
 
     fetch('/processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
       riversLayer = L.geoJSON(data, {
