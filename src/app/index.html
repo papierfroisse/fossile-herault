@@ -30,7 +30,7 @@
 
     /* Side Control Panel */
     #sidebar {
-      width: 380px;
+      width: 390px;
       height: 100%;
       background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
@@ -268,6 +268,76 @@
       color: #0f172a;
       font-weight: 600;
     }
+
+    /* Species Guide Modal / Drawer */
+    #guideModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-content {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      max-width: 750px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .modal-header h2 {
+      color: #38bdf8;
+      font-size: 1.3rem;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .close-btn:hover {
+      color: #fff;
+    }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .guide-card {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .guide-card h3 {
+      color: #f59e0b;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .guide-card p {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
@@ -276,7 +346,7 @@
   <div id="sidebar">
     <div class="header">
       <h1><i class="fa-solid fa-bone"></i> Fossile Hérault</h1>
-      <p>Points fixes de précision GPS & Études Scientifiques (34)</p>
+      <p>Modèle Prédictive ML, Relief LiDAR & SIG (34)</p>
     </div>
 
     <div class="content">
@@ -297,15 +367,17 @@
         </div>
       </div>
 
-      <!-- PDF Export Button Card -->
+      <!-- Guide & PDF Buttons -->
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-file-pdf"></i> Rapport de Prospection PDF</div>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px;">
-          Générez une fiche de terrain PDF complète (contexte géologique, découvertes certifiées proches, guide d'identification) pour la zone observée.
-        </p>
-        <button class="jump-btn" style="width: 100%; padding: 8px; background: #0284c7; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="generateCurrentLocationReport()">
-          <i class="fa-solid fa-download"></i> Télécharger le Rapport PDF du Secteur
-        </button>
+        <div class="card-title"><i class="fa-solid fa-book-bookmark"></i> Outils & Rapports de Terrain</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="jump-btn" style="width: 100%; padding: 8px; background: #0284c7; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="generateCurrentLocationReport()">
+            <i class="fa-solid fa-file-pdf"></i> Générer le Rapport PDF du Secteur
+          </button>
+          <button class="jump-btn" style="width: 100%; padding: 8px; background: #059669; color: #fff; font-weight: 600; text-align: center; border-radius: 8px;" onclick="openGuideModal()">
+            <i class="fa-solid fa-eye"></i> Guide d'Identification Visuelle (Hérault)
+          </button>
+        </div>
       </div>
 
       <!-- Search Communes -->
@@ -324,9 +396,9 @@
         </div>
       </div>
 
-      <!-- Layers Toggles (Carrières, Rivières) -->
+      <!-- Layers Toggles (Carrières, Rivières, Relief/Pente) -->
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-layer-group"></i> Calques Environnementaux</div>
+        <div class="card-title"><i class="fa-solid fa-layer-group"></i> Calques Environnementaux & Relief</div>
         <div class="filter-list">
           <label class="filter-item">
             <input type="checkbox" id="toggleRivers" checked onchange="toggleRiversLayer(this.checked)">
@@ -335,6 +407,10 @@
           <label class="filter-item">
             <input type="checkbox" id="toggleQuarries" checked onchange="toggleQuarriesLayer(this.checked)">
             <span style="color:#f59e0b;"><i class="fa-solid fa-industry"></i></span> Carrières & Coupes Ouvertes
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" id="toggleSlopeOnly" onchange="toggleSlopeFilter(this.checked)">
+            <span style="color:#ef4444;"><i class="fa-solid fa-mountain"></i></span> Affleurements Forts Uniquement (Pente ≥ 15°)
           </label>
         </div>
       </div>
@@ -378,23 +454,53 @@
         </div>
       </div>
 
-      <!-- Explanatory Guide -->
-      <div class="help-card">
-        <b>📍 Mode Points Fixes de Précision :</b><br>
-        Chaque point coloré est désormais un **emplacement GPS exact et individuel** (sans regroupement en cercles numérotés). Cliquez sur un point pour accéder aux publications scientifiques liées !
-      </div>
-
     </div>
   </div>
 
   <!-- Map Canvas -->
   <div id="map"></div>
 
+  <!-- Guide Modal -->
+  <div id="guideModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📚 Guide d'Identification Visuelle — Fossiles de l'Hérault (34)</h2>
+        <button class="close-btn" onclick="closeGuideModal()">&times;</button>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3>🌲 Walchia piniformis (Conifère Permien)</h3>
+          <p><b>Visuel :</b> Rameau feuillé avec petites aiguilles serrées recourbées en spirale.<br><b>Couleur :</b> Pellicule noire brillante (fusain).<br><b>Zone :</b> Mont Sénégra, Lodévois (Permien ~295 Ma).</p>
+        </div>
+        <div class="guide-card">
+          <h3>🍃 Rhachiphyllum lyratifolia (Fougère)</h3>
+          <p><b>Visuel :</b> Petite fougère dont les pinnules sont découpées en 3 lobes arrondis.<br><b>Support :</b> Siltites grises/ocres.<br><b>Zone :</b> Mont Sénégra, Usclas, Tuilières.</p>
+        </div>
+        <div class="guide-card">
+          <h3>🐊 Thérapsides & Pélycosaures (Reptiles)</h3>
+          <p><b>Visuel :</b> Empreintes de pas à 5 doigts ou dalles d'ichnofaciès <i>Scoyenia</i>.<br><b>Support :</b> Grès et ruffes rouges.<br><b>Zone :</b> La Lieude, Salagou, Rabéjac.</p>
+        </div>
+        <div class="guide-card">
+          <h3>🦖 Dinosaures & Œufs (Crétacé)</h3>
+          <p><b>Visuel :</b> Coquilles d'œufs arrondies ou os spongieux lourds.<br><b>Support :</b> Grès à reptiles et argiles rutilantes.<br><b>Zone :</b> Mèze, Cruzy, Villeveyrac.</p>
+        </div>
+        <div class="guide-card">
+          <h3>🐚 Ammonites & Belemnites (Jurassique)</h3>
+          <p><b>Visuel :</b> Coquilles en spirale striée ou "pointes de rostre" allongées.<br><b>Support :</b> Marnes de Fontaneilles, calcaires.<br><b>Zone :</b> Fontaneilles, Causses, Montpeyroux.</p>
+        </div>
+        <div class="guide-card">
+          <h3>🦂 Trilobites & Brachiopodes (Ordovicien)</h3>
+          <p><b>Visuel :</b> Carapaces articulées ovales à plusieurs segments.<br><b>Support :</b> Schistes et grès sombres.<br><b>Zone :</b> Saint-Chinian, Cabrières, Landeyran.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // Initialize Map centered on Hérault with Canvas renderer for fast rendering of thousands of individual points
+    // Initialize Map centered on Hérault with Canvas renderer
     const map = L.map('map', {
       center: [43.55, 3.45],
       zoom: 10,
@@ -405,20 +511,10 @@
     L.control.zoom({ position: 'topright' }).addTo(map);
 
     // Base Layers
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-    });
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' });
+    const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Satellite' });
+    const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© CartoDB Voyager (Noms des villes & villages)' }).addTo(map);
 
-    const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Esri Satellite'
-    });
-
-    const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '© CartoDB Voyager (Noms des villes & villages)'
-    }).addTo(map);
-
-    // Layer Control Top-Right
     const baseMaps = {
       "🗺️ Carte Villes & Villages (CartoDB)": cartoPositron,
       "🛰️ Vue Satellite (Esri)": esriSat,
@@ -433,166 +529,121 @@
     let riversLayer = null;
     let quarriesLayer = null;
     let rawGeojsonData = null;
+    let slopeOnlyFilter = false;
 
     let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammals', 'plants', 'arthropods', 'fish', 'others']);
-    let minScoreThreshold = 50;
+    let minScoreThreshold = 45;
 
-    // Load Fossils JSON
-    fetch('/processed/fossils_herault.json')
-      .then(res => res.json())
-      .then(data => {
-        fossilsData = data;
-        renderFossils();
-      });
+    // Load Data
+    fetch('/processed/fossils_herault.json').then(res => res.json()).then(data => { fossilsData = data; renderFossils(); });
+    fetch('/processed/herault_geologie_pentes.geojson').then(res => res.json()).then(data => { rawGeojsonData = data; renderPredictiveGeology(); });
 
-    // Load Scored Geology GeoJSON
-    fetch('/processed/herault_geologie_scored.geojson')
-      .then(res => res.json())
-      .then(data => {
-        rawGeojsonData = data;
-        renderPredictiveGeology();
-      });
+    fetch('/processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
+      riversLayer = L.geoJSON(data, {
+        style: { color: '#38bdf8', weight: 1.8, opacity: 0.6 },
+        onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
+      }).addTo(map);
+    });
 
-    // Load Rivers GeoJSON
-    fetch('/processed/rivieres_herault.geojson')
-      .then(res => res.json())
-      .then(data => {
-        riversLayer = L.geoJSON(data, {
-          style: {
-            color: '#38bdf8',
-            weight: 1.8,
-            opacity: 0.6
-          },
-          onEachFeature: function(feature, layer) {
-            layer.bindTooltip(feature.properties.name || "Cours d'eau", { sticky: true });
-          }
-        }).addTo(map);
-      });
+    fetch('/processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
+      quarriesLayer = L.geoJSON(data, {
+        pointToLayer: function(f, latlng) {
+          const p = f.properties;
+          return L.marker(latlng, {
+            icon: L.divIcon({
+              className: 'custom-div-icon',
+              html: `<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,
+              iconSize: [24, 24],
+              iconAnchor: [12, 12]
+            })
+          }).bindPopup(`
+            <div class="popup-title">${p.name}</div>
+            <div class="popup-meta">
+              <b>Type :</b> ${p.type}<br>
+              <b>Commune :</b> ${p.commune}<br>
+              <b>Intérêt paléontologique :</b> ${p.interet}
+            </div>
+            <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
+          `);
+        }
+      }).addTo(map);
+    });
 
-    // Load Quarries & Key Outcrops GeoJSON
-    fetch('/processed/carrieres_herault.geojson')
-      .then(res => res.json())
-      .then(data => {
-        quarriesLayer = L.geoJSON(data, {
-          pointToLayer: function(feature, latlng) {
-            const p = feature.properties;
-            return L.marker(latlng, {
-              icon: L.divIcon({
-                className: 'custom-div-icon',
-                html: `<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
-              })
-            }).bindPopup(`
-              <div class="popup-title">${p.name}</div>
-              <div class="popup-meta">
-                <b>Type :</b> ${p.type}<br>
-                <b>Commune :</b> ${p.commune}<br>
-                <b>Intérêt paléontologique :</b> ${p.interet}
-              </div>
-              <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
-            `);
-          }
-        }).addTo(map);
-      });
-
-    // Add Mont Sénégra MNHN Discovery Site Marker
-    const senegraMarker = L.marker([43.6820, 3.1250], {
+    // Mont Sénégra Marker
+    L.marker([43.6820, 3.1250], {
       icon: L.divIcon({
         className: 'custom-div-icon',
         html: `<div style="background:#10b981; color:#fff; padding:7px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.5); text-align:center;"><i class="fa-solid fa-leaf" style="font-size:13px;"></i></div>`,
-        iconSize: [26, 26],
-        iconAnchor: [13, 13]
+        iconSize: [26, 26], iconAnchor: [13, 13]
       })
     }).bindPopup(`
       <div class="popup-title">🌿 Mont Sénégra (G. Gand et al., MNHN 2013)</div>
       <div class="popup-meta">
         <b>Période :</b> Autunien basal (Permien inférieur, ~295 Ma)<br>
-        <b>Formations :</b> Siltites grises et grès quartzites fins à fusain<br>
-        <b>Plantes identifiées :</b> <i>Walchia piniformis</i>, <i>Hermitia schlotheimii</i>, <i>Culmitzschia frondosa</i>, <i>Rhachiphyllum lyratifolia</i>, <i>Taeniopteris</i>.<br>
+        <b>Plantes identifiées :</b> <i>Walchia piniformis</i>, <i>Hermitia</i>, <i>Culmitzschia</i>, <i>Rhachiphyllum</i>.<br>
         <b>Repère de terrain :</b> 20m au-dessus du conglomérat basal.
       </div>
       <a href="https://sciencepress.mnhn.fr/sites/default/files/articles/pdf/comptes-rendus-palevol2013v12f2a02.pdf" target="_blank" class="popup-tag" style="color:#10b981; border-color:#10b981;">📄 Lire la publication MNHN (2013)</a>
     `).addTo(map);
 
-    // Render Fossils as FIXED PRECISE INDIVIDUAL POINTS (No Clustering!)
+    // Render Fossils as FIXED PRECISE INDIVIDUAL POINTS
     function renderFossils() {
       fossilsLayerGroup.clearLayers();
       let count = 0;
-
       fossilsData.forEach(item => {
         if (!activeCategories.has(item.category_id)) return;
-
         count++;
-        // Fixed precision point marker
         const marker = L.circleMarker([item.lat, item.lng], {
-          radius: 5,
-          fillColor: item.color,
-          color: '#ffffff',
-          weight: 1,
-          opacity: 0.95,
-          fillOpacity: 0.85
+          radius: 5, fillColor: item.color, color: '#ffffff', weight: 1, opacity: 0.95, fillOpacity: 0.85
         });
-
         const popupContent = `
           <div class="popup-title">${item.name}</div>
           <div class="popup-meta">
             <b>Catégorie :</b> ${item.category_name}<br>
             <b>Période :</b> ${item.period} (${item.max_ma ? item.max_ma + ' Ma' : 'N/A'})<br>
             <b>Formation :</b> ${item.formation || 'Non spécifiée'}<br>
-            <b>Phylum/Classe :</b> ${item.phylum} / ${item.class_name}<br>
             <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
           </div>
           <a href="https://paleobiodb.org/classic/basicCollectionSearch?collection_no=${item.id}" target="_blank" class="popup-tag">📄 Publication & Référence PBDB #${item.id}</a>
         `;
-
         marker.bindPopup(popupContent);
         fossilsLayerGroup.addLayer(marker);
       });
-
       document.getElementById('stat-fossils').innerText = count.toLocaleString('fr-FR');
     }
 
-    // Render Scored Predictive Geology Polygons with smooth continuous color gradient
+    // Render Scored Predictive Geology Polygons with continuous gradient & slope filter
     function renderPredictiveGeology() {
       if (!rawGeojsonData) return;
       if (geojsonLayer) map.removeLayer(geojsonLayer);
 
-      const filteredFeatures = rawGeojsonData.features.filter(f => f.properties.score_potentiel >= minScoreThreshold);
+      const filteredFeatures = rawGeojsonData.features.filter(f => {
+        const scorePass = (f.properties.score_potentiel >= minScoreThreshold);
+        if (slopeOnlyFilter) {
+          return scorePass && (f.properties.pente_degres >= 14.0);
+        }
+        return scorePass;
+      });
 
       geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
         style: function(feature) {
           const score = feature.properties.score_potentiel || 40;
+          let color = '#eab308';
+          if (score >= 80) color = '#991b1b';
+          else if (score >= 68) color = '#dc2626';
+          else if (score >= 55) color = '#f97316';
+          else if (score >= 45) color = '#f59e0b';
 
-          // Continuous color scale from Yellow (score 40) -> Orange (60) -> Red (75) -> Crimson (90)
-          let color = '#eab308'; // Yellow
-          if (score >= 80) {
-            color = '#991b1b'; // Deep Crimson
-          } else if (score >= 68) {
-            color = '#dc2626'; // Bright Red
-          } else if (score >= 55) {
-            color = '#f97316'; // Vivid Orange
-          } else if (score >= 45) {
-            color = '#f59e0b'; // Amber
-          }
-
-          // Smooth opacity boost for higher scores
           const opacity = Math.min(0.6, 0.2 + ((score - 30) / 100) * 0.5);
-
-          return {
-            fillColor: color,
-            color: color,
-            weight: 1,
-            fillOpacity: opacity
-          };
+          return { fillColor: color, color: color, weight: 1, fillOpacity: opacity };
         },
         onEachFeature: function(feature, layer) {
           const p = feature.properties;
           layer.bindTooltip(`
             <div style="font-family: Outfit, sans-serif;">
               <b style="color:#38bdf8;">Zone Géologique (${p.niveau_potentiel || ''})</b><br>
-              <b>Code :</b> ${p.NOTATION || 'N/A'}<br>
               <b>Description :</b> ${p.DESCR || 'Formation sédimentaire'}<br>
+              <b>Inclinaison de la Pente :</b> <span style="color:#ef4444; font-weight:bold;">${p.pente_degres}°</span> (${p.type_affleurement || ''})<br>
               <b>Score de Potentiel :</b> <span style="color:#f97316; font-weight:bold; font-size:1.05rem;">${p.score_potentiel} / 100</span>
             </div>
           `, { sticky: true });
@@ -602,36 +653,28 @@
       document.getElementById('stat-zones').innerText = filteredFeatures.length.toLocaleString('fr-FR');
     }
 
-    // Toggles
+    // Toggles & Controls
     function toggleRiversLayer(checked) {
-      if (riversLayer) {
-        if (checked) map.addLayer(riversLayer);
-        else map.removeLayer(riversLayer);
-      }
+      if (riversLayer) { if (checked) map.addLayer(riversLayer); else map.removeLayer(riversLayer); }
     }
-
     function toggleQuarriesLayer(checked) {
-      if (quarriesLayer) {
-        if (checked) map.addLayer(quarriesLayer);
-        else map.removeLayer(quarriesLayer);
-      }
+      if (quarriesLayer) { if (checked) map.addLayer(quarriesLayer); else map.removeLayer(quarriesLayer); }
     }
-
+    function toggleSlopeFilter(checked) {
+      slopeOnlyFilter = checked;
+      renderPredictiveGeology();
+    }
     function toggleCategory(catId, isChecked) {
-      if (isChecked) activeCategories.add(catId);
-      else activeCategories.delete(catId);
+      if (isChecked) activeCategories.add(catId); else activeCategories.delete(catId);
       renderFossils();
     }
-
     function updateScoreFilter(val) {
       minScoreThreshold = parseInt(val);
       document.getElementById('scoreVal').innerText = val + ' / 100';
       renderPredictiveGeology();
     }
 
-    function flyToLoc(lat, lng, zoom = 13) {
-      map.flyTo([lat, lng], zoom, { duration: 1.2 });
-    }
+    function flyToLoc(lat, lng, zoom = 13) { map.flyTo([lat, lng], zoom, { duration: 1.2 }); }
 
     function generateCurrentLocationReport() {
       const center = map.getCenter();
@@ -639,44 +682,39 @@
       window.open(url, '_blank');
     }
 
-    // Map Click Listener to inspect ANY point and download PDF
+    // Modal Guide
+    function openGuideModal() { document.getElementById('guideModal').style.display = 'flex'; }
+    function closeGuideModal() { document.getElementById('guideModal').style.display = 'none'; }
+
+    // Map Click Listener
     map.on('click', function(e) {
       const lat = e.latlng.lat;
       const lng = e.latlng.lng;
       const pdfUrl = `/api/report?lat=${lat.toFixed(4)}&lng=${lng.toFixed(4)}&name=${encodeURIComponent('Point GPS ' + lat.toFixed(3) + ', ' + lng.toFixed(3))}`;
 
-      L.popup()
-        .setLatLng(e.latlng)
-        .setContent(`
-          <div class="popup-title">📍 Point GPS Sélectionné</div>
-          <div class="popup-meta">
-            <b>Coordonnées :</b> ${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E<br>
-            Cliquez ci-dessous pour générer le rapport de prospection complet pour ce point précis.
-          </div>
-          <a href="${pdfUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7; font-size:0.8rem; display:block; text-align:center; margin-top:8px;">
-            📄 Générer le Rapport PDF de ce Point
-          </a>
-        `)
-        .openOn(map);
+      L.popup().setLatLng(e.latlng).setContent(`
+        <div class="popup-title">📍 Point GPS Sélectionné</div>
+        <div class="popup-meta">
+          <b>Coordonnées :</b> ${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E<br>
+          Générez une fiche de terrain PDF complète pour ce point précis.
+        </div>
+        <a href="${pdfUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7; font-size:0.8rem; display:block; text-align:center; margin-top:8px;">
+          📄 Générer le Rapport PDF de ce Point
+        </a>
+      `).openOn(map);
     });
 
-    // Search Communes
+    // Search
     function handleSearch(e) {
       if (e.key === 'Enter') {
         const query = e.target.value.toLowerCase().trim();
         if (!query) return;
-
         fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Hérault, France')}`)
           .then(res => res.json())
           .then(results => {
-            if (results && results.length > 0) {
-              const r = results[0];
-              flyToLoc(parseFloat(r.lat), parseFloat(r.lon), 13);
-            } else {
-              alert("Lieu introuvable dans l'Hérault.");
-            }
-          })
-          .catch(err => console.error("Erreur recherche :", err));
+            if (results && results.length > 0) flyToLoc(parseFloat(results[0].lat), parseFloat(results[0].lon), 13);
+            else alert("Lieu introuvable dans l'Hérault.");
+          });
       }
     }
   </script>
