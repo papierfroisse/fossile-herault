@@ -1,0 +1,185 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3485,
+          43.654
+        ]
+      },
+      "properties": {
+        "name": "Ancienne Carrière de Lieude",
+        "type": "Carrière de ruffes Permien",
+        "lat": 43.654,
+        "lng": 3.3485,
+        "commune": "Mérifons",
+        "interet": "Traces de thérapsides (Permien)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.938,
+          43.364
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Montplo",
+        "type": "Carrière de grès / argile",
+        "lat": 43.364,
+        "lng": 2.938,
+        "commune": "Cruzy",
+        "interet": "Gisement majeur de dinosaures Crétacé"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.606,
+          43.4285
+        ]
+      },
+      "properties": {
+        "name": "Sablière de Mèze - Saint-Martin",
+        "type": "Sablière / Argilière",
+        "lat": 43.4285,
+        "lng": 3.606,
+        "commune": "Mèze",
+        "interet": "Œufs de dinosaures Crétacé sup."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.125,
+          43.518
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Coumiac",
+        "type": "Carrière de marbre rouge",
+        "lat": 43.518,
+        "lng": 3.125,
+        "commune": "Cessenon-sur-Orb",
+        "interet": "Stratotype mondial limite Frasnien/Famennien (Devonien)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.272,
+          43.513
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Gabian",
+        "type": "Carrière de calcaire fossilifère",
+        "lat": 43.513,
+        "lng": 3.272,
+        "commune": "Gabian",
+        "interet": "Huiles préhistoriques et faune jurassique"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.504,
+          43.695
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Mont Peyroux",
+        "type": "Carrière d'argiles/marnes",
+        "lat": 43.695,
+        "lng": 3.504,
+        "commune": "Montpeyroux",
+        "interet": "Faune marine jurassique"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.948,
+          43.422
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Saint-Chinian",
+        "type": "Carrière de calcaire/marne",
+        "lat": 43.422,
+        "lng": 2.948,
+        "commune": "Saint-Chinian",
+        "interet": "Trilobites et brachiopodes ordoviciens"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.608,
+          43.501
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Villeveyrac",
+        "type": "Ancienne mine de bauxite",
+        "lat": 43.501,
+        "lng": 3.608,
+        "commune": "Villeveyrac",
+        "interet": "Gisement de titanosaures (dinosaures sauropodes)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.221,
+          43.553
+        ]
+      },
+      "properties": {
+        "name": "Carrière de Roquessels",
+        "type": "Carrière de schistes",
+        "lat": 43.553,
+        "lng": 3.221,
+        "commune": "Roquessels",
+        "interet": "Plantes fossiles carbonifères"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.315,
+          43.578
+        ]
+      },
+      "properties": {
+        "name": "Anciennes Phosphatières de Cabrières",
+        "type": "Carrière/Cavité",
+        "lat": 43.578,
+        "lng": 3.315,
+        "commune": "Cabrières",
+        "interet": "Plus ancienne faune marine ordovicienne au monde"
+      }
+    }
+  ]
+}
