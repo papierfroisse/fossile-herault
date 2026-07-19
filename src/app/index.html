@@ -422,7 +422,17 @@
         <div id="season-advice" style="font-size:0.75rem; color:#94a3b8; line-height:1.35;">Conditions difficiles. Privilégier les zones ombragées et les lits de ruisseaux asséchés.</div>
       </div>
 
-      <!-- Tools & Export Card -->
+      <!-- Map Visualization Mode Switcher -->
+      <div class="card" style="background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.25);">
+        <div class="card-title" style="color:#38bdf8;"><i class="fa-solid fa-map-location-dot"></i> Mode de Coloration de la Carte</div>
+        <select id="mapModeSelect" onchange="switchMapColorMode(this.value)" style="width:100%; padding:9px 10px; background:#0f172a; border:1px solid #38bdf8; border-radius:8px; color:#fff; font-family:inherit; font-size:0.85rem; font-weight:600; outline:none; cursor:pointer;">
+          <option value="score">🎯 Potentiel Prédictif ML (Score 0-100)</option>
+          <option value="period">🎨 Époques Géologiques (Couleurs par Âge Ma)</option>
+        </select>
+        <div id="mapModeLegend" style="margin-top:8px; font-size:0.75rem; color:#94a3b8; line-height:1.35;">
+          Affiche le potentiel de découverte calculé par le modèle Random Forest.
+        </div>
+      </div>
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-mobile-screen-button"></i> Navigation Terrain & Exports Hors-Ligne</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
@@ -766,6 +776,22 @@
       document.getElementById('stat-fossils').innerText = count.toLocaleString('fr-FR');
     }
 
+    let currentMapColorMode = "score"; // "score" or "period"
+
+    function switchMapColorMode(mode) {
+      currentMapColorMode = mode;
+      const legendEl = document.getElementById('mapModeLegend');
+      if (mode === 'period') {
+        legendEl.innerHTML = `<b>🎨 Carte Stratigraphique BRGM :</b><br>
+        <span style="color:#dc2626;">■ Permien (~295 Ma)</span> | <span style="color:#0284c7;">■ Jurassique (~170 Ma)</span><br>
+        <span style="color:#16a34a;">■ Crétacé (~70 Ma)</span> | <span style="color:#9333ea;">■ Ordovicien/Dévonien (~450 Ma)</span><br>
+        <span style="color:#f59e0b;">■ Trias (~230 Ma)</span> | <span style="color:#eab308;">■ Cénozoïque (~20 Ma)</span>`;
+      } else {
+        legendEl.innerHTML = "Affiche le potentiel de découverte calculé par le modèle Random Forest.";
+      }
+      renderPredictiveGeology();
+    }
+
     // Render Scored Predictive Geology Polygons in polygonsPane
     function renderPredictiveGeology(selectedFormation = "") {
       if (!rawGeojsonData) return;
@@ -790,24 +816,58 @@
       geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
         pane: 'polygonsPane', // Keeps polygons underneath fossil points
         style: function(feature) {
-          const score = feature.properties.score_potentiel || 40;
-          let color = '#eab308';
-          if (score >= 80) color = '#991b1b';
-          else if (score >= 68) color = '#dc2626';
-          else if (score >= 55) color = '#f97316';
-          else if (score >= 45) color = '#f59e0b';
+          const p = feature.properties;
+          const desc = String(p.DESCR || "").toLowerCase();
+          const score = p.score_potentiel || 40;
 
-          const opacity = Math.min(0.5, 0.18 + ((score - 30) / 100) * 0.4);
-          return { fillColor: color, color: color, weight: 1, fillOpacity: opacity };
+          let color = '#eab308'; // Default ocre/yellow
+
+          if (currentMapColorMode === 'period') {
+            // Coloration par Époque Géologique Réelle (BRGM)
+            if (desc.includes('permien') || desc.includes('autunien') || desc.includes('saxoniens') || desc.includes('salagou') || desc.includes('tuilières')) {
+              color = '#dc2626'; // Rouge Permien (~295 Ma)
+            } else if (desc.includes('jurassique') || desc.includes('toarcien') || desc.includes('fontaneilles') || desc.includes('liassique') || desc.includes('dogger') || desc.includes('malm')) {
+              color = '#0284c7'; // Bleu Jurassique (~170 Ma)
+            } else if (desc.includes('crétacé') || desc.includes('maastrichtien') || desc.includes('campanien') || desc.includes('grès à reptiles') || desc.includes('argiles rutilantes')) {
+              color = '#16a34a'; // Vert Crétacé (~70 Ma)
+            } else if (desc.includes('ordovicien') || desc.includes('dévonien') || desc.includes('silurien') || desc.includes('schiste') || desc.includes('coumiac') || desc.includes('landeyran') || desc.includes('saint-chinian')) {
+              color = '#9333ea'; // Violet Époque Primaire (~450 Ma)
+            } else if (desc.includes('trias') || desc.includes('keuper') || desc.includes('muschelkalk') || desc.includes('grès psammitiques')) {
+              color = '#f59e0b'; // Orange Trias (~230 Ma)
+            } else {
+              color = '#eab308'; // Jaune Tertiaire / Quaternaire
+            }
+            return { fillColor: color, color: color, weight: 1.2, fillOpacity: 0.55 };
+          } else {
+            // Coloration par Score ML Prédictif (Mode par défaut)
+            if (score >= 80) color = '#991b1b';
+            else if (score >= 68) color = '#dc2626';
+            else if (score >= 55) color = '#f97316';
+            else if (score >= 45) color = '#f59e0b';
+
+            const opacity = Math.min(0.5, 0.18 + ((score - 30) / 100) * 0.4);
+            return { fillColor: color, color: color, weight: 1, fillOpacity: opacity };
+          }
         },
         onEachFeature: function(feature, layer) {
           const p = feature.properties;
+          const desc = String(p.DESCR || 'Formation sédimentaire');
+          let epoqueName = "Inconnue";
+
+          const descLower = desc.toLowerCase();
+          if (descLower.includes('permien')) epoqueName = "🔴 Permien (~295 Ma)";
+          else if (descLower.includes('jurassique')) epoqueName = "🐚 Jurassique (~170 Ma)";
+          else if (descLower.includes('crétacé')) epoqueName = "🦖 Crétacé (~70 Ma)";
+          else if (descLower.includes('ordovicien') || descLower.includes('dévonien')) epoqueName = "🦂 Ordovicien / Dévonien (~450 Ma)";
+          else if (descLower.includes('trias')) epoqueName = "🍊 Trias (~230 Ma)";
+          else epoqueName = "🟡 Cénozoïque / Tertiaire (~20 Ma)";
+
           layer.bindTooltip(`
             <div style="font-family: Outfit, sans-serif;">
-              <b style="color:#38bdf8;">Zone Géologique (${p.niveau_potentiel || ''})</b><br>
-              <b>Description :</b> ${p.DESCR || 'Formation sédimentaire'}<br>
-              <b>Inclinaison de la Pente :</b> <span style="color:#ef4444; font-weight:bold;">${p.pente_degres}°</span> (${p.type_affleurement || ''})<br>
-              <b>Score de Potentiel :</b> <span style="color:#f97316; font-weight:bold; font-size:1.05rem;">${p.score_potentiel} / 100</span>
+              <b style="color:#38bdf8;">Zone Géologique (${epoqueName})</b><br>
+              <b>Lithologie & Roche :</b> ${desc}<br>
+              <b>Inclinaison Pente :</b> <span style="color:#ef4444; font-weight:bold;">${p.pente_degres}°</span> (${p.type_affleurement || ''})<br>
+              <b>Score Potentiel ML :</b> <span style="color:#f97316; font-weight:bold; font-size:1.05rem;">${p.score_potentiel} / 100</span>
             </div>
           `, { sticky: true });
         }
