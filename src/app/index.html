@@ -433,9 +433,14 @@
           Affiche le potentiel de découverte calculé par le modèle Random Forest.
         </div>
       </div>
+
+      <!-- Tools & Export Card -->
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-mobile-screen-button"></i> Navigation Terrain & Exports Hors-Ligne</div>
+        <div class="card-title"><i class="fa-solid fa-mobile-screen-button"></i> Navigation Terrain & GPS</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="jump-btn" style="width: 100%; padding: 10px; background: #2563eb; color: #fff; font-weight: 700; text-align: center; border-radius: 8px; font-size: 0.88rem;" onclick="locateUserOnMap()">
+            <i class="fa-solid fa-crosshairs"></i> 🎯 Ma Position GPS en Direct
+          </button>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
             <button class="jump-btn" style="padding: 9px; background: #15803d; color: #fff; font-weight: 600; text-align: center; border-radius: 8px; font-size: 0.78rem;" onclick="downloadGPXExport()">
               <i class="fa-solid fa-location-arrow"></i> Fichier GPX
@@ -571,11 +576,13 @@
     // Base Layers
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' });
     const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Satellite' });
-    const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© CartoDB Voyager (Noms des villes & villages)' }).addTo(map);
+    const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© CartoDB Voyager' }).addTo(map);
+    const ignCadastre = L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png', { attribution: '© IGN Cadastre France', opacity: 0.7 });
 
     const baseMaps = {
       "🗺️ Carte Villes & Villages (CartoDB)": cartoPositron,
-      "🛰️ Vue Satellite (Esri)": esriSat,
+      "📐 Parcellaire Cadastre (IGN)": ignCadastre,
+      "🛰️ Vue Satellite Haute Résolution": esriSat,
       "🌐 OpenStreetMap Standard": osm
     };
     L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
@@ -912,7 +919,37 @@
       renderPredictiveGeology();
     }
 
-    function flyToLoc(lat, lng, zoom = 13) { map.flyTo([lat, lng], zoom, { duration: 1.2 }); }
+    let userLocationMarker = null;
+
+    function locateUserOnMap() {
+      if (!navigator.geolocation) {
+        alert("La géolocalisation n'est pas supportée par votre navigateur.");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          if (userLocationMarker) map.removeLayer(userLocationMarker);
+
+          userLocationMarker = L.marker([lat, lng], {
+            icon: L.divIcon({
+              className: 'custom-user-location',
+              html: `<div style="background:#2563eb; color:#fff; width:26px; height:26px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 15px #2563eb; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fa-solid fa-crosshairs"></i></div>`,
+              iconSize: [26, 26], iconAnchor: [13, 13]
+            })
+          }).bindPopup(`<b>🎯 Votre Position GPS en Direct</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`).addTo(map);
+
+          map.flyTo([lat, lng], 14, { duration: 1.5 });
+          userLocationMarker.openPopup();
+        },
+        err => {
+          alert("Impossible d'obtenir votre position GPS. Veuillez autoriser l'accès à la géolocalisation.");
+        },
+        { enableHighAccuracy: true }
+      );
+    }
 
     function downloadGPXExport() {
       const center = map.getCenter();
