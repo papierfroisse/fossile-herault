@@ -725,12 +725,12 @@
     let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammals', 'plants', 'arthropods', 'fish', 'others']);
     let minScoreThreshold = 45;
 
-    // Load Data
-    fetch('/processed/fossils_herault.json').then(res => res.json()).then(data => { fossilsData = data; renderFossils(); });
-    fetch('/processed/herault_geologie_pentes.geojson').then(res => res.json()).then(data => { rawGeojsonData = data; renderPredictiveGeology(); });
+    // Load Data (Relative paths for GitHub Pages & Local Server compatibility)
+    fetch('processed/fossils_herault.json').then(res => res.json()).then(data => { fossilsData = data; renderFossils(); });
+    fetch('processed/herault_geologie_pentes.geojson').then(res => res.json()).then(data => { rawGeojsonData = data; renderPredictiveGeology(); });
 
     // Load Protected Reserves Layer
-    fetch('/processed/reserves_herault.geojson').then(res => res.json()).then(data => {
+    fetch('processed/reserves_herault.geojson').then(res => res.json()).then(data => {
       reservesLayer = L.geoJSON(data, {
         pointToLayer: function(f, latlng) {
           const p = f.properties;
@@ -771,14 +771,14 @@
       }
     });
 
-    fetch('/processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
+    fetch('processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
       riversLayer = L.geoJSON(data, {
         style: { color: '#38bdf8', weight: 1.8, opacity: 0.6 },
         onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
       }).addTo(map);
     });
 
-    fetch('/processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
+    fetch('processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
       quarriesLayer = L.geoJSON(data, {
         pointToLayer: function(f, latlng) {
           const p = f.properties;
