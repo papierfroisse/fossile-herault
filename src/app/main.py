@@ -62,6 +62,30 @@ def get_seasonality_info():
         return {"error": str(e)}
 
 
+@app.get("/api/export/gpx")
+def export_gpx(lat: float, lng: float, radius: float = 10.0):
+    """Exporte un fichier .gpx utilisable hors-ligne sur smartphone (OsmAnd, GPX Viewer, Garmin)."""
+    try:
+        from src.app.export_gpx import generate_gpx_for_location
+        gpx_xml = generate_gpx_for_location(lat, lng, radius_km=radius)
+        headers = {'Content-Disposition': f'attachment; filename="fossiles_herault_{lat:.3f}_{lng:.3f}.gpx"'}
+        return Response(content=gpx_xml, media_type="application/gpx+xml", headers=headers)
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.get("/api/export/kml")
+def export_kml(lat: float, lng: float, radius: float = 10.0):
+    """Exporte un fichier .kml pour Google Earth ou OsmAnd."""
+    try:
+        from src.app.export_gpx import generate_kml_for_location
+        kml_xml = generate_kml_for_location(lat, lng, radius_km=radius)
+        headers = {'Content-Disposition': f'attachment; filename="fossiles_herault_{lat:.3f}_{lng:.3f}.kml"'}
+        return Response(content=kml_xml, media_type="application/vnd.google-earth.kml+xml", headers=headers)
+    except Exception as e:
+        return {"error": str(e)}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
