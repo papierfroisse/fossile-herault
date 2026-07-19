@@ -334,9 +334,9 @@
         <div class="slider-group">
           <div class="slider-header">
             <span>Seuil de potentiel minimal :</span>
-            <span class="val" id="scoreVal">50 / 100</span>
+            <span class="val" id="scoreVal">45 / 100</span>
           </div>
-          <input type="range" id="scoreSlider" min="30" max="80" value="50" step="5" oninput="updateScoreFilter(this.value)">
+          <input type="range" id="scoreSlider" min="25" max="85" value="45" step="1" oninput="updateScoreFilter(this.value)">
         </div>
       </div>
 
@@ -542,7 +542,7 @@
       document.getElementById('stat-fossils').innerText = count.toLocaleString('fr-FR');
     }
 
-    // Render Scored Predictive Geology Polygons
+    // Render Scored Predictive Geology Polygons with smooth continuous color gradient
     function renderPredictiveGeology() {
       if (!rawGeojsonData) return;
       if (geojsonLayer) map.removeLayer(geojsonLayer);
@@ -551,23 +551,38 @@
 
       geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
         style: function(feature) {
-          const score = feature.properties.score_potentiel || 50;
-          const isHigh = score >= 70;
+          const score = feature.properties.score_potentiel || 40;
+
+          // Continuous color scale from Yellow (score 40) -> Orange (60) -> Red (75) -> Crimson (90)
+          let color = '#eab308'; // Yellow
+          if (score >= 80) {
+            color = '#991b1b'; // Deep Crimson
+          } else if (score >= 68) {
+            color = '#dc2626'; // Bright Red
+          } else if (score >= 55) {
+            color = '#f97316'; // Vivid Orange
+          } else if (score >= 45) {
+            color = '#f59e0b'; // Amber
+          }
+
+          // Smooth opacity boost for higher scores
+          const opacity = Math.min(0.6, 0.2 + ((score - 30) / 100) * 0.5);
+
           return {
-            fillColor: isHigh ? '#ff3300' : '#ff9900',
-            color: isHigh ? '#cc0000' : '#d97706',
-            weight: 1.5,
-            fillOpacity: 0.35
+            fillColor: color,
+            color: color,
+            weight: 1,
+            fillOpacity: opacity
           };
         },
         onEachFeature: function(feature, layer) {
           const p = feature.properties;
           layer.bindTooltip(`
             <div style="font-family: Outfit, sans-serif;">
-              <b style="color:#38bdf8;">Zone Prédictive (${p.niveau_potentiel || ''})</b><br>
+              <b style="color:#38bdf8;">Zone Géologique (${p.niveau_potentiel || ''})</b><br>
               <b>Code :</b> ${p.NOTATION || 'N/A'}<br>
               <b>Description :</b> ${p.DESCR || 'Formation sédimentaire'}<br>
-              <b>Score de Potentiel :</b> <span style="color:#ff9900; font-weight:bold;">${p.score_potentiel} / 100</span>
+              <b>Score de Potentiel :</b> <span style="color:#f97316; font-weight:bold; font-size:1.05rem;">${p.score_potentiel} / 100</span>
             </div>
           `, { sticky: true });
         }
