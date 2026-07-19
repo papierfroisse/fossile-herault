@@ -88,4 +88,5 @@ def export_kml(lat: float, lng: float, radius: float = 10.0):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # Bind on 0.0.0.0 so smartphones on local Wi-Fi / hotspot can access the app
+    uvicorn.run(app, host="0.0.0.0", port=8000)

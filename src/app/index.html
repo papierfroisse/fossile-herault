@@ -69,20 +69,71 @@
       left: 15px;
     }
 
-    /* Species Guide Modal — True Overlay centered over map */
-    #guideModal {
+    /* Mobile Responsive UI Media Queries */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      #sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: auto;
+        max-height: 70vh;
+        border-right: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 18px 18px 0 0;
+        margin-left: 0 !important;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2500;
+      }
+      #sidebar.mobile-open {
+        transform: translateY(0);
+      }
+      #sidebarToggleBtn {
+        display: none !important;
+      }
+
+      /* Mobile Floating Action Bar */
+      #mobileNav {
+        display: flex !important;
+        position: fixed;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        background: rgba(15, 23, 42, 0.92);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 30px;
+        padding: 6px 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        gap: 8px;
+      }
+      .mobile-nav-btn {
+        background: #1e293b;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .mobile-nav-btn.active {
+        background: #38bdf8;
+        color: #0f172a;
+      }
+    }
+
+    #mobileNav {
       display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 3000;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
     }
 
     .header {
@@ -598,7 +649,23 @@
     </div>
   </div>
 
-  <!-- Floating Sidebar Toggle Button -->
+  <!-- Mobile Floating Action Bar (Smartphones) -->
+  <div id="mobileNav">
+    <button class="mobile-nav-btn active" onclick="locateUserOnMap()">
+      <i class="fa-solid fa-crosshairs" style="color:#38bdf8;"></i> 🎯 GPS
+    </button>
+    <button class="mobile-nav-btn" onclick="toggleMobileMapMode()">
+      <i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 🎨 Époques
+    </button>
+    <button class="mobile-nav-btn" onclick="openAddPersonalFindingModal()">
+      <i class="fa-solid fa-star" style="color:#a855f7;"></i> ➕ Trouvaille
+    </button>
+    <button class="mobile-nav-btn" onclick="toggleMobileSidebar()">
+      <i class="fa-solid fa-sliders" style="color:#10b981;"></i> ⚙️ Filtres
+    </button>
+  </div>
+
+  <!-- Floating Sidebar Toggle Button (Desktop) -->
   <button id="sidebarToggleBtn" onclick="toggleSidebar()" title="Masquer / Afficher le panneau latéral">
     <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
   </button>
@@ -1135,6 +1202,17 @@
         icon.className = 'fa-solid fa-angles-left';
       }
       setTimeout(() => { map.invalidateSize(); }, 350);
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('mobile-open');
+    }
+
+    function toggleMobileMapMode() {
+      const newMode = (currentMapColorMode === 'score') ? 'period' : 'score';
+      document.getElementById('mapModeSelect').value = newMode;
+      switchMapColorMode(newMode);
     }
 
     // Modal Guide
