@@ -41,7 +41,6 @@
       flex-direction: column;
       z-index: 1000;
       box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
-      transition: transform 0.3s ease;
     }
 
     .header {
@@ -69,7 +68,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
     /* Section Cards */
@@ -77,13 +76,13 @@
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
     }
     .card-title {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       color: #cbd5e1;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -101,7 +100,7 @@
       border-radius: 8px;
       color: #fff;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
       transition: all 0.2s;
     }
@@ -126,7 +125,7 @@
     .slider-header {
       display: flex;
       justify-content: space-between;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       color: #94a3b8;
     }
     .slider-header span.val {
@@ -142,13 +141,13 @@
     .filter-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .filter-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       cursor: pointer;
       user-select: none;
       color: #e2e8f0;
@@ -172,34 +171,31 @@
       border: 1px solid rgba(56, 189, 248, 0.2);
       border-radius: 10px;
       padding: 12px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: #bae6fd;
       line-height: 1.4;
-    }
-    .help-card b {
-      color: #fff;
     }
 
     /* Stats Bar */
     .stats-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
     }
     .stat-item {
       background: #0f172a;
-      padding: 10px;
+      padding: 8px;
       border-radius: 8px;
       text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .stat-val {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: #38bdf8;
     }
     .stat-lbl {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: #64748b;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -225,13 +221,13 @@
       background: rgba(15, 23, 42, 0.95) !important;
     }
     .popup-title {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 700;
       color: #38bdf8;
       margin-bottom: 6px;
     }
     .popup-meta {
-      font-size: 0.83rem;
+      font-size: 0.82rem;
       color: #cbd5e1;
       line-height: 1.5;
     }
@@ -258,9 +254,9 @@
       background: #1e293b;
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94a3b8;
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -277,7 +273,7 @@
   <div id="sidebar">
     <div class="header">
       <h1><i class="fa-solid fa-bone"></i> Fossile Hérault</h1>
-      <p>Cartographie prédictive & découpes fossilifères (34)</p>
+      <p>Modèle Prédictive ML & Calques SIG (34)</p>
     </div>
 
     <div class="content">
@@ -286,11 +282,15 @@
       <div class="stats-grid">
         <div class="stat-item">
           <div class="stat-val" id="stat-fossils">2 818</div>
-          <div class="stat-lbl">Fossiles certifiés</div>
+          <div class="stat-lbl">Fossiles</div>
         </div>
         <div class="stat-item">
           <div class="stat-val" id="stat-zones">535</div>
-          <div class="stat-lbl">Zones cibles prédictives</div>
+          <div class="stat-lbl">Zones Cibles</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="stat-rivers">20 992</div>
+          <div class="stat-lbl">Rivières</div>
         </div>
       </div>
 
@@ -307,6 +307,21 @@
           <button class="jump-btn" onclick="flyToLoc(43.4278, 3.6056, 13)">Mèze</button>
           <button class="jump-btn" onclick="flyToLoc(43.3625, 2.9375, 13)">Cruzy</button>
           <button class="jump-btn" onclick="flyToLoc(43.6108, 3.8767, 12)">Montpellier</button>
+        </div>
+      </div>
+
+      <!-- Layers Toggles (Carrières, Rivières) -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-layer-group"></i> Calques Environnementaux</div>
+        <div class="filter-list">
+          <label class="filter-item">
+            <input type="checkbox" id="toggleRivers" checked onchange="toggleRiversLayer(this.checked)">
+            <span style="color:#38bdf8;"><i class="fa-solid fa-water"></i></span> Réseau Rivières & Cours d'Eau
+          </label>
+          <label class="filter-item">
+            <input type="checkbox" id="toggleQuarries" checked onchange="toggleQuarriesLayer(this.checked)">
+            <span style="color:#f59e0b;"><i class="fa-solid fa-industry"></i></span> Carrières & Coupes Ouvertes
+          </label>
         </div>
       </div>
 
@@ -346,19 +361,15 @@
             <input type="checkbox" checked onchange="toggleCategory('arthropods', this.checked)">
             <span class="badge-dot" style="background:#9c27b0;"></span> Trilobites & Arthropodes (224)
           </label>
-          <label class="filter-item">
-            <input type="checkbox" checked onchange="toggleCategory('fish', this.checked)">
-            <span class="badge-dot" style="background:#00bcd4;"></span> Poissons (85)
-          </label>
         </div>
       </div>
 
       <!-- Explanatory Guide -->
       <div class="help-card">
-        <b>💡 Comment lire la carte :</b><br>
-        • <b>Marqueurs / Puces</b> : Coordonnées GPS réelles d'un fossile documenté en publication scientifique (PBDB).<br>
-        • <b>Cercle numéroté</b> : Regroupement (cluster) de fossiles proches. Zoomer pour séparer.<br>
-        • <b>Zones colorées (Rouge/Orange)</b> : Formations géologiques sédimentaires prédictives calculées par l'algorithme.
+        <b>💡 Indicateurs croisés :</b><br>
+        • <b>Rivières (lignes bleues)</b> : Zones où l'érosion hydraulique met la roche à nu.<br>
+        • <b>Carrières (icônes oranges)</b> : Entailles artificielles exposant les couches.<br>
+        • <b>Zones rouges/oranges</b> : Potentiel sédimentaire calculé.
       </div>
 
     </div>
@@ -403,10 +414,13 @@
     };
     L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
 
-    // Data Containers
+    // Layer Containers
     let fossilsData = [];
     let geojsonLayer = null;
+    let riversLayer = null;
+    let quarriesLayer = null;
     let rawGeojsonData = null;
+
     let clusterGroup = L.markerClusterGroup({
       maxClusterRadius: 45,
       spiderfyOnMaxZoom: true,
@@ -422,8 +436,7 @@
       .then(data => {
         fossilsData = data;
         renderFossils();
-      })
-      .catch(err => console.error("Erreur chargement fossiles:", err));
+      });
 
     // Load Scored Geology GeoJSON
     fetch('/processed/herault_geologie_scored.geojson')
@@ -431,8 +444,50 @@
       .then(data => {
         rawGeojsonData = data;
         renderPredictiveGeology();
-      })
-      .catch(err => console.error("Erreur chargement géologie prédictive:", err));
+      });
+
+    // Load Rivers GeoJSON
+    fetch('/processed/rivieres_herault.geojson')
+      .then(res => res.json())
+      .then(data => {
+        riversLayer = L.geoJSON(data, {
+          style: {
+            color: '#38bdf8',
+            weight: 1.8,
+            opacity: 0.6
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindTooltip(feature.properties.name || "Cours d'eau", { sticky: true });
+          }
+        }).addTo(map);
+      });
+
+    // Load Quarries GeoJSON
+    fetch('/processed/carrieres_herault.geojson')
+      .then(res => res.json())
+      .then(data => {
+        quarriesLayer = L.geoJSON(data, {
+          pointToLayer: function(feature, latlng) {
+            const p = feature.properties;
+            return L.marker(latlng, {
+              icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+              })
+            }).bindPopup(`
+              <div class="popup-title">${p.name}</div>
+              <div class="popup-meta">
+                <b>Type :</b> ${p.type}<br>
+                <b>Commune :</b> ${p.commune}<br>
+                <b>Intérêt paléontologique :</b> ${p.interet}
+              </div>
+              <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
+            `);
+          }
+        }).addTo(map);
+      });
 
     // Render Fossils on Map
     function renderFossils() {
@@ -505,7 +560,21 @@
       document.getElementById('stat-zones').innerText = filteredFeatures.length.toLocaleString('fr-FR');
     }
 
-    // Interactive Controls
+    // Toggles
+    function toggleRiversLayer(checked) {
+      if (riversLayer) {
+        if (checked) map.addLayer(riversLayer);
+        else map.removeLayer(riversLayer);
+      }
+    }
+
+    function toggleQuarriesLayer(checked) {
+      if (quarriesLayer) {
+        if (checked) map.addLayer(quarriesLayer);
+        else map.removeLayer(quarriesLayer);
+      }
+    }
+
     function toggleCategory(catId, isChecked) {
       if (isChecked) activeCategories.add(catId);
       else activeCategories.delete(catId);
@@ -528,7 +597,6 @@
         const query = e.target.value.toLowerCase().trim();
         if (!query) return;
 
-        // Geocoding simple via Nominatim
         fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Hérault, France')}`)
           .then(res => res.json())
           .then(results => {
