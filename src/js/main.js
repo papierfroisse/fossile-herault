@@ -8,8 +8,10 @@ import { initGPSHandlers, locateUserOnMap, togglePointSelectionMode } from './gp
 import { downloadGPXExport, downloadKMLExport, generateCurrentLocationReport, generateCustomLocationReport } from './export.js';
 import { initPersonalFindings, openAddPersonalFindingModal, closeAddPersonalFindingModal, savePersonalFinding, deletePersonalFinding } from './personal.js';
 import { toggleSidebar, toggleMobileSidebar, toggleMobileMapMode, openGearModal, closeGearModal, openGuideModal, closeGuideModal } from './ui.js';
+import { selectPaleoEra } from './paleogeography.js';
 
 // Expose functions required by inline HTML onclick/onchange attributes to window scope
+window.selectPaleoEra = selectPaleoEra;
 window.locateUserOnMap = locateUserOnMap;
 window.openAddPersonalFindingModal = openAddPersonalFindingModal;
 window.closeAddPersonalFindingModal = closeAddPersonalFindingModal;
@@ -41,7 +43,12 @@ window.changeDepartment = function(deptCode) {
   const deptCenters = {
     '34': { center: [43.55, 3.45], file: 'processed/34/fossils.json' },
     '30': { center: [44.0, 4.2], file: 'processed/30/fossils.json' },
-    '11': { center: [43.1, 2.4], file: 'processed/11/fossils.json' }
+    '11': { center: [43.1, 2.4], file: 'processed/11/fossils.json' },
+    '12': { center: [44.3, 2.6], file: 'processed/12/fossils.json' },
+    '13': { center: [43.5, 5.2], file: 'processed/13/fossils.json' },
+    '46': { center: [44.6, 1.6], file: 'processed/46/fossils.json' },
+    '24': { center: [45.1, 0.7], file: 'processed/24/fossils.json' },
+    '71': { center: [46.6, 4.5], file: 'processed/71/fossils.json' }
   };
 
   const target = deptCenters[deptCode];

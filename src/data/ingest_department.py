@@ -11,7 +11,9 @@ DEPARTMENTS = {
     '11': {'name': 'Aude', 'bounds': (42.7, 43.5, 1.7, 3.2), 'center': [43.1, 2.4]},
     '12': {'name': 'Aveyron', 'bounds': (43.7, 44.9, 1.9, 3.4), 'center': [44.3, 2.6]},
     '13': {'name': 'Bouches-du-Rhône', 'bounds': (43.1, 43.8, 4.7, 5.8), 'center': [43.5, 5.2]},
-    '46': {'name': 'Lot', 'bounds': (44.2, 45.1, 1.1, 2.2), 'center': [44.6, 1.6]}
+    '46': {'name': 'Lot', 'bounds': (44.2, 45.1, 1.1, 2.2), 'center': [44.6, 1.6]},
+    '24': {'name': 'Dordogne', 'bounds': (44.5, 45.8, 0.0, 1.5), 'center': [45.1, 0.7]},
+    '71': {'name': 'Saône-et-Loire', 'bounds': (46.1, 47.2, 3.6, 5.5), 'center': [46.6, 4.5]}
 }
 
 def clean_category(phylum, class_name, order_name, family, genus, sci_name):

@@ -31,9 +31,14 @@
       <div style="margin-top:10px;">
         <label style="font-size:0.75rem; color:#94a3b8; display:block; margin-bottom:4px; font-weight:600;">SÉLECTIONNER UN DÉPARTEMENT :</label>
         <select id="deptSelect" onchange="changeDepartment(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid #38bdf8; border-radius:8px; color:#38bdf8; font-family:inherit; font-size:0.85rem; font-weight:700; outline:none; cursor:pointer;">
-          <option value="34">🦕 34 — Hérault (1 004 fossiles certifiés)</option>
-          <option value="30">🦖 30 — Gard (776 fossiles certifiés)</option>
-          <option value="11">🥚 11 — Aude (786 fossiles certifiés)</option>
+          <option value="34">🦕 34 — Hérault (1 004 fossiles MNHN/PBDB)</option>
+          <option value="30">🦖 30 — Gard (776 fossiles MNHN/PBDB)</option>
+          <option value="11">🥚 11 — Aude (786 fossiles MNHN/PBDB)</option>
+          <option value="12">🐚 12 — Aveyron (Causses & Ammonites)</option>
+          <option value="13">🦖 13 — Bouches-du-Rhône (Sainte-Victoire & Dinosaures)</option>
+          <option value="46">🦴 46 — Lot (Phosphorites du Quercy)</option>
+          <option value="24">🌿 24 — Dordogne (Périgord & Crétacé)</option>
+          <option value="71">🔴 71 — Saône-et-Loire (Bassin d'Autun)</option>
         </select>
       </div>
     </div>
@@ -127,6 +132,20 @@
           <button class="jump-btn" onclick="flyToLoc(43.7317, 3.3192, 13)">Lodève</button>
           <button class="jump-btn" onclick="flyToLoc(43.4278, 3.6056, 13)">Mèze</button>
         </div>
+      </div>
+
+      <!-- Paleogeography & Geological Time Travel Card -->
+      <div class="card" style="background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.25);">
+        <div class="card-title" style="color:#f59e0b;"><i class="fa-solid fa-earth-europe"></i> Voyage Temporel & Paléogéographie</div>
+        <div style="font-size:0.78rem; color:#cbd5e1; margin-bottom:8px;">Explorez la position des mers et des continents à travers les grands âges géologiques :</div>
+        <div style="display:flex; flex-wrap:wrap; gap:5px;">
+          <button class="jump-btn" style="background:rgba(220,38,38,0.2); color:#fca5a5; border-color:#dc2626;" onclick="selectPaleoEra('permian')">🔴 Permien (290 Ma)</button>
+          <button class="jump-btn" style="background:rgba(245,158,11,0.2); color:#fcd34d; border-color:#f59e0b;" onclick="selectPaleoEra('trias')">🍊 Trias (230 Ma)</button>
+          <button class="jump-btn" style="background:rgba(2,132,199,0.2); color:#7dd3fc; border-color:#0284c7;" onclick="selectPaleoEra('jurassic')">🐚 Jurassique (170 Ma)</button>
+          <button class="jump-btn" style="background:rgba(22,163,74,0.2); color:#86efac; border-color:#16a34a;" onclick="selectPaleoEra('cretaceous')">🦖 Crétacé (100 Ma)</button>
+          <button class="jump-btn" style="background:rgba(147,51,234,0.2); color:#d8b4fe; border-color:#9333ea;" onclick="selectPaleoEra('cenozoic')">🦴 Cénozoïque (30 Ma)</button>
+        </div>
+        <div id="paleoEraInfo" class="help-card" style="margin-top:10px; display:none;"></div>
       </div>
 
       <!-- Data Source Filter Card -->
