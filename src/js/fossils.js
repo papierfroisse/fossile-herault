@@ -79,15 +79,14 @@ export function renderFossils() {
     let faIcon = iconConfig.icon;
     if (item.category_id === 'molluscs') faIcon = 'fa-ring';
 
-    const currentZoom = map ? map.getZoom() : 10;
-    const r = currentZoom >= 13 ? 7 : (currentZoom >= 10 ? 5 : 3.5);
-
-    const marker = L.circleMarker([item.lat, item.lng], {
-      radius: r,
-      fillColor: iconConfig.color,
-      color: '#ffffff',
-      weight: currentZoom >= 11 ? 1.5 : 0.8,
-      fillOpacity: 0.85
+    const marker = L.marker([item.lat, item.lng], {
+      pane: 'fossilsPane',
+      icon: L.divIcon({
+        className: 'custom-fossil-icon',
+        html: `<div style="background:${iconConfig.color}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      })
     });
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
