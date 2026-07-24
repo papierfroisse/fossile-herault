@@ -39,15 +39,15 @@ window.openGuideModal = openGuideModal;
 window.closeGuideModal = closeGuideModal;
 window.handleSearch = handleSearch;
 window.loadWikiPreview = loadWikiPreview;
-let allDepartmentsMap = {};
+import { ALL_DEPARTMENTS, DEPARTMENTS_MAP } from './departments.js';
 
 window.changeDepartment = function(deptCode) {
-  const dept = allDepartmentsMap[deptCode];
+  const dept = DEPARTMENTS_MAP[deptCode];
   if (!dept) return;
 
   flyToLoc(dept.center[0], dept.center[1], 10);
 
-  // Try local processed dataset first, fallback to live PBDB API fetch for any department in France
+  // Try local pre-packaged department dataset, fallback to live PBDB query
   fetch(`processed/${deptCode}/fossils.json`)
     .then(res => {
       if (!res.ok) throw new Error("Dataset not pre-packaged");
@@ -91,17 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initGPSHandlers();
   initPersonalFindings();
 
-  // Load Department Index (All 96 Departments of France)
-  fetch('processed/departments.json')
-    .then(res => res.json())
-    .then(depts => {
-      const selectEl = document.getElementById('deptSelect');
-      if (selectEl) {
-        selectEl.innerHTML = depts.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
-        depts.forEach(d => { allDepartmentsMap[d.code] = d; });
-        selectEl.value = "34"; // Default Hérault
-      }
-    });
+  // Populate Department Selector with all 96 French Departments
+  const selectEl = document.getElementById('deptSelect');
+  if (selectEl) {
+    selectEl.innerHTML = ALL_DEPARTMENTS.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
+    selectEl.value = "34"; // Default Hérault
+  }
 
   // Load Primary Department Dataset (Hérault - 34)
   fetch('processed/34/fossils.json')
