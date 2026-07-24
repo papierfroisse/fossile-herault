@@ -9,16 +9,7 @@ export let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
 export let selectedPeriodFilter = "";
 
 export function initFossils() {
-  if (typeof L.markerClusterGroup === 'function') {
-    fossilsLayerGroup = L.markerClusterGroup({
-      disableClusteringAtZoom: 14,
-      maxClusterRadius: 40,
-      showCoverageOnHover: false,
-      spiderfyOnMaxZoom: true
-    }).addTo(map);
-  } else {
-    fossilsLayerGroup = L.layerGroup().addTo(map);
-  }
+  fossilsLayerGroup = L.layerGroup().addTo(map);
   
   // Attach global handler for inline Wiki preview calls in popups
   window.loadWikiPreview = loadWikiPreview;
@@ -82,14 +73,12 @@ export function renderFossils() {
     let faIcon = iconConfig.icon;
     if (item.category_id === 'molluscs') faIcon = 'fa-ring';
 
-    const marker = L.marker([item.lat, item.lng], {
-      pane: 'fossilsPane',
-      icon: L.divIcon({
-        className: 'custom-fossil-icon',
-        html: `<div style="background:${iconConfig.color}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11]
-      })
+    const marker = L.circleMarker([item.lat, item.lng], {
+      radius: 6,
+      fillColor: iconConfig.color,
+      color: '#ffffff',
+      weight: 1.5,
+      fillOpacity: 0.9
     });
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;

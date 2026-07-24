@@ -39,26 +39,48 @@ window.openGuideModal = openGuideModal;
 window.closeGuideModal = closeGuideModal;
 window.handleSearch = handleSearch;
 window.loadWikiPreview = loadWikiPreview;
+let allDepartmentsMap = {};
+
 window.changeDepartment = function(deptCode) {
-  const deptCenters = {
-    '34': { center: [43.55, 3.45], file: 'processed/34/fossils.json' },
-    '30': { center: [44.0, 4.2], file: 'processed/30/fossils.json' },
-    '11': { center: [43.1, 2.4], file: 'processed/11/fossils.json' },
-    '12': { center: [44.3, 2.6], file: 'processed/12/fossils.json' },
-    '13': { center: [43.5, 5.2], file: 'processed/13/fossils.json' },
-    '46': { center: [44.6, 1.6], file: 'processed/46/fossils.json' },
-    '24': { center: [45.1, 0.7], file: 'processed/24/fossils.json' },
-    '71': { center: [46.6, 4.5], file: 'processed/71/fossils.json' }
-  };
+  const dept = allDepartmentsMap[deptCode];
+  if (!dept) return;
 
-  const target = deptCenters[deptCode];
-  if (!target) return;
+  flyToLoc(dept.center[0], dept.center[1], 10);
 
-  flyToLoc(target.center[0], target.center[1], 10);
-  fetch(target.file)
-    .then(res => res.json())
+  // Try local processed dataset first, fallback to live PBDB API fetch for any department in France
+  fetch(`processed/${deptCode}/fossils.json`)
+    .then(res => {
+      if (!res.ok) throw new Error("Dataset not pre-packaged");
+      return res.json();
+    })
     .then(data => setFossilsData(data))
-    .catch(err => console.error("Error loading department fossils:", err));
+    .catch(() => {
+      // Live query PBDB for any French department
+      const b = dept.bounds;
+      const pbdbUrl = `https://paleobiodb.org/data1.2/occs/list.json?lngmin=${b[2]}&lngmax=${b[3]}&latmin=${b[0]}&latmax=${b[1]}&show=coords,classext,strata`;
+      fetch(pbdbUrl)
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.records) {
+            const formatted = data.records.map(r => ({
+              id: r.oid,
+              name: r.tno || r.mno || "Fossile PBDB",
+              lat: r.lat,
+              lng: r.lng,
+              phylum: r.phl || "PBDB",
+              class_name: r.cll || "Paleontology",
+              period: r.dpt || r.eon || "Mésozoïque",
+              formation: r.sfm || r.fmt || dept.name,
+              category_id: "molluscs",
+              category_name: "Fossile Certifié",
+              color: "#0284c7",
+              precision_gps: "📍 Point GPS Certifié PBDB",
+              source: "PBDB"
+            }));
+            setFossilsData(formatted);
+          }
+        });
+    });
 };
 
 // Application Initialization
@@ -69,8 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
   initGPSHandlers();
   initPersonalFindings();
 
-  // Load Primary Department Datasets (Hérault - 34)
-  fetch('processed/fossils_herault.json')
+  // Load Department Index (All 96 Departments of France)
+  fetch('processed/departments.json')
+    .then(res => res.json())
+    .then(depts => {
+      const selectEl = document.getElementById('deptSelect');
+      if (selectEl) {
+        selectEl.innerHTML = depts.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
+        depts.forEach(d => { allDepartmentsMap[d.code] = d; });
+        selectEl.value = "34"; // Default Hérault
+      }
+    });
+
+  // Load Primary Department Dataset (Hérault - 34)
+  fetch('processed/34/fossils.json')
     .then(res => res.json())
     .then(data => setFossilsData(data));
 
