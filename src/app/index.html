@@ -3,502 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🦕 Fossile — Cartographie prédictive de l'Hérault (34)</title>
+  <title>🦕 Fossile — Cartographie prédictive (Hérault & France)</title>
 
-  <!-- Leaflet CSS -->
+  <!-- Leaflet CSS & MarkerCluster CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      background: #0f172a;
-      color: #f8fafc;
-      display: flex;
-    }
-
-    /* Collapsible Sidebar styling */
-    #sidebar {
-      width: 380px;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(12px);
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      z-index: 1000;
-      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
-      transition: margin-left 0.3s ease;
-    }
-    #sidebar.collapsed {
-      margin-left: -380px;
-    }
-
-    /* Sidebar Toggle Floating Button */
-    #sidebarToggleBtn {
-      position: absolute;
-      top: 15px;
-      left: 395px;
-      z-index: 1100;
-      background: #1e293b;
-      color: #38bdf8;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: left 0.3s ease;
-    }
-    #sidebar.collapsed + #sidebarToggleBtn {
-      left: 15px;
-    }
-
-    /* Mobile Responsive UI Media Queries */
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
-      #sidebar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100vw;
-        height: auto;
-        max-height: 65vh;
-        border-right: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 18px 18px 0 0;
-        margin-left: 0 !important;
-        transform: translateY(100%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 2500;
-        padding-top: 15px;
-      }
-      #sidebar::before {
-        content: '';
-        position: absolute;
-        top: 8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 40px;
-        height: 5px;
-        background: rgba(255, 255, 255, 0.25);
-        border-radius: 4px;
-      }
-      #sidebar.mobile-open {
-        transform: translateY(0);
-      }
-      #sidebarToggleBtn {
-        display: none !important;
-      }
-      
-      /* Modals Full Screen */
-      .modal-content {
-        max-width: 100% !important;
-        height: 100% !important;
-        max-height: 100vh !important;
-        border-radius: 0 !important;
-        border: none !important;
-      }
-
-      /* Mobile Floating Action Bar */
-      #mobileNav {
-        display: flex !important;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100vw;
-        z-index: 2000;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(16px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 10px 22px 10px; /* Extra bottom padding for safe area */
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
-        justify-content: space-around;
-      }
-      .mobile-nav-btn {
-        background: transparent;
-        color: #94a3b8;
-        border: none;
-        padding: 6px;
-        font-size: 0.65rem;
-        font-weight: 600;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        cursor: pointer;
-        user-select: none;
-        flex: 1;
-        transition: color 0.2s;
-      }
-      .mobile-nav-btn i {
-        font-size: 1.35rem;
-        margin-bottom: 2px;
-      }
-      .mobile-nav-btn.active {
-        background: transparent;
-        color: #38bdf8;
-      }
-      #mapOverlayBtn {
-        top: 135px;
-        right: 10px;
-      }
-      .content {
-        gap: 20px; /* More space between cards on mobile */
-      }
-    }
-
-    #mobileNav {
-      display: none;
-    }
-    
-    #mapOverlayBtn {
-      position: absolute;
-      top: 135px;
-      right: 10px;
-      z-index: 1000;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #38bdf8;
-      border-radius: 8px;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      backdrop-filter: blur(8px);
-      transition: all 0.2s;
-    }
-    #mapOverlayBtn:hover {
-      background: #38bdf8;
-      color: #0f172a;
-    }
-
-    .header {
-      padding: 18px 20px;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .header h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #38bdf8;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .header p {
-      font-size: 0.82rem;
-      color: #94a3b8;
-      margin-top: 4px;
-    }
-
-    .content {
-      padding: 16px 20px;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* Section Cards */
-    .card {
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .card-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Search Input */
-    .search-box {
-      position: relative;
-    }
-    .search-box input {
-      width: 100%;
-      padding: 9px 14px 9px 36px;
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.88rem;
-      outline: none;
-      transition: all 0.2s;
-    }
-    .search-box input:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-    }
-    .search-box i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #64748b;
-    }
-
-    /* Slider styling */
-    .slider-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .slider-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
-      color: #94a3b8;
-    }
-    .slider-header span.val {
-      color: #38bdf8;
-      font-weight: 600;
-    }
-    input[type="range"] {
-      width: 100%;
-      accent-color: #38bdf8;
-    }
-
-    /* Checkbox Group */
-    .filter-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .filter-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.84rem;
-      cursor: pointer;
-      user-select: none;
-      color: #e2e8f0;
-    }
-    .filter-item input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: #38bdf8;
-      cursor: pointer;
-    }
-    .badge-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    /* Explanatory Help Card */
-    .help-card {
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 0.8rem;
-      color: #bae6fd;
-      line-height: 1.4;
-    }
-
-    /* Stats Bar */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-    }
-    .stat-item {
-      background: #0f172a;
-      padding: 8px;
-      border-radius: 8px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .stat-val {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #38bdf8;
-    }
-    .stat-lbl {
-      font-size: 0.65rem;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Map container */
-    #map {
-      flex: 1;
-      height: 100%;
-      width: 100%;
-    }
-
-    /* Custom Leaflet Tooltip & Popup */
-    .leaflet-popup-content-wrapper {
-      background: rgba(15, 23, 42, 0.95) !important;
-      color: #f8fafc !important;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px !important;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
-    }
-    .leaflet-popup-tip {
-      background: rgba(15, 23, 42, 0.95) !important;
-    }
-    .popup-title {
-      font-size: 1.02rem;
-      font-weight: 700;
-      color: #38bdf8;
-      margin-bottom: 6px;
-    }
-    .popup-meta {
-      font-size: 0.82rem;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-    .popup-tag {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      margin-top: 6px;
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      text-decoration: none;
-    }
-    .popup-tag:hover {
-      background: #38bdf8;
-      color: #0f172a;
-    }
-
-    /* Quick jump buttons */
-    .quick-jumps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .jump-btn {
-      background: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .jump-btn:hover {
-      background: #38bdf8;
-      color: #0f172a;
-      font-weight: 600;
-    }
-
-    /* Species Guide Modal / Drawer */
-    #guideModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(10px);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .modal-content {
-      background: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      max-width: 750px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 24px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-    }
-    .modal-header h2 {
-      color: #38bdf8;
-      font-size: 1.3rem;
-    }
-    .close-btn {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-    .close-btn:hover {
-      color: #fff;
-    }
-    .guide-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .guide-card {
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 12px;
-    }
-    .guide-card h3 {
-      color: #f59e0b;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-    }
-    .guide-card p {
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      line-height: 1.4;
-    }
-  </style>
+  <!-- Leaflet & MarkerCluster JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 </head>
 <body>
 
   <!-- Sidebar Control Panel -->
   <div id="sidebar">
     <div class="header">
-      <h1><i class="fa-solid fa-bone"></i> Fossile Hérault</h1>
-      <p>Modèle Prédictive ML, Relief LiDAR & SIG (34)</p>
+      <h1><i class="fa-solid fa-bone"></i> Fossile France</h1>
+      <p>Modèle Prédictif ML, Relief LiDAR & SIG</p>
+      <div style="margin-top:10px;">
+        <label style="font-size:0.75rem; color:#94a3b8; display:block; margin-bottom:4px; font-weight:600;">SÉLECTIONNER UN DÉPARTEMENT :</label>
+        <select id="deptSelect" onchange="changeDepartment(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid #38bdf8; border-radius:8px; color:#38bdf8; font-family:inherit; font-size:0.85rem; font-weight:700; outline:none; cursor:pointer;">
+          <option value="34">🦕 34 — Hérault (1 004 fossiles certifiés)</option>
+          <option value="30">🦖 30 — Gard (776 fossiles certifiés)</option>
+          <option value="11">🥚 11 — Aude (786 fossiles certifiés)</option>
+        </select>
+      </div>
     </div>
 
     <div class="content">
@@ -506,7 +38,7 @@
       <!-- Stats Grid -->
       <div class="stats-grid">
         <div class="stat-item">
-          <div class="stat-val" id="stat-fossils">2 818</div>
+          <div class="stat-val" id="stat-fossils">1 004</div>
           <div class="stat-lbl">Points GPS Fixes</div>
         </div>
         <div class="stat-item">
@@ -519,7 +51,7 @@
         </div>
       </div>
 
-      <!-- Seasonality & Erosion Weather Widget -->
+      <!-- Seasonality & Weather Widget -->
       <div class="card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.25);">
         <div class="card-title" style="color: #34d399;"><i class="fa-solid fa-cloud-sun-rain"></i> Indice d'Érosion & Prospection Météo</div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -542,7 +74,7 @@
         </div>
       </div>
 
-      <!-- Tools & Export Card -->
+      <!-- Navigation & Export Card -->
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-mobile-screen-button"></i> Navigation Terrain & GPS</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
@@ -566,16 +98,15 @@
         </div>
       </div>
 
-      <!-- Search & Formation / Period Filters -->
+      <!-- Search & Period Filters -->
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Filtre par Époque & Période (Ma)</div>
-
         <select id="periodSelect" onchange="filterByPeriod(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#f59e0b; font-family:inherit; font-size:0.82rem; outline:none; cursor:pointer; margin-bottom:8px;">
           <option value="">⏳ Toutes les Époques Géologiques (Toutes périodes)</option>
           <option value="permian">🔴 Permien (~299 - 252 Ma) — *Walchia*, *Thérapsides*</option>
           <option value="jurassic">🐚 Jurassique (~201 - 145 Ma) — *Ammonites*, *Belemnites*</option>
           <option value="cretaceous">🦖 Crétacé (~145 - 66 Ma) — *Dinosaures*, *Œufs*</option>
-          <option value="ordovician_devonian">🦂 Ordovicien / Dévonien (~485 - 358 Ma) — *Trilobites*</option>
+          <option value="ordovician_devonian">INFO Ordovicien / Dévonien (~485 - 358 Ma) — *Trilobites*</option>
           <option value="cenozoic">🦴 Cénozoïque / Tertiaire (~66 - 2 Ma) — *Mammifères*</option>
         </select>
 
@@ -612,7 +143,7 @@
         </div>
       </div>
 
-      <!-- Layers Toggles (Carrières, Rivières, Pente, Réserves) -->
+      <!-- Layers Toggles -->
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-layer-group"></i> Calques Environnementaux & Réglementation</div>
         <div class="filter-list">
@@ -653,23 +184,23 @@
         <div class="filter-list">
           <label class="filter-item">
             <input type="checkbox" checked onchange="toggleCategory('dinosaurs_reptiles', this.checked)">
-            <span class="badge-dot" style="background:#ff3333;"></span> Dinosaures & Reptiles (159)
+            <span class="badge-dot" style="background:#ff3333;"></span> Dinosaures & Reptiles
           </label>
           <label class="filter-item">
             <input type="checkbox" checked onchange="toggleCategory('molluscs', this.checked)">
-            <span class="badge-dot" style="background:#3388ff;"></span> Mollusques & Ammonites (542)
+            <span class="badge-dot" style="background:#3388ff;"></span> Mollusques & Ammonites
           </label>
           <label class="filter-item">
             <input type="checkbox" checked onchange="toggleCategory('mammals', this.checked)">
-            <span class="badge-dot" style="background:#ffaa00;"></span> Mammifères (281)
+            <span class="badge-dot" style="background:#ffaa00;"></span> Mammifères
           </label>
           <label class="filter-item">
             <input type="checkbox" checked onchange="toggleCategory('plants', this.checked)">
-            <span class="badge-dot" style="background:#28a745;"></span> Plantes & Végétaux (*Walchia*...) (114)
+            <span class="badge-dot" style="background:#28a745;"></span> Plantes & Végétaux (*Walchia*...)
           </label>
           <label class="filter-item">
             <input type="checkbox" checked onchange="toggleCategory('arthropods', this.checked)">
-            <span class="badge-dot" style="background:#9c27b0;"></span> Trilobites & Arthropodes (224)
+            <span class="badge-dot" style="background:#9c27b0;"></span> Trilobites & Arthropodes
           </label>
         </div>
       </div>
@@ -681,7 +212,7 @@
   <div id="personalFindingModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.85); backdrop-filter:blur(10px); z-index:3000; justify-content:center; align-items:center; padding:20px;">
     <div class="modal-content" style="max-width:500px;">
       <div class="modal-header">
-        <h2 style="color:#a855f7;"><i class="fa-solid fa-star"></i> Enregistrer une Découverte Personnel</h2>
+        <h2 style="color:#a855f7;"><i class="fa-solid fa-star"></i> Enregistrer une Découverte Personnelle</h2>
         <button class="close-btn" onclick="closeAddPersonalFindingModal()">&times;</button>
       </div>
       <form onsubmit="savePersonalFinding(event)" style="display:flex; flex-direction:column; gap:12px;">
@@ -689,19 +220,17 @@
           <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Nom / Description de la Découverte :</label>
           <input type="text" id="pf-name" required placeholder="Ex: Empreinte de Walchia, Ammonite Toarcien..." style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
         </div>
-
         <div>
           <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Type / Catégorie :</label>
           <select id="pf-category" style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
             <option value="plants">🌿 Plante / Végétal (Walchia...)</option>
             <option value="molluscs">🐚 Mollusque / Ammonite</option>
             <option value="dinosaurs_reptiles">🦖 Reptile / Dinosaure / Empreinte</option>
-            <option value="arthropods">🦂 Trilobite / Arthropode</option>
+            <option value="arthropods">INFO Trilobite / Arthropode</option>
             <option value="mammals">🦴 Mammifère / Os</option>
             <option value="others">💎 Minerai / Autre</option>
           </select>
         </div>
-
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
           <div>
             <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Latitude :</label>
@@ -712,12 +241,10 @@
             <input type="number" step="any" id="pf-lng" required style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none;">
           </div>
         </div>
-
         <div>
           <label style="font-size:0.8rem; color:#cbd5e1; display:block; margin-bottom:4px;">Notes & Remarques Terrain :</label>
           <textarea id="pf-notes" rows="3" placeholder="Ex: Trouvé dans la ravine sud du Mont Sénégra, dans la dalle de siltite grise." style="width:100%; padding:8px 12px; background:#0f172a; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-family:inherit; outline:none; resize:none;"></textarea>
         </div>
-
         <button type="submit" style="padding:10px; background:#a855f7; color:#fff; font-weight:700; border:none; border-radius:8px; cursor:pointer; margin-top:6px;">
           💾 Sauvegarder dans Mon Carnet
         </button>
@@ -725,7 +252,7 @@
     </div>
   </div>
 
-  <!-- Mobile Floating Action Bar (Smartphones) -->
+  <!-- Mobile Floating Action Bar -->
   <div id="mobileNav">
     <button class="mobile-nav-btn active" onclick="locateUserOnMap()">
       <i class="fa-solid fa-crosshairs"></i> GPS
@@ -750,804 +277,7 @@
     <i class="fa-solid fa-layer-group"></i>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script>
-    // Global Filter Variables
-    let selectedPeriodFilter = "";
-    let currentMapColorMode = "score"; // "score" or "period"
-
-    // Initialize Map centered on Hérault with Canvas renderer
-    const map = L.map('map', {
-      center: [43.55, 3.45],
-      zoom: 10,
-      zoomControl: false,
-      renderer: L.canvas()
-    });
-
-    L.control.zoom({ position: 'topright' }).addTo(map);
-
-    // Base Layers
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' });
-    const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Satellite' });
-    const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© CartoDB Voyager' }).addTo(map);
-    const ignCadastre = L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png', { attribution: '© IGN Cadastre France', opacity: 0.7 });
-
-    const baseMaps = {
-      "🗺️ Carte Villes & Villages (CartoDB)": cartoPositron,
-      "📐 Parcellaire Cadastre (IGN)": ignCadastre,
-      "🛰️ Vue Satellite Haute Résolution": esriSat,
-      "🌐 OpenStreetMap Standard": osm
-    };
-    L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
-
-    // CRITICAL FIX: Create custom Leaflet Panes to guarantee Fossil Markers are ALWAYS on top of polygons & 100% clickable
-    map.createPane('polygonsPane');
-    map.getPane('polygonsPane').style.zIndex = 400; // Underneath
-
-    map.createPane('fossilsPane');
-    map.getPane('fossilsPane').style.zIndex = 650; // On Top of Everything!
-
-    // Layer Containers
-    let fossilsData = [];
-    let fossilsLayerGroup = L.layerGroup().addTo(map);
-    let geojsonLayer = null;
-    let riversLayer = null;
-    let quarriesLayer = null;
-    let reservesLayer = null;
-    let rawGeojsonData = null;
-    let slopeOnlyFilter = false;
-
-    let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammals', 'plants', 'arthropods', 'fish', 'others']);
-    let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
-    let minScoreThreshold = 45;
-
-    function toggleSourceFilter(source, isChecked) {
-      if (isChecked) activeSources.add(source);
-      else activeSources.delete(source);
-      renderFossils();
-    }
-
-    // Load Data (Relative paths for GitHub Pages & Local Server compatibility)
-    fetch('processed/fossils_herault.json').then(res => res.json()).then(data => { fossilsData = data; renderFossils(); });
-    fetch('processed/herault_geologie_pentes.geojson').then(res => res.json()).then(data => { rawGeojsonData = data; renderPredictiveGeology(); });
-
-    // Load Protected Reserves Layer
-    fetch('processed/reserves_herault.geojson').then(res => res.json()).then(data => {
-      reservesLayer = L.geoJSON(data, {
-        pointToLayer: function(f, latlng) {
-          const p = f.properties;
-          const isInterdit = p.interdiction;
-          const bg = isInterdit ? '#dc2626' : '#f59e0b';
-          const icon = isInterdit ? 'fa-ban' : 'fa-shield-halved';
-
-          return L.marker(latlng, {
-            icon: L.divIcon({
-              className: 'custom-div-icon',
-              html: `<div style="background:${bg}; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 10px rgba(0,0,0,0.6); text-align:center;"><i class="fa-solid ${icon}" style="font-size:13px;"></i></div>`,
-              iconSize: [26, 26], iconAnchor: [13, 13]
-            })
-          }).bindPopup(`
-            <div class="popup-title" style="color:${bg};">${p.name}</div>
-            <div class="popup-meta">
-              <b>Statut Légal :</b> ${p.type}<br><br>
-              <div style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:8px; border-radius:8px; font-size:0.8rem;">
-                ${p.reglementation}
-              </div>
-            </div>
-          `);
-        }
-      }).addTo(map);
-    });
-
-    fetch('/api/seasonality').then(res => res.json()).then(data => {
-      if (data && data.mois) {
-        document.getElementById('season-month').innerText = data.mois;
-        document.getElementById('season-score').innerText = data.score_saison + ' / 100';
-        document.getElementById('season-condition').innerText = data.condition;
-        document.getElementById('season-advice').innerText = data.conseil;
-
-        const scoreEl = document.getElementById('season-score');
-        if (data.score_saison >= 80) scoreEl.style.color = '#34d399';
-        else if (data.score_saison >= 60) scoreEl.style.color = '#f59e0b';
-        else scoreEl.style.color = '#ef4444';
-      }
-    });
-
-    // Major Cities Landmarks (Hérault)
-    const majorCities = [
-      { name: "MONTPELLIER", lat: 43.6108, lng: 3.8767, main: true },
-      { name: "BÉZIERS", lat: 43.3442, lng: 3.2158, main: true },
-      { name: "SÈTE", lat: 43.4053, lng: 3.6975, main: true },
-      { name: "AGDE", lat: 43.3108, lng: 3.4758, main: false },
-      { name: "LODÈVE", lat: 43.7311, lng: 3.3200, main: true },
-      { name: "CLERMONT-L'HÉRAULT", lat: 43.6275, lng: 3.4303, main: false },
-      { name: "BÉDARIEUX", lat: 43.6167, lng: 3.1583, main: false },
-      { name: "GANGES", lat: 43.9358, lng: 3.7083, main: false },
-      { name: "PÉZENAS", lat: 43.4608, lng: 3.4225, main: false }
-    ];
-
-    const citiesLayerGroup = L.layerGroup().addTo(map);
-    majorCities.forEach(city => {
-      L.marker([city.lat, city.lng], {
-        interactive: false,
-        icon: L.divIcon({
-          className: 'city-label-icon',
-          html: `<div style="background:rgba(15,23,42,0.85); color:#f8fafc; border:1px solid rgba(56,189,248,0.6); padding:2px 7px; border-radius:4px; font-size:${city.main ? '11px' : '10px'}; font-weight:700; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.6); letter-spacing:0.5px;"><i class="fa-solid fa-city" style="font-size:9px; color:#38bdf8; margin-right:3px;"></i>${city.name}</div>`,
-          iconAnchor: [30, 10]
-        })
-      }).addTo(citiesLayerGroup);
-    });
-
-    fetch('processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
-      riversLayer = L.geoJSON(data, {
-        style: { color: '#0284c7', weight: 1.2, opacity: 0.35 },
-        onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
-      });
-      if (map.getZoom() >= 11) riversLayer.addTo(map);
-    });
-
-    map.on('zoomend', function() {
-      if (riversLayer) {
-        if (map.getZoom() >= 11) {
-          if (!map.hasLayer(riversLayer)) map.addLayer(riversLayer);
-        } else {
-          if (map.hasLayer(riversLayer)) map.removeLayer(riversLayer);
-        }
-      }
-    });
-
-    fetch('processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
-      quarriesLayer = L.geoJSON(data, {
-        pointToLayer: function(f, latlng) {
-          const p = f.properties;
-          return L.marker(latlng, {
-            icon: L.divIcon({
-              className: 'custom-div-icon',
-              html: `<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,
-              iconSize: [24, 24],
-              iconAnchor: [12, 12]
-            })
-          }).bindPopup(`
-            <div class="popup-title">${p.name}</div>
-            <div class="popup-meta">
-              <b>Type :</b> ${p.type}<br>
-              <b>Commune :</b> ${p.commune}<br>
-              <b>Intérêt paléontologique :</b> ${p.interet}
-            </div>
-            <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
-          `);
-        }
-      }).addTo(map);
-    });
-
-    // Mont Sénégra Marker
-    L.marker([43.6820, 3.1250], {
-      icon: L.divIcon({
-        className: 'custom-div-icon',
-        html: `<div style="background:#10b981; color:#fff; padding:7px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.5); text-align:center;"><i class="fa-solid fa-leaf" style="font-size:13px;"></i></div>`,
-        iconSize: [26, 26], iconAnchor: [13, 13]
-      })
-    }).bindPopup(`
-      <div class="popup-title">🌿 Mont Sénégra (G. Gand et al., MNHN 2013)</div>
-      <div class="popup-meta">
-        <b>Période :</b> Autunien basal (Permien inférieur, ~295 Ma)<br>
-        <b>Plantes identifiées :</b> <i>Walchia piniformis</i>, <i>Hermitia</i>, <i>Culmitzschia</i>, <i>Rhachiphyllum</i>.<br>
-        <b>Repère de terrain :</b> 20m au-dessus du conglomérat basal.
-      </div>
-      <a href="https://sciencepress.mnhn.fr/sites/default/files/articles/pdf/comptes-rendus-palevol2013v12f2a02.pdf" target="_blank" class="popup-tag" style="color:#10b981; border-color:#10b981;">📄 Lire la publication MNHN (2013)</a>
-    `).addTo(map);
-
-    // Render Fossils with INTUITIVE VISUAL ICONS (Shells 🐚, Dinosaurs 🦖, Plants 🌿, Trilobites 🦂, Bones 🦴)
-    function renderFossils() {
-      fossilsLayerGroup.clearLayers();
-      let count = 0;
-
-      const categoryIcons = {
-        'dinosaurs_reptiles': { icon: 'fa-dragon', color: '#ef4444', label: 'Dinosaures / Reptiles' },
-        'molluscs':           { icon: 'fa-note-sticky', color: '#0284c7', label: 'Mollusques / Ammonites' }, // 🐚
-        'plants':             { icon: 'fa-leaf', color: '#16a34a', label: 'Plantes / Walchia' },
-        'arthropods':         { icon: 'fa-bug', color: '#9333ea', label: 'Trilobites / Arthropodes' },
-        'mammals':            { icon: 'fa-bone', color: '#d97706', label: 'Mammifères' },
-        'fish':               { icon: 'fa-fish', color: '#0d9488', label: 'Poissons' },
-        'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
-      };
-
-      fossilsData.forEach(item => {
-        if (!activeCategories.has(item.category_id)) return;
-
-        const src = item.source || 'PBDB';
-        if (!activeSources.has(src)) return;
-
-        // Filter by Period if selected
-        if (selectedPeriodFilter) {
-          const p = (item.period || "").toLowerCase();
-          if (selectedPeriodFilter === 'permian' && !p.includes('permian')) return;
-          if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic')) return;
-          if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous')) return;
-          if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian')) return;
-          if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene')) return;
-        }
-
-        count++;
-
-        const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
-        // Specific override for ammonites / bivalves
-        let faIcon = iconConfig.icon;
-        if (item.category_id === 'molluscs') faIcon = 'fa-ring'; // ammonite spiral look
-
-        const marker = L.marker([item.lat, item.lng], {
-          pane: 'fossilsPane',
-          icon: L.divIcon({
-            className: 'custom-fossil-icon',
-            html: `<div style="background:${iconConfig.color}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
-            iconSize: [22, 22],
-            iconAnchor: [11, 11]
-          })
-        });
-
-        const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
-        const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
-        const cleanName = item.name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
-
-        const precisionBadge = item.precision_gps || '🎯 GPS Précis';
-        const precisionColor = (item.precision_code === 'high') ? '#10b981' : '#f59e0b';
-
-        const sourceBadges = {
-          'MNHN': '<span style="background:rgba(168,85,247,0.2); color:#c084fc; border:1px solid rgba(168,85,247,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🏛️ Collection Muséum (MNHN Paris)</span>',
-          'BRGM': '<span style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid rgba(56,189,248,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">📐 Carte Géologique BRGM</span>',
-          'PBDB': '<span style="background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🌐 Base Scientifique PBDB</span>'
-        };
-        const srcBadge = sourceBadges[src] || sourceBadges['PBDB'];
-
-        const catalogTag = item.mnhn_catalog ? `<br><b>N° Spécimen Muséum :</b> <span style="color:#c084fc; font-weight:600;">${item.mnhn_catalog}</span>` : '';
-
-        const popupContent = `
-          <div class="popup-title">${item.name}</div>
-          <div style="margin-bottom:6px;">${srcBadge}</div>
-          <div class="popup-meta">
-            <b>Type :</b> <span style="color:${iconConfig.color}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name}</span><br>
-            <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span>${catalogTag}<br>
-            <b>Période :</b> ${item.period} (${item.max_ma ? item.max_ma + ' Ma' : 'N/A'})<br>
-            <b>Formation :</b> ${item.formation || 'Non spécifiée'}<br>
-            <b>Phylum / Classe :</b> ${item.phylum} / ${item.class_name}<br>
-            <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
-          </div>
-
-          <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;"></div>
-
-          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
-            <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">
-              🖼️ Photos Google
-            </a>
-            <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">
-              🔍 Recherche Web
-            </a>
-            <button onclick="loadWikiPreview('${cleanName}', ${item.id})" class="popup-tag" style="background:#15803d; color:#fff; border-color:#15803d; cursor:pointer;">
-              📖 Aperçu Wikipédia
-            </button>
-            <a href="https://paleobiodb.org/classic/basicCollectionSearch?collection_no=${item.id}" target="_blank" class="popup-tag" style="background:#1e293b; color:#94a3b8; border-color:#334155;">
-              📄 PBDB #${item.id}
-            </a>
-          </div>
-        `;
-        marker.bindPopup(popupContent);
-        fossilsLayerGroup.addLayer(marker);
-      });
-      document.getElementById('stat-fossils').innerText = count.toLocaleString('fr-FR');
-    }
-
-    // Map Coloration Switcher
-    function switchMapColorMode(mode) {
-      currentMapColorMode = mode;
-      const legendEl = document.getElementById('mapModeLegend');
-      if (mode === 'period') {
-        legendEl.innerHTML = `<b>🎨 Carte Stratigraphique BRGM :</b><br>
-        <span style="color:#dc2626;">■ Permien (~295 Ma)</span> | <span style="color:#0284c7;">■ Jurassique (~170 Ma)</span><br>
-        <span style="color:#16a34a;">■ Crétacé (~70 Ma)</span> | <span style="color:#9333ea;">■ Ordovicien/Dévonien (~450 Ma)</span><br>
-        <span style="color:#f59e0b;">■ Trias (~230 Ma)</span> | <span style="color:#eab308;">■ Cénozoïque (~20 Ma)</span>`;
-      } else {
-        legendEl.innerHTML = "Affiche le potentiel de découverte calculé par le modèle Random Forest.";
-      }
-      renderPredictiveGeology();
-    }
-
-    // Render Scored Predictive Geology Polygons in polygonsPane
-    function renderPredictiveGeology(selectedFormation = "") {
-      if (!rawGeojsonData) return;
-      if (geojsonLayer) map.removeLayer(geojsonLayer);
-
-      const filteredFeatures = rawGeojsonData.features.filter(f => {
-        const scorePass = (f.properties.score_potentiel >= minScoreThreshold);
-        let slopePass = true;
-        if (slopeOnlyFilter) {
-          slopePass = (f.properties.pente_degres >= 14.0);
-        }
-
-        let formationPass = true;
-        if (selectedFormation) {
-          const desc = String(f.properties.DESCR || "").toLowerCase();
-          formationPass = desc.includes(selectedFormation.toLowerCase());
-        }
-
-        return scorePass && slopePass && formationPass;
-      });
-
-      geojsonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
-        pane: 'polygonsPane', // Keeps polygons underneath fossil points
-        style: function(feature) {
-          const p = feature.properties;
-          const desc = String(p.DESCR || "").toLowerCase();
-          const score = p.score_potentiel || 40;
-
-          let color = '#eab308'; // Default ocre/yellow
-
-          if (currentMapColorMode === 'period') {
-            // Coloration par Époque Géologique Réelle (BRGM)
-            if (desc.includes('permien') || desc.includes('autunien') || desc.includes('saxoniens') || desc.includes('salagou') || desc.includes('tuilières')) {
-              color = '#dc2626'; // Rouge Permien (~295 Ma)
-            } else if (desc.includes('jurassique') || desc.includes('toarcien') || desc.includes('fontaneilles') || desc.includes('liassique') || desc.includes('dogger') || desc.includes('malm')) {
-              color = '#0284c7'; // Bleu Jurassique (~170 Ma)
-            } else if (desc.includes('crétacé') || desc.includes('maastrichtien') || desc.includes('campanien') || desc.includes('grès à reptiles') || desc.includes('argiles rutilantes')) {
-              color = '#16a34a'; // Vert Crétacé (~70 Ma)
-            } else if (desc.includes('ordovicien') || desc.includes('dévonien') || desc.includes('silurien') || desc.includes('schiste') || desc.includes('coumiac') || desc.includes('landeyran') || desc.includes('saint-chinian')) {
-              color = '#9333ea'; // Violet Époque Primaire (~450 Ma)
-            } else if (desc.includes('trias') || desc.includes('keuper') || desc.includes('muschelkalk') || desc.includes('grès psammitiques')) {
-              color = '#f59e0b'; // Orange Trias (~230 Ma)
-            } else {
-              color = '#eab308'; // Jaune Tertiaire / Quaternaire
-            }
-            return { fillColor: color, color: color, weight: 1.2, fillOpacity: 0.55 };
-          } else {
-            // Coloration par Score ML Prédictif (Mode par défaut)
-            if (score >= 80) color = '#991b1b';
-            else if (score >= 68) color = '#dc2626';
-            else if (score >= 55) color = '#f97316';
-            else if (score >= 45) color = '#f59e0b';
-
-            const opacity = Math.min(0.5, 0.18 + ((score - 30) / 100) * 0.4);
-            return { fillColor: color, color: color, weight: 1, fillOpacity: opacity };
-          }
-        },
-        onEachFeature: function(feature, layer) {
-          const p = feature.properties;
-          const desc = String(p.DESCR || 'Formation sédimentaire');
-          let epoqueName = "Inconnue";
-
-          const descLower = desc.toLowerCase();
-          if (descLower.includes('permien')) epoqueName = "🔴 Permien (~295 Ma)";
-          else if (descLower.includes('jurassique')) epoqueName = "🐚 Jurassique (~170 Ma)";
-          else if (descLower.includes('crétacé')) epoqueName = "🦖 Crétacé (~70 Ma)";
-          else if (descLower.includes('ordovicien') || descLower.includes('dévonien')) epoqueName = "🦂 Ordovicien / Dévonien (~450 Ma)";
-          else if (descLower.includes('trias')) epoqueName = "🍊 Trias (~230 Ma)";
-          else epoqueName = "🟡 Cénozoïque / Tertiaire (~20 Ma)";
-
-          layer.bindTooltip(`
-            <div style="font-family: Outfit, sans-serif;">
-              <b style="color:#38bdf8;">Zone Géologique (${epoqueName})</b><br>
-              <b>Lithologie & Roche :</b> ${desc}<br>
-              <b>Inclinaison Pente :</b> <span style="color:#ef4444; font-weight:bold;">${p.pente_degres}°</span> (${p.type_affleurement || ''})<br>
-              <b>Score Potentiel ML :</b> <span style="color:#f97316; font-weight:bold; font-size:1.05rem;">${p.score_potentiel} / 100</span>
-            </div>
-          `, { sticky: true });
-        }
-      }).addTo(map);
-
-      document.getElementById('stat-zones').innerText = filteredFeatures.length.toLocaleString('fr-FR');
-    }
-
-    function filterByFormation(val) {
-      renderPredictiveGeology(val);
-    }
-
-    function filterByPeriod(val) {
-      selectedPeriodFilter = val;
-      renderFossils();
-    }
-
-    // Toggles & Controls
-    function toggleReservesLayer(checked) {
-      if (reservesLayer) { if (checked) map.addLayer(reservesLayer); else map.removeLayer(reservesLayer); }
-    }
-    function toggleRiversLayer(checked) {
-      if (riversLayer) { if (checked) map.addLayer(riversLayer); else map.removeLayer(riversLayer); }
-    }
-    function toggleQuarriesLayer(checked) {
-      if (quarriesLayer) { if (checked) map.addLayer(quarriesLayer); else map.removeLayer(quarriesLayer); }
-    }
-    function toggleSlopeFilter(checked) {
-      slopeOnlyFilter = checked;
-      renderPredictiveGeology();
-    }
-    function toggleCategory(catId, isChecked) {
-      if (isChecked) activeCategories.add(catId); else activeCategories.delete(catId);
-      renderFossils();
-    }
-    function updateScoreFilter(val) {
-      minScoreThreshold = parseInt(val);
-      document.getElementById('scoreVal').innerText = val + ' / 100';
-      renderPredictiveGeology();
-    }
-
-    let userLocationMarker = null;
-
-    function locateUserOnMap() {
-      if (!navigator.geolocation) {
-        alert("La géolocalisation n'est pas supportée par votre navigateur.");
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-
-          if (userLocationMarker) map.removeLayer(userLocationMarker);
-
-          userLocationMarker = L.marker([lat, lng], {
-            icon: L.divIcon({
-              className: 'custom-user-location',
-              html: `<div style="background:#2563eb; color:#fff; width:26px; height:26px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 15px #2563eb; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fa-solid fa-crosshairs"></i></div>`,
-              iconSize: [26, 26], iconAnchor: [13, 13]
-            })
-          }).bindPopup(`
-            <b>🎯 Votre Position GPS en Direct</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br>
-            <div style="margin-top:8px; display:flex; flex-direction:column; gap:4px;">
-              <a href="#" onclick="generateCustomLocationReport(${lat}, ${lng}); return false;" class="popup-tag" style="background:#0284c7; color:#fff; text-align:center;">📄 Rapport PDF Ma Position</a>
-              <button onclick="togglePointSelectionMode()" style="background:#a855f7; color:#fff; border:none; padding:4px; border-radius:4px; font-size:0.75rem; cursor:pointer;">📌 Activer Sélection Autre Point</button>
-            </div>
-          `).addTo(map);
-
-          map.flyTo([lat, lng], 14, { duration: 1.5 });
-          userLocationMarker.openPopup();
-        },
-        err => {
-          alert("Impossible d'obtenir votre position GPS. Astuce: Vous pouvez faire un appui long sur la carte pour placer un point.");
-        },
-        { enableHighAccuracy: true }
-      );
-    }
-
-    let personalFindingsLayerGroup = L.layerGroup().addTo(map);
-
-    function openAddPersonalFindingModal(lat = null, lng = null) {
-      const modal = document.getElementById('personalFindingModal');
-      modal.style.display = 'flex';
-      const center = map.getCenter();
-      document.getElementById('pf-lat').value = lat ? lat.toFixed(5) : center.lat.toFixed(5);
-      document.getElementById('pf-lng').value = lng ? lng.toFixed(5) : center.lng.toFixed(5);
-    }
-
-    function closeAddPersonalFindingModal() {
-      document.getElementById('personalFindingModal').style.display = 'none';
-    }
-
-    function savePersonalFinding(e) {
-      e.preventDefault();
-      const name = document.getElementById('pf-name').value;
-      const category = document.getElementById('pf-category').value;
-      const lat = parseFloat(document.getElementById('pf-lat').value);
-      const lng = parseFloat(document.getElementById('pf-lng').value);
-      const notes = document.getElementById('pf-notes').value;
-
-      const newFinding = { id: Date.now(), name, category, lat, lng, notes, date: new Date().toLocaleDateString('fr-FR') };
-
-      let saved = JSON.parse(localStorage.getItem('my_fossil_findings') || '[]');
-      saved.push(newFinding);
-      localStorage.setItem('my_fossil_findings', JSON.stringify(saved));
-
-      closeAddPersonalFindingModal();
-      document.getElementById('pf-name').value = '';
-      document.getElementById('pf-notes').value = '';
-
-      loadPersonalFindings();
-      map.flyTo([lat, lng], 14);
-    }
-
-    function loadPersonalFindings() {
-      personalFindingsLayerGroup.clearLayers();
-      let saved = JSON.parse(localStorage.getItem('my_fossil_findings') || '[]');
-
-      saved.forEach(item => {
-        const marker = L.marker([item.lat, item.lng], {
-          pane: 'fossilsPane',
-          icon: L.divIcon({
-            className: 'custom-personal-finding',
-            html: `<div style="background:#a855f7; color:#fff; width:26px; height:26px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 12px #a855f7; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fa-solid fa-star"></i></div>`,
-            iconSize: [26, 26], iconAnchor: [13, 13]
-          })
-        }).bindPopup(`
-          <div class="popup-title" style="color:#a855f7;">🌟 Ma Découverte : ${item.name}</div>
-          <div class="popup-meta">
-            <b>Date :</b> ${item.date}<br>
-            <b>GPS :</b> ${item.lat.toFixed(5)}, ${item.lng.toFixed(5)}<br>
-            <b>Notes :</b> ${item.notes || 'Aucune note'}
-          </div>
-          <button onclick="deletePersonalFinding(${item.id})" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:0.75rem; margin-top:8px; cursor:pointer;">🗑️ Supprimer de mon carnet</button>
-        `);
-        personalFindingsLayerGroup.addLayer(marker);
-      });
-    }
-
-    function deletePersonalFinding(id) {
-      let saved = JSON.parse(localStorage.getItem('my_fossil_findings') || '[]');
-      saved = saved.filter(x => x.id !== id);
-      localStorage.setItem('my_fossil_findings', JSON.stringify(saved));
-      loadPersonalFindings();
-      map.closePopup();
-    }
-
-    // Load personal findings on start
-    loadPersonalFindings();
-
-    function downloadGPXExport() {
-      const center = map.getCenter();
-      const lat = center.lat;
-      const lng = center.lng;
-
-      let gpxXml = `<?xml version="1.0" encoding="UTF-8"?>
-<gpx version="1.1" creator="Fossile Hérault Pro" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata>
-    <name>Prospection Fossiles Hérault (${lat.toFixed(3)}, ${lng.toFixed(3)})</name>
-  </metadata>`;
-
-      if (fossilsData && fossilsData.length > 0) {
-        fossilsData.forEach(item => {
-          const dist = Math.sqrt(Math.pow(item.lat - lat, 2) + Math.pow((item.lng - lng)*0.73, 2)) * 111.0;
-          if (dist <= 10.0) {
-            gpxXml += `
-  <wpt lat="${item.lat}" lon="${item.lng}">
-    <name>🦖 ${item.name}</name>
-    <desc>Catégorie: ${item.category_name} | Période: ${item.period} | Formation: ${item.formation || 'N/A'}</desc>
-    <sym>Fossil</sym>
-  </wpt>`;
-          }
-        });
-      }
-      gpxXml += `\n</gpx>`;
-
-      const blob = new Blob([gpxXml], { type: 'application/gpx+xml' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `fossiles_herault_${lat.toFixed(3)}_${lng.toFixed(3)}.gpx`;
-      link.click();
-    }
-
-    function downloadKMLExport() {
-      const center = map.getCenter();
-      const lat = center.lat;
-      const lng = center.lng;
-
-      let kmlXml = `<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.2">
-  <Document>
-    <name>Prospection Fossiles Hérault (${lat.toFixed(3)}, ${lng.toFixed(3)})</name>`;
-
-      if (fossilsData && fossilsData.length > 0) {
-        fossilsData.forEach(item => {
-          const dist = Math.sqrt(Math.pow(item.lat - lat, 2) + Math.pow((item.lng - lng)*0.73, 2)) * 111.0;
-          if (dist <= 10.0) {
-            kmlXml += `
-    <Placemark>
-      <name>${item.name}</name>
-      <description>Période: ${item.period} | Formation: ${item.formation || 'N/A'}</description>
-      <Point>
-        <coordinates>${item.lng},${item.lat},0</coordinates>
-      </Point>
-    </Placemark>`;
-          }
-        });
-      }
-      kmlXml += `\n  </Document>\n</kml>`;
-
-      const blob = new Blob([kmlXml], { type: 'application/vnd.google-earth.kml+xml' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `fossiles_herault_${lat.toFixed(3)}_${lng.toFixed(3)}.kml`;
-      link.click();
-    }
-
-    function generateCurrentLocationReport() {
-      const center = map.getCenter();
-      generateCustomLocationReport(center.lat, center.lng);
-    }
-
-    function generateCustomLocationReport(lat, lng) {
-      const printWin = window.open('', '_blank');
-      printWin.document.write(`
-        <html>
-        <head>
-          <title>FICHE TERRAIN DE PROSPECTION — ${lat.toFixed(4)}, ${lng.toFixed(4)}</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 30px; color: #1e293b; }
-            h1 { color: #0284c7; font-size: 22px; border-bottom: 2px solid #0284c7; padding-bottom: 8px; }
-            .box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-            .tag { font-weight: bold; color: #0369a1; }
-          </style>
-        </head>
-        <body>
-          <h1>🦕 FICHE DE TERRAIN TERRAIN PALÉONTOLOGIQUE — HÉRAULT (34)</h1>
-          <div class="box">
-            <p><b>Coordonnées GPS Cibles :</b> ${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E</p>
-            <p><b>Date d'impression :</b> ${new Date().toLocaleDateString('fr-FR')}</p>
-          </div>
-          <div class="box">
-            <p class="tag">📌 GISEMENTS FOSSILES CERTIFIÉS À PROXIMITÉ (&lt; 10 km) :</p>
-            <ul>
-              ${fossilsData.slice(0, 8).map(f => `<li><b>${f.name}</b> (${f.category_name}) — <i>${f.period}</i></li>`).join('')}
-            </ul>
-          </div>
-          <div class="box" style="background:#fff7ed; border-color:#fdba74;">
-            <p style="color:#c2410c;"><b>⚠️ CONSIGNES DE SÉCURITÉ & RESPECT DES SITES :</b></p>
-            <p>• Respecter la signalisation et les réserves naturelles (ex: Réserve de Coumiac : observation seule).</p>
-            <p>• Porter des lunettes de sécurité et des chaussures de marche adaptées aux terrains inclinés.</p>
-          </div>
-          <script>window.onload = function() { window.print(); };<\/script>
-        </body>
-        </html>
-      `);
-      printWin.document.close();
-    }
-
-    function openMatcherModal() {
-      openGuideModal(); // Opens the visual guide & specimen identification drawer
-    }
-
-    // Load Wikipedia Preview on demand inside Popup
-    function loadWikiPreview(speciesName, itemId) {
-      const box = document.getElementById(`wiki-box-${itemId}`);
-      if (!box) return;
-
-      box.style.display = 'block';
-      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Recherche scientifique...`;
-
-      // Clean taxon name
-      let cleanName = speciesName.replace(/["'()]/g, '').replace(/\b(sp|cf|var|subsp)\b\.?/gi, '').trim();
-
-      const googleImgUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(cleanName + ' fossile')}`;
-      const mnhnUrl = `https://science.mnhn.fr/institution/mnhn/collection/f/item/list?full_text=${encodeURIComponent(cleanName)}`;
-
-      const extraLinksHtml = `
-        <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
-          <a href="${googleImgUrl}" target="_blank" class="popup-tag" style="background:#1e293b; color:#38bdf8; border-color:#0284c7; margin:0; font-size:0.75rem;">🖼️ Google Images</a>
-          <a href="${mnhnUrl}" target="_blank" class="popup-tag" style="background:#1e293b; color:#34d399; border-color:#059669; margin:0; font-size:0.75rem;">🏛️ MNHN Paris</a>
-        </div>
-      `;
-
-      // Search French Wikipedia using Search API first to get real article title
-      fetch(`https://fr.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName)}&format=json&origin=*`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.query && data.query.search && data.query.search.length > 0) {
-            const pageTitle = data.query.search[0].title;
-            return fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageTitle)}`).then(r => r.json());
-          } else {
-            // Try English Wikipedia Search
-            return fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName)}&format=json&origin=*`)
-              .then(r => r.json())
-              .then(enData => {
-                if (enData && enData.query && enData.query.search && enData.query.search.length > 0) {
-                  return fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(enData.query.search[0].title)}`).then(r => r.json());
-                }
-                return null;
-              });
-          }
-        })
-        .then(summary => {
-          if (summary && summary.extract) {
-            let imgHtml = '';
-            if (summary.thumbnail && summary.thumbnail.source) {
-              imgHtml = `<img src="${summary.thumbnail.source}" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px; margin-bottom:6px;">`;
-            }
-            box.innerHTML = `
-              ${imgHtml}
-              <div style="font-size:0.8rem; line-height:1.3;">
-                <b>${summary.title}</b>: ${summary.extract.substring(0, 200)}...
-              </div>
-              ${extraLinksHtml}
-            `;
-          } else {
-            box.innerHTML = `
-              <div style="font-size:0.8rem; color:#cbd5e1;">ℹ️ Pas d'article Wikipédia direct. Consultez les bases certifiées :</div>
-              ${extraLinksHtml}
-            `;
-          }
-        })
-        .catch(() => {
-          box.innerHTML = `
-            <div style="font-size:0.8rem; color:#cbd5e1;">ℹ️ Recherche distante indisponible. Liens directs :</div>
-            ${extraLinksHtml}
-          `;
-        });
-    }
-
-    // Modal Gear
-    function openGearModal() { document.getElementById('gearModal').style.display = 'flex'; }
-    function closeGearModal() { document.getElementById('gearModal').style.display = 'none'; }
-
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const icon = document.getElementById('toggleIcon');
-      sidebar.classList.toggle('collapsed');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.className = 'fa-solid fa-angles-right';
-      } else {
-        icon.className = 'fa-solid fa-angles-left';
-      }
-      setTimeout(() => { map.invalidateSize(); }, 350);
-    }
-
-    function toggleMobileSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('mobile-open');
-    }
-
-    function toggleMobileMapMode() {
-      const newMode = (currentMapColorMode === 'score') ? 'period' : 'score';
-      document.getElementById('mapModeSelect').value = newMode;
-      switchMapColorMode(newMode);
-    }
-
-    // Modal Guide
-    function openGuideModal() { document.getElementById('guideModal').style.display = 'flex'; }
-    function closeGuideModal() { document.getElementById('guideModal').style.display = 'none'; }
-
-    let isPointSelectionActive = false;
-
-    function togglePointSelectionMode() {
-      isPointSelectionActive = !isPointSelectionActive;
-      if (isPointSelectionActive) {
-        alert("📍 Mode Sélection Activé : Touchez un endroit précis sur la carte pour générer son rapport PDF.");
-      }
-    }
-
-    // Map Click Listener (no auto popup on normal tap)
-    map.on('click', function(e) {
-      // Close mobile sidebar if open
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('mobile-open');
-      }
-
-      // Only show point popup if point selection mode is active
-      if (isPointSelectionActive) {
-        isPointSelectionActive = false;
-        const lat = e.latlng.lat;
-        const lng = e.latlng.lng;
-        openCustomPointPopup(lat, lng, e.latlng);
-      }
-    });
-
-    // Long press on map (contextmenu event) to drop intentional pin
-    map.on('contextmenu', function(e) {
-      openCustomPointPopup(e.latlng.lat, e.latlng.lng, e.latlng);
-    });
-
-    function openCustomPointPopup(lat, lng, latlng) {
-      L.popup().setLatLng(latlng).setContent(`
-        <div class="popup-title">📍 Point GPS Sélectionné</div>
-        <div class="popup-meta">
-          <b>Coordonnées :</b> ${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E<br>
-          Générez une fiche de terrain PDF complète pour ce point précis.
-        </div>
-        <a href="#" onclick="generateCustomLocationReport(${lat}, ${lng}); return false;" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7; font-size:0.8rem; display:block; text-align:center; margin-top:8px;">
-          📄 Générer le Rapport PDF de ce Point
-        </a>
-      `).openOn(map);
-    }
-
-    // Search
-    function handleSearch(e) {
-      if (e.key === 'Enter') {
-        const query = e.target.value.toLowerCase().trim();
-        if (!query) return;
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Hérault, France')}`)
-          .then(res => res.json())
-          .then(results => {
-            if (results && results.length > 0) flyToLoc(parseFloat(results[0].lat), parseFloat(results[0].lon), 13);
-            else alert("Lieu introuvable dans l'Hérault.");
-          });
-      }
-    }
-  </script>
+  <!-- Application Entry Point (ES Module) -->
+  <script type="module" src="/src/js/main.js"></script>
 </body>
 </html>
