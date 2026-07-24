@@ -3,6 +3,7 @@ import json
 import time
 import sys
 import os
+from ingest_department import ingest_department
 
 ALL_DEPARTMENTS = [
     {"code": "01", "name": "Ain", "center": [46.1, 5.2], "bounds": (45.7, 46.5, 4.8, 6.1)},
@@ -101,11 +102,31 @@ ALL_DEPARTMENTS = [
     {"code": "95", "name": "Val-d'Oise", "center": [49.1, 2.1], "bounds": (48.9, 49.2, 1.6, 2.5)}
 ]
 
+def copy_to_public(dept_code):
+    """Ensure data is saved in both processed/ and public/processed/ for Vite dist bundle."""
+    src = f"processed/{dept_code}/fossils.json"
+    if os.path.exists(src):
+        pub_dir = f"public/processed/{dept_code}"
+        os.makedirs(pub_dir, exist_ok=True)
+        with open(src, 'r', encoding='utf-8') as sf, open(f"{pub_dir}/fossils.json", 'w', encoding='utf-8') as df:
+            df.write(sf.read())
+
 def generate_department_index():
     os.makedirs('processed', exist_ok=True)
+    os.makedirs('public/processed', exist_ok=True)
+
     with open('processed/departments.json', 'w', encoding='utf-8') as f:
         json.dump(ALL_DEPARTMENTS, f, ensure_ascii=False, indent=2)
-    print(f"Generated index for {len(ALL_DEPARTMENTS)} French departments in processed/departments.json.")
+    with open('public/processed/departments.json', 'w', encoding='utf-8') as f:
+        json.dump(ALL_DEPARTMENTS, f, ensure_ascii=False, indent=2)
+
+    print(f"Generated index for {len(ALL_DEPARTMENTS)} French departments.")
 
 if __name__ == '__main__':
     generate_department_index()
+    
+    # Ingest key departments
+    for d in ALL_DEPARTMENTS:
+        code = d['code']
+        ingest_department(code)
+        copy_to_public(code)

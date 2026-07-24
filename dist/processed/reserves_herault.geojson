@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.9642,
+          43.4075
+        ]
+      },
+      "properties": {
+        "name": "Réserve Naturelle Nationale de Coumiac (Cessenon-sur-Orb)",
+        "type": "Réserve Naturelle Nationale (GSSP Dévonien)",
+        "reglementation": "⛔ STRICTEMENT INTERDIT : Marteau, burin et collecte de fossiles interdits sous peine d'amende (Code de l'Environnement).",
+        "interdiction": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.3583,
+          43.6225
+        ]
+      },
+      "properties": {
+        "name": "Grand Site de France Salagou - Cirque de Mourèze",
+        "type": "Site Classé & Espace Naturel Sensible",
+        "reglementation": "⚠️ REGLEMENTATION : Ramassage de surface modéré toléré. Dégradation des parois et outillage lourd interdits.",
+        "interdiction": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.5611,
+          43.7028
+        ]
+      },
+      "properties": {
+        "name": "Natura 2000 Gorges de l'Hérault",
+        "type": "Zone Spéciale de Conservation (ZSC)",
+        "reglementation": "ℹ️ Zone Protégée : Respect du milieu naturel.",
+        "interdiction": false
+      }
+    }
+  ]
+}

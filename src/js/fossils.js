@@ -21,9 +21,17 @@ export function initFossils() {
   window.loadWikiPreview = loadWikiPreview;
 }
 
-export function setFossilsData(data) {
+export function setFossilsData(data, autoFit = true) {
   fossilsData = data;
   renderFossils();
+
+  if (autoFit && data && data.length > 0 && map) {
+    const latLngs = data.map(item => [item.lat, item.lng]);
+    const bounds = L.latLngBounds(latLngs);
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
+    }
+  }
 }
 
 export function toggleCategory(catId, isChecked) {
