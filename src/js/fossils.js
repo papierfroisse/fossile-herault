@@ -11,6 +11,12 @@ export let selectedPeriodFilter = "";
 export function initFossils() {
   fossilsLayerGroup = L.layerGroup().addTo(map);
   
+  if (map) {
+    map.on('zoomend', () => {
+      renderFossils();
+    });
+  }
+
   // Attach global handler for inline Wiki preview calls in popups
   window.loadWikiPreview = loadWikiPreview;
 }
@@ -73,12 +79,15 @@ export function renderFossils() {
     let faIcon = iconConfig.icon;
     if (item.category_id === 'molluscs') faIcon = 'fa-ring';
 
+    const currentZoom = map ? map.getZoom() : 10;
+    const r = currentZoom >= 13 ? 7 : (currentZoom >= 10 ? 5 : 3.5);
+
     const marker = L.circleMarker([item.lat, item.lng], {
-      radius: 6,
+      radius: r,
       fillColor: iconConfig.color,
       color: '#ffffff',
-      weight: 1.5,
-      fillOpacity: 0.9
+      weight: currentZoom >= 11 ? 1.5 : 0.8,
+      fillOpacity: 0.85
     });
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
