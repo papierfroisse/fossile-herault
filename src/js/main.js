@@ -41,6 +41,29 @@ window.handleSearch = handleSearch;
 window.loadWikiPreview = loadWikiPreview;
 import { ALL_DEPARTMENTS, DEPARTMENTS_MAP } from './departments.js';
 
+function cleanCategoryJS(phylum = '', className = '', orderName = '', family = '', genus = '', sciName = '') {
+  const txt = `${phylum} ${className} ${orderName} ${family} ${genus} ${sciName}`.toLowerCase();
+  if (txt.match(/dinosaur|reptil|sauropod|theropod|crocodil|turtle|testudines|squamata/)) {
+    return { category_id: 'dinosaurs_reptiles', category_name: 'Dinosaures & Reptiles', color: '#ef4444' };
+  }
+  if (txt.match(/mollusc|cephalopod|ammonit|bivalv|gastropod|belemnit|brachiopod|hildoceras|lytoceras/)) {
+    return { category_id: 'molluscs', category_name: 'Mollusques & Ammonites', color: '#0284c7' };
+  }
+  if (txt.match(/plant|tracheophyta|ginkgo|walchia|flora|fern|conifer/)) {
+    return { category_id: 'plants', category_name: 'Plantes & Végétaux', color: '#16a34a' };
+  }
+  if (txt.match(/trilobit|arthropod|crustac|insect|ostracod/)) {
+    return { category_id: 'arthropods', category_name: 'Trilobites & Arthropodes', color: '#9333ea' };
+  }
+  if (txt.match(/mammal|rodent|carnivor|hominid|artiodactyl|perissodactyl/)) {
+    return { category_id: 'mammals', category_name: 'Mammifères', color: '#d97706' };
+  }
+  if (txt.match(/fish|pisces|actinopterygii|chondrichthyes|shark/)) {
+    return { category_id: 'fish', category_name: 'Poissons & Chondrichthyens', color: '#0d9488' };
+  }
+  return { category_id: 'others', category_name: 'Autres Fossiles', color: '#64748b' };
+}
+
 window.changeDepartment = function(deptCode) {
   const dept = DEPARTMENTS_MAP[deptCode];
   if (!dept) return;
@@ -62,21 +85,24 @@ window.changeDepartment = function(deptCode) {
         .then(r => r.json())
         .then(data => {
           if (data && data.records) {
-            const formatted = data.records.map(r => ({
-              id: r.oid,
-              name: r.tno || r.mno || "Fossile PBDB",
-              lat: r.lat,
-              lng: r.lng,
-              phylum: r.phl || "PBDB",
-              class_name: r.cll || "Paleontology",
-              period: r.dpt || r.eon || "Mésozoïque",
-              formation: r.sfm || r.fmt || dept.name,
-              category_id: "molluscs",
-              category_name: "Fossile Certifié",
-              color: "#0284c7",
-              precision_gps: "📍 Point GPS Certifié PBDB",
-              source: "PBDB"
-            }));
+            const formatted = data.records.map(r => {
+              const cat = cleanCategoryJS(r.phl, r.cll, r.odl, r.fml, r.gnn, r.tno || r.mno);
+              return {
+                id: r.oid,
+                name: r.tno || r.mno || "Fossile PBDB",
+                lat: r.lat,
+                lng: r.lng,
+                phylum: r.phl || "PBDB Record",
+                class_name: r.cll || "Paleontology",
+                period: r.dpt || r.eon || "Mésozoïque",
+                formation: r.sfm || r.fmt || dept.name,
+                category_id: cat.category_id,
+                category_name: cat.category_name,
+                color: cat.color,
+                precision_gps: "📍 Point GPS Certifié PBDB",
+                source: "PBDB"
+              };
+            });
             setFossilsData(formatted);
           }
         });
