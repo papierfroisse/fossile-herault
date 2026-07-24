@@ -1,9 +1,4 @@
 // Main Entry Point for Fossile France Application
-import '../styles/main.css';
-import '../styles/sidebar.css';
-import '../styles/map.css';
-import '../styles/mobile.css';
-
 import { initMap, flyToLoc } from './map.js';
 import { initFossils, setFossilsData, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
 import { setGeologyData, switchMapColorMode, updateScoreFilter, toggleSlopeFilter } from './geology.js';
