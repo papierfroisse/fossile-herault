@@ -1,10 +1,16 @@
 // Main Application Logic & Data Orchestration
+import '../styles/main.css';
+import '../styles/map.css';
+import '../styles/sidebar.css';
+import '../styles/mobile.css';
+
 import { ALL_DEPARTMENTS } from './departments.js';
 import { map, initMap, flyToLoc } from './map.js';
 import { initFossils, setFossilsData } from './fossils.js';
 import { setGeologyData } from './geology.js';
 import { initEnvironmentalLayers } from './layers.js';
-import { initGPSHandlers, initPersonalFindings } from './gps.js';
+import { initGPSHandlers } from './gps.js';
+import { initPersonalFindings } from './personal.js';
 
 let loadedDepartmentsCache = new Map();
 let currentActiveMode = 'all';
