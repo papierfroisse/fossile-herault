@@ -1,4 +1,4 @@
-// Fossil Dataset Management & Marker Rendering
+// Fossil Dataset Management & Marker Rendering (High-Performance Canvas & BBox Filter)
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
@@ -9,10 +9,15 @@ export let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammal
 export let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
 export let selectedPeriodFilter = "";
 
+let isRendering = false;
+
 export function initFossils() {
   fossilsLayerGroup = L.layerGroup().addTo(map);
   
   if (map) {
+    map.on('moveend', () => {
+      renderFossils();
+    });
     map.on('zoomend', () => {
       renderFossils();
     });
@@ -23,7 +28,7 @@ export function initFossils() {
 }
 
 export function setFossilsData(data, autoFit = true) {
-  fossilsData = data;
+  fossilsData = data || [];
   renderFossils();
 
   if (autoFit && data && data.length > 0 && map) {
@@ -53,9 +58,15 @@ export function filterByPeriod(val) {
 }
 
 export function renderFossils() {
-  if (!fossilsLayerGroup) return;
+  if (!fossilsLayerGroup || !map) return;
+  
   fossilsLayerGroup.clearLayers();
-  let count = 0;
+  
+  const currentZoom = map.getZoom();
+  const mapBounds = map.getBounds().pad(0.15); // Add margin to prevent blank edges during pan
+
+  let totalMatchingCount = 0;
+  let renderedCount = 0;
 
   const categoryIcons = {
     'dinosaurs_reptiles': { icon: 'fa-dragon', color: '#ef4444', label: 'Dinosaures / Reptiles' },
@@ -67,27 +78,35 @@ export function renderFossils() {
     'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
   };
 
-  fossilsData.forEach(item => {
-    if (!activeCategories.has(item.category_id)) return;
+  // Fast loop using single pass & bounding box filtering
+  for (let i = 0; i < fossilsData.length; i++) {
+    const item = fossilsData[i];
+
+    if (!activeCategories.has(item.category_id)) continue;
 
     const src = item.source || 'PBDB';
-    if (!activeSources.has(src)) return;
+    if (!activeSources.has(src)) continue;
 
     // Filter by predictive score threshold
     const itemScore = item.score_potentiel || 60;
-    if (itemScore < minScoreThreshold) return;
+    if (itemScore < minScoreThreshold) continue;
 
     // Filter by geological period
     if (selectedPeriodFilter) {
       const p = (item.period || "").toLowerCase();
-      if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) return;
-      if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) return;
-      if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) return;
-      if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) return;
-      if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) return;
+      if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) continue;
+      if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) continue;
+      if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) continue;
+      if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) continue;
+      if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) continue;
     }
 
-    count++;
+    totalMatchingCount++;
+
+    // VIEWPORT BOUNDING BOX CHECK — ONLY RENDER VISIBLE MARKERS!
+    if (!mapBounds.contains([item.lat, item.lng])) continue;
+
+    renderedCount++;
 
     const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
     let faIcon = iconConfig.icon;
@@ -101,15 +120,31 @@ export function renderFossils() {
       else markerColor = '#0284c7';
     }
 
-    const marker = L.marker([item.lat, item.lng], {
-      pane: 'fossilsPane',
-      icon: L.divIcon({
-        className: 'custom-fossil-icon',
-        html: `<div style="background:${markerColor}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11]
-      })
-    });
+    let marker;
+
+    // When zoomed out (< 9), render ultra-fast Canvas circle markers to eliminate DOM overhead
+    if (currentZoom < 9) {
+      const radius = currentZoom >= 7 ? 4.5 : 3.5;
+      marker = L.circleMarker([item.lat, item.lng], {
+        pane: 'fossilsPane',
+        radius: radius,
+        fillColor: markerColor,
+        color: '#ffffff',
+        weight: 0.8,
+        fillOpacity: 0.85
+      });
+    } else {
+      // High Zoom (>= 9): Render full DivIcon HTML badges with FontAwesome icons
+      marker = L.marker([item.lat, item.lng], {
+        pane: 'fossilsPane',
+        icon: L.divIcon({
+          className: 'custom-fossil-icon',
+          html: `<div style="background:${markerColor}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
+          iconSize: [22, 22],
+          iconAnchor: [11, 11]
+        })
+      });
+    }
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
     const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
@@ -155,8 +190,8 @@ export function renderFossils() {
     `;
     marker.bindPopup(popupContent);
     fossilsLayerGroup.addLayer(marker);
-  });
+  }
 
   const statEl = document.getElementById('stat-fossils');
-  if (statEl) statEl.innerText = count.toLocaleString('fr-FR');
+  if (statEl) statEl.innerText = totalMatchingCount.toLocaleString('fr-FR');
 }
