@@ -8,10 +8,11 @@ import { initGPSHandlers, locateUserOnMap, togglePointSelectionMode } from './gp
 import { downloadGPXExport, downloadKMLExport, generateCurrentLocationReport, generateCustomLocationReport } from './export.js';
 import { initPersonalFindings, openAddPersonalFindingModal, closeAddPersonalFindingModal, savePersonalFinding, deletePersonalFinding } from './personal.js';
 import { toggleSidebar, toggleMobileSidebar, toggleMobileMapMode, openGearModal, closeGearModal, openGuideModal, closeGuideModal } from './ui.js';
-import { selectPaleoEra } from './paleogeography.js';
+import { selectPaleoEra, handlePaleoSliderChange } from './paleogeography.js';
 
 // Expose functions required by inline HTML onclick/onchange attributes to window scope
 window.selectPaleoEra = selectPaleoEra;
+window.handlePaleoSliderChange = handlePaleoSliderChange;
 window.locateUserOnMap = locateUserOnMap;
 window.openAddPersonalFindingModal = openAddPersonalFindingModal;
 window.closeAddPersonalFindingModal = closeAddPersonalFindingModal;
