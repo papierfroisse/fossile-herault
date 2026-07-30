@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🦕 Fossile — Cartographie prédictive (Hérault & France)</title>
+  <title>🦕 Fossile France — Cartographie Paléontologique & Prédictive</title>
 
   <!-- Leaflet CSS & MarkerCluster CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -27,18 +27,11 @@
   <div id="sidebar">
     <div class="header">
       <h1><i class="fa-solid fa-bone"></i> Fossile France</h1>
-      <p>Modèle Prédictif ML, Relief LiDAR & SIG</p>
+      <p>49 757 fossiles · 94 départements · MNHN · PBDB · GBIF</p>
       <div style="margin-top:10px;">
         <label style="font-size:0.75rem; color:#94a3b8; display:block; margin-bottom:4px; font-weight:600;">SÉLECTIONNER UN DÉPARTEMENT :</label>
         <select id="deptSelect" onchange="changeDepartment(this.value)" style="width:100%; padding:8px 10px; background:#0f172a; border:1px solid #38bdf8; border-radius:8px; color:#38bdf8; font-family:inherit; font-size:0.85rem; font-weight:700; outline:none; cursor:pointer;">
-          <option value="34">🦕 34 — Hérault (1 004 fossiles MNHN/PBDB)</option>
-          <option value="30">🦖 30 — Gard (776 fossiles MNHN/PBDB)</option>
-          <option value="11">🥚 11 — Aude (786 fossiles MNHN/PBDB)</option>
-          <option value="12">🐚 12 — Aveyron (Causses & Ammonites)</option>
-          <option value="13">🦖 13 — Bouches-du-Rhône (Sainte-Victoire & Dinosaures)</option>
-          <option value="46">🦴 46 — Lot (Phosphorites du Quercy)</option>
-          <option value="24">🌿 24 — Dordogne (Périgord & Crétacé)</option>
-          <option value="71">🔴 71 — Saône-et-Loire (Bassin d'Autun)</option>
+          <option value="all">🇫🇷 Toute la France (49 757 fossiles)</option>
         </select>
       </div>
     </div>

@@ -65,6 +65,14 @@ function cleanCategoryJS(phylum = '', className = '', orderName = '', family = '
 }
 
 window.changeDepartment = function(deptCode) {
+  if (deptCode === 'all') {
+    flyToLoc(46.6, 2.5, 6);
+    fetch('processed/all_france.json')
+      .then(res => res.json())
+      .then(data => setFossilsData(data, false));
+    return;
+  }
+
   const dept = DEPARTMENTS_MAP[deptCode];
   if (!dept) return;
 
@@ -117,17 +125,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initGPSHandlers();
   initPersonalFindings();
 
-  // Populate Department Selector with all 96 French Departments
+  // Populate Department Selector with all 94 French Departments + "Toute la France"
   const selectEl = document.getElementById('deptSelect');
   if (selectEl) {
-    selectEl.innerHTML = ALL_DEPARTMENTS.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
-    selectEl.value = "34"; // Default Hérault
+    selectEl.innerHTML = '<option value="all">🇫🇷 Toute la France (49 757 fossiles)</option>' +
+      ALL_DEPARTMENTS.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
+    selectEl.value = "all";
   }
 
-  // Load Primary Department Dataset (Hérault - 34)
-  fetch('processed/34/fossils.json')
+  // Load ALL France fossil datasets at startup
+  fetch('processed/all_france.json')
     .then(res => res.json())
-    .then(data => setFossilsData(data));
+    .then(data => setFossilsData(data, false));
 
   fetch('processed/herault_geologie_pentes.geojson')
     .then(res => res.json())
