@@ -1,32 +1,76 @@
-// High-Performance Individual Canvas Point Rendering (No Clustering / Exact GPS Points)
+// Hardware-Accelerated 60 FPS Canvas Point Engine for 50,000+ Fossils
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
 
 export let fossilsData = [];
-export let fossilsLayerGroup;
 export let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammals', 'plants', 'arthropods', 'fish', 'others']);
 export let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
 export let selectedPeriodFilter = "";
 
-let canvasRenderer;
+let canvasOverlayElement = null;
+let currentVisibleItems = [];
+
+const categoryColors = {
+  'dinosaurs_reptiles': '#ef4444',
+  'molluscs':           '#0284c7',
+  'plants':             '#16a34a',
+  'arthropods':         '#9333ea',
+  'mammals':            '#d97706',
+  'fish':               '#0d9488',
+  'others':             '#64748b'
+};
+
+const categoryLabels = {
+  'dinosaurs_reptiles': 'Dinosaures / Reptiles',
+  'molluscs':           'Mollusques / Ammonites',
+  'plants':             'Plantes / Végétaux',
+  'arthropods':         'Trilobites / Arthropodes',
+  'mammals':            'Mammifères',
+  'fish':               'Poissons',
+  'others':             'Autres'
+};
+
+const categoryIcons = {
+  'dinosaurs_reptiles': 'fa-dragon',
+  'molluscs':           'fa-ring',
+  'plants':             'fa-leaf',
+  'arthropods':         'fa-bug',
+  'mammals':            'fa-bone',
+  'fish':               'fa-fish',
+  'others':             'fa-circle-dot'
+};
 
 export function initFossils() {
-  // Dedicated HTML5 Canvas Renderer for zero-lag rendering of tens of thousands of individual points
-  canvasRenderer = L.canvas({ padding: 0.3 });
-  fossilsLayerGroup = L.layerGroup().addTo(map);
-  
-  if (map) {
-    map.on('moveend', () => {
-      renderFossils();
-    });
-    map.on('zoomend', () => {
-      renderFossils();
-    });
-  }
+  if (!map) return;
+
+  // Create hardware-accelerated Canvas container
+  const pane = map.getPane('fossilsPane') || map.createPane('fossilsPane');
+  pane.style.zIndex = 650;
+
+  canvasOverlayElement = L.DomUtil.create('canvas', 'fossils-canvas-overlay');
+  canvasOverlayElement.style.position = 'absolute';
+  canvasOverlayElement.style.top = '0';
+  canvasOverlayElement.style.left = '0';
+  canvasOverlayElement.style.pointerEvents = 'auto';
+  pane.appendChild(canvasOverlayElement);
+
+  map.on('move', renderFossils);
+  map.on('resize', syncCanvasSize);
+  map.on('click', handleMapPointClick);
+
+  syncCanvasSize();
 
   // Attach global handler for inline Wiki preview calls in popups
   window.loadWikiPreview = loadWikiPreview;
+}
+
+function syncCanvasSize() {
+  if (!map || !canvasOverlayElement) return;
+  const size = map.getSize();
+  canvasOverlayElement.width = size.x;
+  canvasOverlayElement.height = size.y;
+  renderFossils();
 }
 
 export function setFossilsData(data, autoFit = true) {
@@ -60,28 +104,25 @@ export function filterByPeriod(val) {
 }
 
 export function renderFossils() {
-  if (!fossilsLayerGroup || !map) return;
-  
-  fossilsLayerGroup.clearLayers();
+  if (!canvasOverlayElement || !map) return;
 
+  const ctx = canvasOverlayElement.getContext('2d');
+  const size = map.getSize();
+
+  // Keep canvas position aligned with Leaflet map container
+  const topLeft = map.containerPointToLayerPoint([0, 0]);
+  L.DomUtil.setPosition(canvasOverlayElement, topLeft);
+
+  ctx.clearRect(0, 0, size.x, size.y);
+
+  const mapBounds = map.getBounds().pad(0.1);
   const currentZoom = map.getZoom();
-  const mapBounds = map.getBounds().pad(0.2); // Spatial viewport check for 60FPS speed
+
+  // Ultra-crisp point radius scaling
+  const r = currentZoom >= 13 ? 6.0 : (currentZoom >= 10 ? 4.0 : (currentZoom >= 8 ? 2.5 : 1.8));
 
   let totalMatchingCount = 0;
-  let visibleCount = 0;
-
-  const categoryIcons = {
-    'dinosaurs_reptiles': { icon: 'fa-dragon', color: '#ef4444', label: 'Dinosaures / Reptiles' },
-    'molluscs':           { icon: 'fa-ring', color: '#0284c7', label: 'Mollusques / Ammonites' },
-    'plants':             { icon: 'fa-leaf', color: '#16a34a', label: 'Plantes / Végétaux' },
-    'arthropods':         { icon: 'fa-bug', color: '#9333ea', label: 'Trilobites / Arthropodes' },
-    'mammals':            { icon: 'fa-bone', color: '#d97706', label: 'Mammifères' },
-    'fish':               { icon: 'fa-fish', color: '#0d9488', label: 'Poissons' },
-    'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
-  };
-
-  // Dynamic point radius based on zoom level for maximum clarity & crisp point cloud
-  const r = currentZoom >= 13 ? 6.0 : (currentZoom >= 10 ? 4.0 : (currentZoom >= 8 ? 2.5 : 1.8));
+  currentVisibleItems = [];
 
   for (let i = 0; i < fossilsData.length; i++) {
     const item = fossilsData[i];
@@ -91,7 +132,6 @@ export function renderFossils() {
     const src = item.source || 'PBDB';
     if (!activeSources.has(src)) continue;
 
-    // Filter by predictive score threshold
     const itemScore = item.score_potentiel || 60;
     if (itemScore < minScoreThreshold) continue;
 
@@ -107,16 +147,12 @@ export function renderFossils() {
 
     totalMatchingCount++;
 
-    // Spatial viewport check: only render points currently in view (zero lag!)
     if (!mapBounds.contains([item.lat, item.lng])) continue;
 
-    visibleCount++;
+    const pt = map.latLngToContainerPoint([item.lat, item.lng]);
 
-    const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
-    let faIcon = iconConfig.icon;
-
-    // Marker color based on ML Score or Category
-    let markerColor = iconConfig.color;
+    // Color calculation
+    let markerColor = categoryColors[item.category_id] || '#64748b';
     if (currentMapColorMode === 'score') {
       if (itemScore >= 80) markerColor = '#dc2626';
       else if (itemScore >= 68) markerColor = '#ea580c';
@@ -124,63 +160,102 @@ export function renderFossils() {
       else markerColor = '#0284c7';
     }
 
-    // Render individual exact GPS point onto HTML5 Canvas Context (NO CLUSTERING, NO DOM OVERHEAD)
-    const marker = L.circleMarker([item.lat, item.lng], {
-      pane: 'fossilsPane',
-      renderer: canvasRenderer,
-      radius: r,
-      fillColor: markerColor,
-      color: '#ffffff',
-      weight: currentZoom >= 11 ? 1.0 : 0.0,
-      fillOpacity: currentZoom >= 11 ? 0.9 : 0.75
-    });
+    // Direct 60 FPS Hardware-Accelerated Canvas Draw Pass
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = markerColor;
+    ctx.fill();
 
-    const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
-    const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
-    const cleanName = item.name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+    if (currentZoom >= 11) {
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
 
-    const precisionBadge = item.precision_gps || '🎯 Point GPS Certifié';
-    const precisionColor = (item.precision_code === 'high' || precisionBadge.includes('Certifié')) ? '#10b981' : '#f59e0b';
-
-    const sourceBadges = {
-      'MNHN': '<span style="background:rgba(168,85,247,0.2); color:#c084fc; border:1px solid rgba(168,85,247,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🏛️ Collection Muséum (MNHN Paris)</span>',
-      'BRGM': '<span style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid rgba(56,189,248,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">📐 Carte Géologique BRGM</span>',
-      'PBDB': '<span style="background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🌐 Base Scientifique PBDB</span>'
-    };
-    const srcBadge = sourceBadges[src] || sourceBadges['PBDB'];
-    const catalogTag = item.mnhn_catalog ? `<br><b>N° Spécimen Muséum :</b> <span style="color:#c084fc; font-weight:600;">${item.mnhn_catalog}</span>` : '';
-    const deptName = item.department ? ` (Dép. ${item.department})` : '';
-
-    const popupContent = `
-      <div class="popup-title">${item.name}${deptName}</div>
-      <div style="margin-bottom:6px;">${srcBadge}</div>
-      <div class="popup-meta">
-        <b>Potentiel Prédictif ML :</b> <span style="color:#f97316; font-weight:bold; font-size:1.02rem;">${itemScore} / 100</span><br>
-        <b>Type :</b> <span style="color:${iconConfig.color}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name || iconConfig.label}</span><br>
-        <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span>${catalogTag}<br>
-        <b>Période :</b> ${item.period || 'Non spécifiée'}<br>
-        <b>Formation :</b> ${item.formation || 'Lithologie locale'}<br>
-        <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
-      </div>
-
-      <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;"></div>
-
-      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
-        <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">
-          🖼️ Photos Google
-        </a>
-        <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">
-          🔍 Recherche Web
-        </a>
-        <button onclick="loadWikiPreview('${cleanName}', ${item.id})" class="popup-tag" style="background:#15803d; color:#fff; border-color:#15803d; cursor:pointer;">
-          📖 Aperçu Wikipédia
-        </button>
-      </div>
-    `;
-    marker.bindPopup(popupContent);
-    fossilsLayerGroup.addLayer(marker);
+    // Store container point for instant click detection
+    currentVisibleItems.push({ item, x: pt.x, y: pt.y });
   }
 
   const statEl = document.getElementById('stat-fossils');
   if (statEl) statEl.innerText = totalMatchingCount.toLocaleString('fr-FR');
+}
+
+// Instant Spatial Click Handler (On-demand popup generation)
+function handleMapPointClick(e) {
+  if (!currentVisibleItems || currentVisibleItems.length === 0) return;
+
+  const clickPt = e.containerPoint;
+  let closest = null;
+  let minDist = 18; // 18px click radius tolerance
+
+  for (let i = 0; i < currentVisibleItems.length; i++) {
+    const entry = currentVisibleItems[i];
+    const dx = entry.x - clickPt.x;
+    const dy = entry.y - clickPt.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < minDist) {
+      minDist = dist;
+      closest = entry.item;
+    }
+  }
+
+  if (closest) {
+    openFossilPopup(closest, e.latlng);
+  }
+}
+
+function openFossilPopup(item, latlng) {
+  const itemScore = item.score_potentiel || 60;
+  const src = item.source || 'PBDB';
+  const iconConfigColor = categoryColors[item.category_id] || '#64748b';
+  const iconLabel = categoryLabels[item.category_id] || 'Autre Fossile';
+  const faIcon = categoryIcons[item.category_id] || 'fa-circle-dot';
+
+  const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
+  const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
+  const cleanName = item.name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+
+  const precisionBadge = item.precision_gps || '🎯 Point GPS Certifié';
+  const precisionColor = (item.precision_code === 'high' || precisionBadge.includes('Certifié')) ? '#10b981' : '#f59e0b';
+
+  const sourceBadges = {
+    'MNHN': '<span style="background:rgba(168,85,247,0.2); color:#c084fc; border:1px solid rgba(168,85,247,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🏛️ Collection Muséum (MNHN Paris)</span>',
+    'BRGM': '<span style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid rgba(56,189,248,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">📐 Carte Géologique BRGM</span>',
+    'PBDB': '<span style="background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🌐 Base Scientifique PBDB</span>'
+  };
+  const srcBadge = sourceBadges[src] || sourceBadges['PBDB'];
+  const catalogTag = item.mnhn_catalog ? `<br><b>N° Spécimen Muséum :</b> <span style="color:#c084fc; font-weight:600;">${item.mnhn_catalog}</span>` : '';
+  const deptName = item.department ? ` (Dép. ${item.department})` : '';
+
+  const popupContent = `
+    <div class="popup-title">${item.name}${deptName}</div>
+    <div style="margin-bottom:6px;">${srcBadge}</div>
+    <div class="popup-meta">
+      <b>Potentiel Prédictif ML :</b> <span style="color:#f97316; font-weight:bold; font-size:1.02rem;">${itemScore} / 100</span><br>
+      <b>Type :</b> <span style="color:${iconConfigColor}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name || iconLabel}</span><br>
+      <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span>${catalogTag}<br>
+      <b>Période :</b> ${item.period || 'Non spécifiée'}<br>
+      <b>Formation :</b> ${item.formation || 'Lithologie locale'}<br>
+      <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
+    </div>
+
+    <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;"></div>
+
+    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+      <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">
+        🖼️ Photos Google
+      </a>
+      <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">
+        🔍 Recherche Web
+      </a>
+      <button onclick="loadWikiPreview('${cleanName}', ${item.id})" class="popup-tag" style="background:#15803d; color:#fff; border-color:#15803d; cursor:pointer;">
+        📖 Aperçu Wikipédia
+      </button>
+    </div>
+  `;
+
+  L.popup()
+    .setLatLng(latlng || [item.lat, item.lng])
+    .setContent(popupContent)
+    .openOn(map);
 }
