@@ -68,6 +68,7 @@ export function initEnvironmentalLayers() {
       }
     });
     reservesLayer.addLayer(geoLayer);
+    updateLayerVisibility();
   });
 
   // Load Rivers Layer
@@ -103,6 +104,7 @@ export function initEnvironmentalLayers() {
       }
     });
     quarriesLayer.addLayer(geoLayer);
+    updateLayerVisibility();
   });
 
   // Mont Sénégra Landmark Marker

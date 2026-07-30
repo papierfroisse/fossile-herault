@@ -58,7 +58,7 @@
               ${n.reglementation}
             </div>
           </div>
-        `)}});k.addLayer(t)}),fetch(`processed/rivieres_herault.geojson`).then(e=>e.json()).then(e=>{D=L.geoJSON(e,{style:{color:`#0284c7`,weight:1.2,opacity:.35},onEachFeature:function(e,t){t.bindTooltip(e.properties.name||`Cours d'eau`,{sticky:!0})}}),F()}),fetch(`processed/carrieres_herault.geojson`).then(e=>e.json()).then(e=>{let t=L.geoJSON(e,{pointToLayer:function(e,t){let n=e.properties;return L.marker(t,{icon:L.divIcon({className:`custom-div-icon`,html:`<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,iconSize:[24,24],iconAnchor:[12,12]})}).bindPopup(`
+        `)}});k.addLayer(t),F()}),fetch(`processed/rivieres_herault.geojson`).then(e=>e.json()).then(e=>{D=L.geoJSON(e,{style:{color:`#0284c7`,weight:1.2,opacity:.35},onEachFeature:function(e,t){t.bindTooltip(e.properties.name||`Cours d'eau`,{sticky:!0})}}),F()}),fetch(`processed/carrieres_herault.geojson`).then(e=>e.json()).then(e=>{let t=L.geoJSON(e,{pointToLayer:function(e,t){let n=e.properties;return L.marker(t,{icon:L.divIcon({className:`custom-div-icon`,html:`<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,iconSize:[24,24],iconAnchor:[12,12]})}).bindPopup(`
           <div class="popup-title">${n.name}</div>
           <div class="popup-meta">
             <b>Type :</b> ${n.type}<br>
@@ -66,7 +66,7 @@
             <b>Intérêt paléontologique :</b> ${n.interet}
           </div>
           <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
-        `)}});O.addLayer(t)}),L.marker([43.682,3.125],{icon:L.divIcon({className:`custom-div-icon`,html:`<div style="background:#10b981; color:#fff; padding:7px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.5); text-align:center;"><i class="fa-solid fa-leaf" style="font-size:13px;"></i></div>`,iconSize:[26,26],iconAnchor:[13,13]})}).bindPopup(`
+        `)}});O.addLayer(t),F()}),L.marker([43.682,3.125],{icon:L.divIcon({className:`custom-div-icon`,html:`<div style="background:#10b981; color:#fff; padding:7px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.5); text-align:center;"><i class="fa-solid fa-leaf" style="font-size:13px;"></i></div>`,iconSize:[26,26],iconAnchor:[13,13]})}).bindPopup(`
     <div class="popup-title">🌿 Mont Sénégra (G. Gand et al., MNHN 2013)</div>
     <div class="popup-meta">
       <b>Période :</b> Autunien basal (Permien inférieur, ~295 Ma)<br>
