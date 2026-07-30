@@ -80,8 +80,8 @@ export function renderFossils() {
     'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
   };
 
-  // Dynamic point radius based on zoom level for maximum clarity
-  const r = currentZoom >= 13 ? 6.5 : (currentZoom >= 10 ? 4.5 : (currentZoom >= 8 ? 3.5 : 2.5));
+  // Dynamic point radius based on zoom level for maximum clarity & crisp point cloud
+  const r = currentZoom >= 13 ? 6.0 : (currentZoom >= 10 ? 4.0 : (currentZoom >= 8 ? 2.5 : 1.8));
 
   for (let i = 0; i < fossilsData.length; i++) {
     const item = fossilsData[i];
@@ -131,8 +131,8 @@ export function renderFossils() {
       radius: r,
       fillColor: markerColor,
       color: '#ffffff',
-      weight: currentZoom >= 11 ? 1.2 : 0.6,
-      fillOpacity: 0.88
+      weight: currentZoom >= 11 ? 1.0 : 0.0,
+      fillOpacity: currentZoom >= 11 ? 0.9 : 0.75
     });
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;

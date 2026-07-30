@@ -5,8 +5,18 @@ export let riversLayer = null;
 export let quarriesLayer = null;
 export let reservesLayer = null;
 export let citiesLayerGroup = null;
+export let landmarksLayerGroup = null;
+
+let isReservesEnabled = true;
+let isQuarriesEnabled = true;
+let isRiversEnabled = true;
 
 export function initEnvironmentalLayers() {
+  citiesLayerGroup = L.layerGroup();
+  landmarksLayerGroup = L.layerGroup();
+  reservesLayer = L.layerGroup();
+  quarriesLayer = L.layerGroup();
+
   // Major Cities Landmarks
   const majorCities = [
     { name: "MONTPELLIER", lat: 43.6108, lng: 3.8767, main: true },
@@ -20,7 +30,6 @@ export function initEnvironmentalLayers() {
     { name: "PÉZENAS", lat: 43.4608, lng: 3.4225, main: false }
   ];
 
-  citiesLayerGroup = L.layerGroup().addTo(map);
   majorCities.forEach(city => {
     L.marker([city.lat, city.lng], {
       interactive: false,
@@ -34,7 +43,7 @@ export function initEnvironmentalLayers() {
 
   // Load Protected Reserves
   fetch('processed/reserves_herault.geojson').then(res => res.json()).then(data => {
-    reservesLayer = L.geoJSON(data, {
+    const geoLayer = L.geoJSON(data, {
       pointToLayer: function(f, latlng) {
         const p = f.properties;
         const isInterdit = p.interdiction;
@@ -57,31 +66,22 @@ export function initEnvironmentalLayers() {
           </div>
         `);
       }
-    }).addTo(map);
+    });
+    reservesLayer.addLayer(geoLayer);
   });
 
-  // Load Rivers Layer (dynamic zoom-level display for performance)
+  // Load Rivers Layer
   fetch('processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
     riversLayer = L.geoJSON(data, {
       style: { color: '#0284c7', weight: 1.2, opacity: 0.35 },
       onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
     });
-    if (map.getZoom() >= 11) riversLayer.addTo(map);
-  });
-
-  map.on('zoomend', function() {
-    if (riversLayer) {
-      if (map.getZoom() >= 11) {
-        if (!map.hasLayer(riversLayer)) map.addLayer(riversLayer);
-      } else {
-        if (map.hasLayer(riversLayer)) map.removeLayer(riversLayer);
-      }
-    }
+    updateLayerVisibility();
   });
 
   // Load Quarries
   fetch('processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
-    quarriesLayer = L.geoJSON(data, {
+    const geoLayer = L.geoJSON(data, {
       pointToLayer: function(f, latlng) {
         const p = f.properties;
         return L.marker(latlng, {
@@ -101,7 +101,8 @@ export function initEnvironmentalLayers() {
           <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
         `);
       }
-    }).addTo(map);
+    });
+    quarriesLayer.addLayer(geoLayer);
   });
 
   // Mont Sénégra Landmark Marker
@@ -119,26 +120,51 @@ export function initEnvironmentalLayers() {
       <b>Repère de terrain :</b> 20m au-dessus du conglomérat basal.
     </div>
     <a href="https://sciencepress.mnhn.fr/sites/default/files/articles/pdf/comptes-rendus-palevol2013v12f2a02.pdf" target="_blank" class="popup-tag" style="color:#10b981; border-color:#10b981;">📄 Lire la publication MNHN (2013)</a>
-  `).addTo(map);
+  `).addTo(landmarksLayerGroup);
+
+  // Dynamic zoom listener to hide fixed HTML badges on low zoom levels
+  map.on('zoomend', updateLayerVisibility);
+  updateLayerVisibility();
+}
+
+function updateLayerVisibility() {
+  if (!map) return;
+  const zoom = map.getZoom();
+
+  // Show HTML DivIcon badges (Cities, Quarries, Reserves, Landmarks) ONLY at Zoom >= 10
+  if (zoom >= 10) {
+    if (citiesLayerGroup && !map.hasLayer(citiesLayerGroup)) map.addLayer(citiesLayerGroup);
+    if (landmarksLayerGroup && !map.hasLayer(landmarksLayerGroup)) map.addLayer(landmarksLayerGroup);
+    if (isReservesEnabled && reservesLayer && !map.hasLayer(reservesLayer)) map.addLayer(reservesLayer);
+    if (isQuarriesEnabled && quarriesLayer && !map.hasLayer(quarriesLayer)) map.addLayer(quarriesLayer);
+  } else {
+    if (citiesLayerGroup && map.hasLayer(citiesLayerGroup)) map.removeLayer(citiesLayerGroup);
+    if (landmarksLayerGroup && map.hasLayer(landmarksLayerGroup)) map.removeLayer(landmarksLayerGroup);
+    if (reservesLayer && map.hasLayer(reservesLayer)) map.removeLayer(reservesLayer);
+    if (quarriesLayer && map.hasLayer(quarriesLayer)) map.removeLayer(quarriesLayer);
+  }
+
+  // Rivers Layer at Zoom >= 11
+  if (riversLayer) {
+    if (isRiversEnabled && zoom >= 11) {
+      if (!map.hasLayer(riversLayer)) map.addLayer(riversLayer);
+    } else {
+      if (map.hasLayer(riversLayer)) map.removeLayer(riversLayer);
+    }
+  }
 }
 
 export function toggleReservesLayer(checked) {
-  if (reservesLayer && map) {
-    if (checked) map.addLayer(reservesLayer);
-    else map.removeLayer(reservesLayer);
-  }
+  isReservesEnabled = checked;
+  updateLayerVisibility();
 }
 
 export function toggleRiversLayer(checked) {
-  if (riversLayer && map) {
-    if (checked) map.addLayer(riversLayer);
-    else map.removeLayer(riversLayer);
-  }
+  isRiversEnabled = checked;
+  updateLayerVisibility();
 }
 
 export function toggleQuarriesLayer(checked) {
-  if (quarriesLayer && map) {
-    if (checked) map.addLayer(quarriesLayer);
-    else map.removeLayer(quarriesLayer);
-  }
+  isQuarriesEnabled = checked;
+  updateLayerVisibility();
 }

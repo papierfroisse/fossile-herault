@@ -9,6 +9,9 @@ export let slopeOnlyFilter = false;
 
 export function setGeologyData(data) {
   rawGeojsonData = data;
+  if (map) {
+    map.on('zoomend', () => renderPredictiveGeology());
+  }
   renderPredictiveGeology();
 }
 
@@ -42,7 +45,13 @@ export function toggleSlopeFilter(checked) {
 
 export function renderPredictiveGeology(selectedFormation = "") {
   if (!rawGeojsonData || !map) return;
-  if (geojsonLayer) map.removeLayer(geojsonLayer);
+  if (geojsonLayer) {
+    map.removeLayer(geojsonLayer);
+    geojsonLayer = null;
+  }
+
+  // Only render geology polygons when zoomed into a department/region (zoom >= 10)
+  if (map.getZoom() < 10) return;
 
   const filteredFeatures = rawGeojsonData.features.filter(f => {
     const scorePass = (f.properties.score_potentiel >= minScoreThreshold);
