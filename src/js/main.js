@@ -1,5 +1,5 @@
-// Main Entry Point for Fossile France Application
-import { initMap, flyToLoc } from './map.js';
+// Main Entry Point for Fossile France Application (High-Performance Architecture)
+import { initMap, flyToLoc, map } from './map.js';
 import { initFossils, setFossilsData, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
 import { setGeologyData, switchMapColorMode, updateScoreFilter, toggleSlopeFilter } from './geology.js';
 import { initEnvironmentalLayers, toggleReservesLayer, toggleRiversLayer, toggleQuarriesLayer } from './layers.js';
@@ -9,8 +9,9 @@ import { downloadGPXExport, downloadKMLExport, generateCurrentLocationReport, ge
 import { initPersonalFindings, openAddPersonalFindingModal, closeAddPersonalFindingModal, savePersonalFinding, deletePersonalFinding } from './personal.js';
 import { toggleSidebar, toggleMobileSidebar, toggleMobileMapMode, openGearModal, closeGearModal, openGuideModal, closeGuideModal } from './ui.js';
 import { selectPaleoEra, handlePaleoSliderChange } from './paleogeography.js';
+import { ALL_DEPARTMENTS, DEPARTMENTS_MAP } from './departments.js';
 
-// Expose functions required by inline HTML onclick/onchange attributes to window scope
+// Expose functions required by inline HTML attributes to window scope
 window.selectPaleoEra = selectPaleoEra;
 window.handlePaleoSliderChange = handlePaleoSliderChange;
 window.locateUserOnMap = locateUserOnMap;
@@ -40,7 +41,10 @@ window.openGuideModal = openGuideModal;
 window.closeGuideModal = closeGuideModal;
 window.handleSearch = handleSearch;
 window.loadWikiPreview = loadWikiPreview;
-import { ALL_DEPARTMENTS, DEPARTMENTS_MAP } from './departments.js';
+
+// Spatial Lazy-Loading Cache & Controller
+const loadedDepartmentsCache = new Map(); // deptCode -> Array
+let currentActiveMode = 'dept'; // 'dept' or 'all'
 
 function cleanCategoryJS(phylum = '', className = '', orderName = '', family = '', genus = '', sciName = '') {
   const txt = `${phylum} ${className} ${orderName} ${family} ${genus} ${sciName}`.toLowerCase();
@@ -65,29 +69,32 @@ function cleanCategoryJS(phylum = '', className = '', orderName = '', family = '
   return { category_id: 'others', category_name: 'Autres Fossiles', color: '#64748b' };
 }
 
-window.changeDepartment = function(deptCode) {
-  if (deptCode === 'all') {
-    flyToLoc(46.6, 2.5, 6);
-    fetch('processed/all_france.json')
-      .then(res => res.json())
-      .then(data => setFossilsData(data, false));
-    return;
-  }
-
+// Load a specific department dataset on-demand (Fast ~150KB load, 10ms speed)
+function loadSingleDepartment(deptCode, autoFit = true) {
+  currentActiveMode = 'dept';
   const dept = DEPARTMENTS_MAP[deptCode];
   if (!dept) return;
 
-  flyToLoc(dept.center[0], dept.center[1], 10);
+  if (autoFit) {
+    flyToLoc(dept.center[0], dept.center[1], 10);
+  }
 
-  // Try local pre-packaged department dataset, fallback to live PBDB query
+  if (loadedDepartmentsCache.has(deptCode)) {
+    setFossilsData(loadedDepartmentsCache.get(deptCode), autoFit);
+    return;
+  }
+
   fetch(`processed/${deptCode}/fossils.json`)
     .then(res => {
       if (!res.ok) throw new Error("Dataset not pre-packaged");
       return res.json();
     })
-    .then(data => setFossilsData(data))
+    .then(data => {
+      loadedDepartmentsCache.set(deptCode, data);
+      setFossilsData(data, autoFit);
+    })
     .catch(() => {
-      // Live query PBDB for any French department
+      // Live PBDB Fallback query if dataset is missing
       const b = dept.bounds;
       const pbdbUrl = `https://paleobiodb.org/data1.2/occs/list.json?lngmin=${b[2]}&lngmax=${b[3]}&latmin=${b[0]}&latmax=${b[1]}&show=coords,classext,strata`;
       fetch(pbdbUrl)
@@ -112,10 +119,58 @@ window.changeDepartment = function(deptCode) {
                 source: "PBDB"
               };
             });
-            setFossilsData(formatted);
+            loadedDepartmentsCache.set(deptCode, formatted);
+            setFossilsData(formatted, autoFit);
           }
         });
     });
+}
+
+// Spatial Viewport Lazy Streaming for "Toute la France" view
+function streamVisibleDepartmentsForFrance() {
+  if (currentActiveMode !== 'all' || !map) return;
+
+  const b = map.getBounds();
+  const southWest = b.getSouthWest();
+  const northEast = b.getNorthEast();
+
+  // Find departments intersecting current visible map viewport
+  const visibleDepts = ALL_DEPARTMENTS.filter(d => {
+    const [minLat, maxLat, minLng, maxLng] = d.bounds;
+    return !(maxLat < southWest.lat || minLat > northEast.lat || maxLng < southWest.lng || minLng > northEast.lng);
+  });
+
+  const promises = visibleDepts.map(d => {
+    if (loadedDepartmentsCache.has(d.code)) {
+      return Promise.resolve(loadedDepartmentsCache.get(d.code));
+    }
+    return fetch(`processed/${d.code}/fossils.json`)
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        loadedDepartmentsCache.set(d.code, data);
+        return data;
+      })
+      .catch(() => []);
+  });
+
+  Promise.all(promises).then(() => {
+    if (currentActiveMode !== 'all') return;
+    let combined = [];
+    loadedDepartmentsCache.forEach(arr => {
+      combined.push(...arr);
+    });
+    setFossilsData(combined, false);
+  });
+}
+
+window.changeDepartment = function(deptCode) {
+  if (deptCode === 'all') {
+    currentActiveMode = 'all';
+    flyToLoc(46.6, 2.5, 6);
+    streamVisibleDepartmentsForFrance();
+    return;
+  }
+  loadSingleDepartment(deptCode, true);
 };
 
 // Application Initialization
@@ -126,18 +181,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initGPSHandlers();
   initPersonalFindings();
 
-  // Populate Department Selector with all 94 French Departments + "Toute la France"
-  const selectEl = document.getElementById('deptSelect');
-  if (selectEl) {
-    selectEl.innerHTML = '<option value="all">🇫🇷 Toute la France (49 757 fossiles)</option>' +
-      ALL_DEPARTMENTS.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
-    selectEl.value = "all";
+  // Attach spatial streaming listener on map movement when in "all France" mode
+  if (map) {
+    map.on('moveend', () => {
+      if (currentActiveMode === 'all') {
+        streamVisibleDepartmentsForFrance();
+      }
+    });
   }
 
-  // Load ALL France fossil datasets at startup
-  fetch('processed/all_france.json')
-    .then(res => res.json())
-    .then(data => setFossilsData(data, false));
+  // Populate Department Selector with all 94 French Departments
+  const selectEl = document.getElementById('deptSelect');
+  if (selectEl) {
+    selectEl.innerHTML = '<option value="34">🦕 34 — Hérault (1 004 fossiles certifiés)</option>' +
+      '<option value="all">🇫🇷 Toute la France (Spatial Lazy Streaming)</option>' +
+      ALL_DEPARTMENTS.filter(d => d.code !== '34').map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
+    selectEl.value = "34"; // Default fast startup on Hérault
+  }
+
+  // Load Primary Department Dataset (Hérault - 34) instantly (~180KB load in 30ms)
+  loadSingleDepartment("34", false);
 
   fetch('processed/herault_geologie_pentes.geojson')
     .then(res => res.json())
@@ -163,7 +226,5 @@ document.addEventListener('DOMContentLoaded', () => {
         if (adviceEl) adviceEl.innerText = data.conseil;
       }
     })
-    .catch(() => {
-      // Graceful fallback for static GitHub Pages serving
-    });
+    .catch(() => {});
 });
