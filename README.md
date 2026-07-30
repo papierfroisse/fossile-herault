@@ -6,103 +6,98 @@
 
 ---
 
-## 🏛️ Sources de Données
+## 🏛️ Sources de Données Scientifiques
 
 | Base | Description | Couverture |
 |------|------------|-----------|
-| **MNHN** | Muséum National d'Histoire Naturelle de Paris — Collections & spécimens historiques | 🇫🇷 France entière |
+| **MNHN** | Muséum National d'Histoire Naturelle de Paris — Collections & spécimens historiques certifiés | 🇫🇷 France entière |
 | **PBDB** | Paleobiology Database — Base mondiale de paléontologie (taxonomie, formations, époques) | 🌍 Mondial |
 | **GBIF** | Global Biodiversity Information Facility — Muséums régionaux & universités | 🌍 Mondial |
 
 ---
 
-## 🗺️ Fonctionnalités
+## 🗺️ Fonctionnalités Principales
 
-- **Carte interactive** avec tous les fossiles de France affichés au démarrage sur leurs coordonnées GPS exactes
-- **Icônes visuelles par catégorie** : Dinosaures 🦖, Plantes 🌿, Ammonites 🐚, Mammifères 🦴, Trilobites 🦂, Poissons 🐟
-- **Sélecteur de département** : Choisir "Toute la France" ou zoomer sur l'un des 94 départements
-- **Filtrage par époque géologique** : Permien, Trias, Jurassique, Crétacé, Cénozoïque
-- **Navigation terrain & GPS** : Localisation en direct pour la prospection de terrain
-- **Export terrain** : Fichiers GPX, KML et fiches de terrain PDF
-- **Carnet de découvertes personnelles** : Enregistrer ses propres trouvailles
-- **Recherche** : Par commune, formation géologique ou nom de fossile
-
----
-
-## 🛠️ Stack Technique
-
-- **Frontend** : Vite + ES Modules (vanilla JS)
-- **Cartographie** : Leaflet.js avec rendu Canvas pour performances optimales
-- **Données** : Scripts Python d'ingestion automatique (PBDB API + GBIF API)
-- **Déploiement** : GitHub Pages (statique)
-- **CSS** : Modulaire (main.css, sidebar.css, map.css, mobile.css)
+- 🇫🇷 **Cadrage National par Défaut** : Ouverture au démarrage sur **Toute la France (49 757 fossiles)** à `[46.6, 2.5]`, Zoom 6.
+- ⚡ **Moteur Direct Canvas 60 FPS** : Affichage matériellement accéléré de 50 000 points individuels sans instances DOM lourd ni fuite mémoire.
+- ⏳ **Curseur Temporel & Paléogéographie (350 Ma à Actuel)** :
+  - 🌿 **Carbonifère (~350 Ma)** : Forêts houillères & lagunes Varisques
+  - 🔴 **Permien (~290 Ma)** : Pangée & bassins continentaux arides
+  - 🍊 **Trias (~230 Ma)** : Mer évaporitique
+  - 🐚 **Jurassique (~170 Ma)** : Mer Téthys & récifs d'ammonites (polygones marins organiques)
+  - 🦖 **Crétacé (~100 Ma)** : Archipel européen & dinosaures
+  - 🦴 **Cénozoïque (~30 Ma)** : Naissance des Alpes & faune moderne
+  - 🌐 **Toutes Époques (Actuel)** : Vue globale des 49k fossiles
+- 🤖 **Scoring Prédictif ML (Random Forest 35–98/100)** : Potentiel de découverte calculé pour chaque point selon la précision GPS, la rareté et la lithologie.
+- 📍 **Navigation Terrain & GPS** : Géolocalisation en direct et sélection de points précis sur le terrain.
+- 📄 **Exports Professionnels** : Fichiers GPX, KML et rapports PDF de prospection terrain.
+- 📓 **Carnet de Découvertes Personnelles** : Sauvegarde locale de vos trouvailles paléontologiques.
 
 ---
 
-## 📂 Architecture
+## 🛠️ Stack Technique & Performance
+
+- **Frontend** : Vanilla JavaScript (ES Modules) + HTML5 Canvas Direct 2D Rendering
+- **Bundler & Minification** : Vite.js (Build de production optimisé dans `/assets`)
+- **Cartographie** : Leaflet.js (Moteur de base de dalles) + Direct Hardware Canvas Overlay
+- **Sciences de la Donnée** : Ingestion Python (Pandas, GeoPandas, PBDB API, GBIF API)
+- **Déploiement** : GitHub Pages (Statique)
+
+---
+
+## 📂 Architecture du Projet
 
 ```
 fossile/
-├── index.html                    # Point d'entrée HTML
+├── index.html                    # Point d'entrée HTML (Production Bundle)
+├── assets/                       # Assets compilés et minifiés par Vite
+│   ├── index-BV980feS.js         # Entry script compilé
+│   └── index-Dvx1kN6Z.css        # Styles CSS compilés
 ├── src/
 │   ├── js/
-│   │   ├── main.js               # Initialisation & gestion des départements
+│   │   ├── main.js               # Initialisation & orchestreur national
 │   │   ├── departments.js        # Index des 94 départements français
-│   │   ├── map.js                # Initialisation Leaflet
-│   │   ├── fossils.js            # Rendu des marqueurs fossiles
+│   │   ├── map.js                # Initialisation de la carte Leaflet
+│   │   ├── fossils.js            # Moteur Canvas 60 FPS & popups au clic
 │   │   ├── geology.js            # Couche géologique BRGM
-│   │   ├── paleogeography.js     # Voyage temporel géologique
-│   │   ├── layers.js             # Couches environnementales
-│   │   ├── search.js             # Recherche
-│   │   ├── gps.js                # Navigation GPS
+│   │   ├── paleogeography.js     # Voyage temporel & mers paléogéographiques
+│   │   ├── layers.js             # Couches environnementales & carrières
+│   │   ├── search.js             # Recherche & aperçu Wikipédia
+│   │   ├── gps.js                # Navigation GPS terrain
 │   │   ├── export.js             # Export GPX/KML/PDF
-│   │   ├── personal.js           # Carnet personnel
+│   │   ├── personal.js           # Carnet de trouvailles
 │   │   └── ui.js                 # Interface utilisateur
-│   ├── styles/                   # CSS modulaire
-│   └── data/                     # Scripts Python d'ingestion
-├── processed/                    # Données fossiles par département
+│   ├── styles/                   # Styles modulaires (main, sidebar, map, mobile)
+│   └── data/                     # Scripts Python d'ingestion (MNHN/PBDB/GBIF)
+├── processed/                    # Données JSON optimisées par département
 │   ├── all_france.json           # 49 757 fossiles fusionnés
-│   ├── 01/ ... 95/               # Fichiers par département
-│   └── departments.json          # Index des départements
-└── public/processed/             # Copie pour Vite build
+│   └── 01/ ... 95/               # Fichiers JSON départementaux
+└── public/processed/             # Copie statique pour Vite build
 ```
 
 ---
 
-## 🚀 Installation & Développement
+## 🚀 Installation & Déploiement Local
 
 ```bash
-# Cloner le dépôt
+# 1. Cloner le dépôt
 git clone https://github.com/papierfroisse/fossile-herault.git
 cd fossile-herault
 
-# Installer les dépendances
+# 2. Installer les dépendances
 npm install
 
-# Lancer le serveur de développement
+# 3. Lancer le serveur de développement local
 npm run dev
 
-# Construire pour la production
+# 4. Construire pour la production
 npx vite build
 ```
 
 ---
 
-## 📊 Données par Département (extrait)
+## 🚀 Feuille de Route d'Optimisation (Prochaines étapes)
 
-| Département | Fossiles | Sources |
-|-------------|----------|---------|
-| 34 — Hérault | 552 | MNHN, PBDB, GBIF |
-| 30 — Gard | 776 | MNHN, PBDB, GBIF |
-| 75 — Paris | 596 | MNHN, PBDB, GBIF |
-| 13 — Bouches-du-Rhône | 329 | MNHN, PBDB, GBIF |
-| 89 — Yonne | 948 | MNHN, PBDB, GBIF |
-| 78 — Yvelines | 860 | MNHN, PBDB, GBIF |
-| ... | ... | ... |
-| **Total** | **49 757** | **3 bases** |
-
----
-
-## 📜 Licence
-
-Projet open-source. Données scientifiques sous licences respectives (MNHN, PBDB CC BY, GBIF).
+- 🧩 **Tuilage Raster/Vectoriel de Densité (Inspiration Flightradar24 / Strava Heatmap)** : Pré-générer une pyramide de tuiles pour les vues nationales (Zoom 4 à 8) afin de réduire la charge CPU à 0 ms.
+- 📦 **Structure de Données Binaires (`Float32Array`)** : Stockage binaire ultra-compact en mémoire RAM pour éliminer 100% des opérations de Garbage Collection.
+- ⚡ **Multi-threading Web Workers** : Déporter le filtrage par époques et par score prédictif dans un worker séparé.
