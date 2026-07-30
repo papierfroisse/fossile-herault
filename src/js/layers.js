@@ -7,9 +7,9 @@ export let reservesLayer = null;
 export let citiesLayerGroup = null;
 export let landmarksLayerGroup = null;
 
-let isReservesEnabled = true;
-let isQuarriesEnabled = true;
-let isRiversEnabled = true;
+let isReservesEnabled = false;
+let isQuarriesEnabled = false;
+let isRiversEnabled = false;
 
 export function initEnvironmentalLayers() {
   citiesLayerGroup = L.layerGroup();
@@ -124,7 +124,7 @@ export function initEnvironmentalLayers() {
     <a href="https://sciencepress.mnhn.fr/sites/default/files/articles/pdf/comptes-rendus-palevol2013v12f2a02.pdf" target="_blank" class="popup-tag" style="color:#10b981; border-color:#10b981;">📄 Lire la publication MNHN (2013)</a>
   `).addTo(landmarksLayerGroup);
 
-  // Dynamic zoom listener to hide fixed HTML badges on low zoom levels
+  // Dynamic zoom listener
   map.on('zoomend', updateLayerVisibility);
   updateLayerVisibility();
 }
@@ -133,22 +133,31 @@ function updateLayerVisibility() {
   if (!map) return;
   const zoom = map.getZoom();
 
-  // Show HTML DivIcon badges (Cities, Quarries, Reserves, Landmarks) ONLY at Zoom >= 10
-  if (zoom >= 10) {
+  // Landmarks & Cities only at high zoom (Zoom >= 12)
+  if (zoom >= 12) {
     if (citiesLayerGroup && !map.hasLayer(citiesLayerGroup)) map.addLayer(citiesLayerGroup);
     if (landmarksLayerGroup && !map.hasLayer(landmarksLayerGroup)) map.addLayer(landmarksLayerGroup);
-    if (isReservesEnabled && reservesLayer && !map.hasLayer(reservesLayer)) map.addLayer(reservesLayer);
-    if (isQuarriesEnabled && quarriesLayer && !map.hasLayer(quarriesLayer)) map.addLayer(quarriesLayer);
   } else {
     if (citiesLayerGroup && map.hasLayer(citiesLayerGroup)) map.removeLayer(citiesLayerGroup);
     if (landmarksLayerGroup && map.hasLayer(landmarksLayerGroup)) map.removeLayer(landmarksLayerGroup);
+  }
+
+  // Reserves & Quarries ONLY when enabled AND zoom >= 11
+  if (isReservesEnabled && zoom >= 11) {
+    if (reservesLayer && !map.hasLayer(reservesLayer)) map.addLayer(reservesLayer);
+  } else {
     if (reservesLayer && map.hasLayer(reservesLayer)) map.removeLayer(reservesLayer);
+  }
+
+  if (isQuarriesEnabled && zoom >= 11) {
+    if (quarriesLayer && !map.hasLayer(quarriesLayer)) map.addLayer(quarriesLayer);
+  } else {
     if (quarriesLayer && map.hasLayer(quarriesLayer)) map.removeLayer(quarriesLayer);
   }
 
-  // Rivers Layer at Zoom >= 11
+  // Rivers Layer at Zoom >= 12
   if (riversLayer) {
-    if (isRiversEnabled && zoom >= 11) {
+    if (isRiversEnabled && zoom >= 12) {
       if (!map.hasLayer(riversLayer)) map.addLayer(riversLayer);
     } else {
       if (map.hasLayer(riversLayer)) map.removeLayer(riversLayer);
