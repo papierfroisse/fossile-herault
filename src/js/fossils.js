@@ -1,4 +1,4 @@
-// Fossil Dataset Management & Marker Rendering (High-Performance Canvas & BBox Filter)
+// High-Performance Fossil Dataset Management & Marker Clustering
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
@@ -9,18 +9,42 @@ export let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammal
 export let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
 export let selectedPeriodFilter = "";
 
-let isRendering = false;
-
 export function initFossils() {
-  fossilsLayerGroup = L.layerGroup().addTo(map);
-  
-  if (map) {
-    map.on('moveend', () => {
-      renderFossils();
-    });
-    map.on('zoomend', () => {
-      renderFossils();
-    });
+  // Use Leaflet MarkerClusterGroup with chunked background loading for 60FPS zero-lag performance
+  if (window.L && typeof L.markerClusterGroup === 'function') {
+    fossilsLayerGroup = L.markerClusterGroup({
+      chunkedLoading: true,
+      chunkInterval: 100,
+      chunkDelay: 15,
+      maxClusterRadius: 45,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      disableClusteringAtZoom: 13,
+      iconCreateFunction: function(cluster) {
+        const count = cluster.getChildCount();
+        let bg = 'rgba(2, 132, 199, 0.9)'; // Blue for small
+        let border = '#38bdf8';
+        if (count >= 1000) {
+          bg = 'rgba(220, 38, 38, 0.92)'; // Red for 1k+
+          border = '#fca5a5';
+        } else if (count >= 100) {
+          bg = 'rgba(217, 119, 6, 0.92)'; // Orange for 100+
+          border = '#fcd34d';
+        }
+
+        const displayCount = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
+
+        return L.divIcon({
+          html: `<div style="background:${bg}; color:#ffffff; font-weight:800; font-family:'Outfit',sans-serif; border:2px solid ${border}; box-shadow:0 3px 12px rgba(0,0,0,0.5); border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; font-size:12px; text-shadow:0 1px 2px rgba(0,0,0,0.6);"><span>${displayCount}</span></div>`,
+          className: 'custom-cluster-badge',
+          iconSize: [38, 38],
+          iconAnchor: [19, 19]
+        });
+      }
+    }).addTo(map);
+  } else {
+    fossilsLayerGroup = L.layerGroup().addTo(map);
   }
 
   // Attach global handler for inline Wiki preview calls in popups
@@ -61,12 +85,6 @@ export function renderFossils() {
   if (!fossilsLayerGroup || !map) return;
   
   fossilsLayerGroup.clearLayers();
-  
-  const currentZoom = map.getZoom();
-  const mapBounds = map.getBounds().pad(0.15); // Add margin to prevent blank edges during pan
-
-  let totalMatchingCount = 0;
-  let renderedCount = 0;
 
   const categoryIcons = {
     'dinosaurs_reptiles': { icon: 'fa-dragon', color: '#ef4444', label: 'Dinosaures / Reptiles' },
@@ -78,7 +96,9 @@ export function renderFossils() {
     'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
   };
 
-  // Fast loop using single pass & bounding box filtering
+  const markersToAdd = [];
+  let totalMatchingCount = 0;
+
   for (let i = 0; i < fossilsData.length; i++) {
     const item = fossilsData[i];
 
@@ -103,11 +123,6 @@ export function renderFossils() {
 
     totalMatchingCount++;
 
-    // VIEWPORT BOUNDING BOX CHECK — ONLY RENDER VISIBLE MARKERS!
-    if (!mapBounds.contains([item.lat, item.lng])) continue;
-
-    renderedCount++;
-
     const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
     let faIcon = iconConfig.icon;
 
@@ -120,31 +135,15 @@ export function renderFossils() {
       else markerColor = '#0284c7';
     }
 
-    let marker;
-
-    // When zoomed out (< 9), render ultra-fast Canvas circle markers to eliminate DOM overhead
-    if (currentZoom < 9) {
-      const radius = currentZoom >= 7 ? 4.5 : 3.5;
-      marker = L.circleMarker([item.lat, item.lng], {
-        pane: 'fossilsPane',
-        radius: radius,
-        fillColor: markerColor,
-        color: '#ffffff',
-        weight: 0.8,
-        fillOpacity: 0.85
-      });
-    } else {
-      // High Zoom (>= 9): Render full DivIcon HTML badges with FontAwesome icons
-      marker = L.marker([item.lat, item.lng], {
-        pane: 'fossilsPane',
-        icon: L.divIcon({
-          className: 'custom-fossil-icon',
-          html: `<div style="background:${markerColor}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
-          iconSize: [22, 22],
-          iconAnchor: [11, 11]
-        })
-      });
-    }
+    const marker = L.marker([item.lat, item.lng], {
+      pane: 'fossilsPane',
+      icon: L.divIcon({
+        className: 'custom-fossil-icon',
+        html: `<div style="background:${markerColor}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      })
+    });
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
     const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
@@ -189,7 +188,14 @@ export function renderFossils() {
       </div>
     `;
     marker.bindPopup(popupContent);
-    fossilsLayerGroup.addLayer(marker);
+    markersToAdd.push(marker);
+  }
+
+  // Add all markers to Cluster Group at once (uses chunkedLoading internally)
+  if (fossilsLayerGroup.addLayers) {
+    fossilsLayerGroup.addLayers(markersToAdd);
+  } else {
+    markersToAdd.forEach(m => fossilsLayerGroup.addLayer(m));
   }
 
   const statEl = document.getElementById('stat-fossils');
