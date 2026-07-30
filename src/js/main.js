@@ -190,17 +190,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Populate Department Selector with all 94 French Departments
+  // Populate Department Selector with all 94 French Departments + "Toute la France" (Default Startup)
   const selectEl = document.getElementById('deptSelect');
   if (selectEl) {
-    selectEl.innerHTML = '<option value="34">🦕 34 — Hérault (1 004 fossiles certifiés)</option>' +
-      '<option value="all">🇫🇷 Toute la France (Spatial Lazy Streaming)</option>' +
-      ALL_DEPARTMENTS.filter(d => d.code !== '34').map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
-    selectEl.value = "34"; // Default fast startup on Hérault
+    selectEl.innerHTML = '<option value="all">🇫🇷 Toute la France (49 757 fossiles)</option>' +
+      ALL_DEPARTMENTS.map(d => `<option value="${d.code}">${d.code} — ${d.name}</option>`).join('');
+    selectEl.value = "all";
   }
 
-  // Load Primary Department Dataset (Hérault - 34) instantly (~180KB load in 30ms)
-  loadSingleDepartment("34", false);
+  // Startup default mode: All France Spatial Lazy Streaming
+  currentActiveMode = 'all';
+  streamVisibleDepartmentsForFrance();
 
   fetch('processed/herault_geologie_pentes.geojson')
     .then(res => res.json())

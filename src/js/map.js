@@ -3,8 +3,8 @@ export let map;
 
 export function initMap() {
   map = L.map('map', {
-    center: [43.55, 3.45],
-    zoom: 10,
+    center: [46.6, 2.5],
+    zoom: 6,
     zoomControl: false,
     renderer: L.canvas()
   });
