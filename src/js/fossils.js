@@ -1,4 +1,4 @@
-// High-Performance Fossil Dataset Management & Marker Clustering
+// High-Performance Individual Canvas Point Rendering (No Clustering / Exact GPS Points)
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
@@ -9,42 +9,20 @@ export let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammal
 export let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
 export let selectedPeriodFilter = "";
 
+let canvasRenderer;
+
 export function initFossils() {
-  // Use Leaflet MarkerClusterGroup with chunked background loading for 60FPS zero-lag performance
-  if (window.L && typeof L.markerClusterGroup === 'function') {
-    fossilsLayerGroup = L.markerClusterGroup({
-      chunkedLoading: true,
-      chunkInterval: 100,
-      chunkDelay: 15,
-      maxClusterRadius: 45,
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-      disableClusteringAtZoom: 13,
-      iconCreateFunction: function(cluster) {
-        const count = cluster.getChildCount();
-        let bg = 'rgba(2, 132, 199, 0.9)'; // Blue for small
-        let border = '#38bdf8';
-        if (count >= 1000) {
-          bg = 'rgba(220, 38, 38, 0.92)'; // Red for 1k+
-          border = '#fca5a5';
-        } else if (count >= 100) {
-          bg = 'rgba(217, 119, 6, 0.92)'; // Orange for 100+
-          border = '#fcd34d';
-        }
-
-        const displayCount = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
-
-        return L.divIcon({
-          html: `<div style="background:${bg}; color:#ffffff; font-weight:800; font-family:'Outfit',sans-serif; border:2px solid ${border}; box-shadow:0 3px 12px rgba(0,0,0,0.5); border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; font-size:12px; text-shadow:0 1px 2px rgba(0,0,0,0.6);"><span>${displayCount}</span></div>`,
-          className: 'custom-cluster-badge',
-          iconSize: [38, 38],
-          iconAnchor: [19, 19]
-        });
-      }
-    }).addTo(map);
-  } else {
-    fossilsLayerGroup = L.layerGroup().addTo(map);
+  // Dedicated HTML5 Canvas Renderer for zero-lag rendering of tens of thousands of individual points
+  canvasRenderer = L.canvas({ padding: 0.3 });
+  fossilsLayerGroup = L.layerGroup().addTo(map);
+  
+  if (map) {
+    map.on('moveend', () => {
+      renderFossils();
+    });
+    map.on('zoomend', () => {
+      renderFossils();
+    });
   }
 
   // Attach global handler for inline Wiki preview calls in popups
@@ -86,6 +64,12 @@ export function renderFossils() {
   
   fossilsLayerGroup.clearLayers();
 
+  const currentZoom = map.getZoom();
+  const mapBounds = map.getBounds().pad(0.2); // Spatial viewport check for 60FPS speed
+
+  let totalMatchingCount = 0;
+  let visibleCount = 0;
+
   const categoryIcons = {
     'dinosaurs_reptiles': { icon: 'fa-dragon', color: '#ef4444', label: 'Dinosaures / Reptiles' },
     'molluscs':           { icon: 'fa-ring', color: '#0284c7', label: 'Mollusques / Ammonites' },
@@ -96,8 +80,8 @@ export function renderFossils() {
     'others':             { icon: 'fa-circle-dot', color: '#64748b', label: 'Autres' }
   };
 
-  const markersToAdd = [];
-  let totalMatchingCount = 0;
+  // Dynamic point radius based on zoom level for maximum clarity
+  const r = currentZoom >= 13 ? 6.5 : (currentZoom >= 10 ? 4.5 : (currentZoom >= 8 ? 3.5 : 2.5));
 
   for (let i = 0; i < fossilsData.length; i++) {
     const item = fossilsData[i];
@@ -123,6 +107,11 @@ export function renderFossils() {
 
     totalMatchingCount++;
 
+    // Spatial viewport check: only render points currently in view (zero lag!)
+    if (!mapBounds.contains([item.lat, item.lng])) continue;
+
+    visibleCount++;
+
     const iconConfig = categoryIcons[item.category_id] || categoryIcons['others'];
     let faIcon = iconConfig.icon;
 
@@ -135,14 +124,15 @@ export function renderFossils() {
       else markerColor = '#0284c7';
     }
 
-    const marker = L.marker([item.lat, item.lng], {
+    // Render individual exact GPS point onto HTML5 Canvas Context (NO CLUSTERING, NO DOM OVERHEAD)
+    const marker = L.circleMarker([item.lat, item.lng], {
       pane: 'fossilsPane',
-      icon: L.divIcon({
-        className: 'custom-fossil-icon',
-        html: `<div style="background:${markerColor}; color:#ffffff; width:22px; height:22px; border-radius:50%; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:10px;"><i class="fa-solid ${faIcon}"></i></div>`,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11]
-      })
+      renderer: canvasRenderer,
+      radius: r,
+      fillColor: markerColor,
+      color: '#ffffff',
+      weight: currentZoom >= 11 ? 1.2 : 0.6,
+      fillOpacity: 0.88
     });
 
     const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
@@ -188,14 +178,7 @@ export function renderFossils() {
       </div>
     `;
     marker.bindPopup(popupContent);
-    markersToAdd.push(marker);
-  }
-
-  // Add all markers to Cluster Group at once (uses chunkedLoading internally)
-  if (fossilsLayerGroup.addLayers) {
-    fossilsLayerGroup.addLayers(markersToAdd);
-  } else {
-    markersToAdd.forEach(m => fossilsLayerGroup.addLayer(m));
+    fossilsLayerGroup.addLayer(marker);
   }
 
   const statEl = document.getElementById('stat-fossils');
