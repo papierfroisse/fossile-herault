@@ -161,29 +161,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // DEFAULT STARTUP VIEW: ALL OF FRANCE
   loadAllFranceData();
 
+  // Invalidate Leaflet map size once DOM layout is stable
+  setTimeout(() => {
+    if (map) {
+      map.invalidateSize();
+    }
+  }, 300);
+
   fetch('processed/herault_geologie_pentes.geojson')
     .then(res => res.json())
-    .then(data => setGeologyData(data));
-
-  // Seasonality API / static widget
-  fetch('/api/seasonality')
-    .then(res => res.json())
-    .then(data => {
-      if (data && data.mois) {
-        const monthEl = document.getElementById('season-month');
-        const scoreEl = document.getElementById('season-score');
-        const condEl = document.getElementById('season-condition');
-        const adviceEl = document.getElementById('season-advice');
-        if (monthEl) monthEl.innerText = data.mois;
-        if (scoreEl) {
-          scoreEl.innerText = data.score_saison + ' / 100';
-          if (data.score_saison >= 80) scoreEl.style.color = '#34d399';
-          else if (data.score_saison >= 60) scoreEl.style.color = '#f59e0b';
-          else scoreEl.style.color = '#ef4444';
-        }
-        if (condEl) condEl.innerText = data.condition;
-        if (adviceEl) adviceEl.innerText = data.conseil;
-      }
-    })
+    .then(data => setGeologyData(data))
     .catch(() => {});
+
+  // Seasonality static widget (No 404 API calls)
+  const currentMonthName = new Date().toLocaleDateString('fr-FR', { month: 'long' });
+  const capitalizedMonth = currentMonthName.charAt(0).toUpperCase() + currentMonthName.slice(1);
+
+  const monthEl = document.getElementById('season-month');
+  const scoreEl = document.getElementById('season-score');
+  const condEl = document.getElementById('season-condition');
+  const adviceEl = document.getElementById('season-advice');
+
+  if (monthEl) monthEl.innerText = capitalizedMonth;
+  if (scoreEl) {
+    scoreEl.innerText = '75 / 100';
+    scoreEl.style.color = '#34d399';
+  }
+  if (condEl) condEl.innerText = "Conditions Favorables (Terrain Sec & Niveau D'eau Bas)";
+  if (adviceEl) adviceEl.innerText = "Saison idéale pour prospecter les lits de cours d'eau asséchés et affleurements.";
 });
