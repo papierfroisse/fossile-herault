@@ -1,5 +1,5 @@
 // Hardware-Accelerated 60 FPS Canvas Point Engine for 50,000+ Fossils
-// Features: 2D Spatial Grid Indexing & Zero-DOM Direct Canvas Rendering
+// Features: 2D Spatial Grid Indexing, Low-Zoom Density Clusters & Zero-DOM Direct Canvas Rendering
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
@@ -170,56 +170,113 @@ export function renderFossils() {
   let totalMatchingCount = 0;
   currentVisibleItems = [];
 
-  for (let i = 0; i < candidates.length; i++) {
-    const item = candidates[i];
+  // Low Zoom Level (Zoom < 7): Screen density aggregation for clean country overview
+  if (currentZoom < 7) {
+    const bucketSize = 30; // 30px screen buckets
+    const densityMap = new Map();
 
-    if (!activeCategories.has(item.category_id)) continue;
+    for (let i = 0; i < candidates.length; i++) {
+      const item = candidates[i];
+      if (!activeCategories.has(item.category_id)) continue;
+      if (!activeSources.has(item.source || 'PBDB')) continue;
 
-    const src = item.source || 'PBDB';
-    if (!activeSources.has(src)) continue;
+      const itemScore = item.score_potentiel || 60;
+      if (itemScore < minScoreThreshold) continue;
 
-    const itemScore = item.score_potentiel || 60;
-    if (itemScore < minScoreThreshold) continue;
+      if (selectedPeriodFilter) {
+        const p = (item.period || "").toLowerCase();
+        if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) continue;
+        if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) continue;
+        if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) continue;
+        if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) continue;
+        if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) continue;
+      }
 
-    // Filter by geological period
-    if (selectedPeriodFilter) {
-      const p = (item.period || "").toLowerCase();
-      if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) continue;
-      if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) continue;
-      if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) continue;
-      if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) continue;
-      if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) continue;
+      totalMatchingCount++;
+
+      if (!mapBounds.contains([item.lat, item.lng])) continue;
+
+      const pt = map.latLngToContainerPoint([item.lat, item.lng]);
+      const bx = Math.floor(pt.x / bucketSize);
+      const by = Math.floor(pt.y / bucketSize);
+      const key = `${bx}_${by}`;
+
+      if (!densityMap.has(key)) {
+        densityMap.set(key, { sumX: 0, sumY: 0, count: 0, sampleItem: item });
+      }
+      const b = densityMap.get(key);
+      b.sumX += pt.x;
+      b.sumY += pt.y;
+      b.count++;
     }
 
-    totalMatchingCount++;
+    // Render density spots
+    densityMap.forEach(b => {
+      const avgX = b.sumX / b.count;
+      const avgY = b.sumY / b.count;
+      const radius = Math.min(14, 3 + Math.log2(b.count) * 2.2);
 
-    if (!mapBounds.contains([item.lat, item.lng])) continue;
+      ctx.beginPath();
+      ctx.arc(avgX, avgY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = b.count > 50 ? 'rgba(239, 68, 68, 0.85)' : (b.count > 15 ? 'rgba(249, 115, 22, 0.8)' : 'rgba(56, 189, 248, 0.75)');
+      ctx.fill();
 
-    const pt = map.latLngToContainerPoint([item.lat, item.lng]);
-
-    // Color calculation
-    let markerColor = categoryColors[item.category_id] || '#64748b';
-    if (currentMapColorMode === 'score') {
-      if (itemScore >= 80) markerColor = '#dc2626';
-      else if (itemScore >= 68) markerColor = '#ea580c';
-      else if (itemScore >= 55) markerColor = '#f59e0b';
-      else markerColor = '#0284c7';
-    }
-
-    // Direct Hardware-Accelerated Canvas Draw Pass
-    ctx.beginPath();
-    ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
-    ctx.fillStyle = markerColor;
-    ctx.fill();
-
-    if (currentZoom >= 11) {
-      ctx.strokeStyle = '#ffffff';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.lineWidth = 1;
       ctx.stroke();
-    }
 
-    // Store container point for instant click detection
-    currentVisibleItems.push({ item, x: pt.x, y: pt.y });
+      currentVisibleItems.push({ item: b.sampleItem, x: avgX, y: avgY });
+    });
+
+  } else {
+    // Zoom >= 7: Exact GPS Individual Canvas Markers
+    for (let i = 0; i < candidates.length; i++) {
+      const item = candidates[i];
+
+      if (!activeCategories.has(item.category_id)) continue;
+
+      const src = item.source || 'PBDB';
+      if (!activeSources.has(src)) continue;
+
+      const itemScore = item.score_potentiel || 60;
+      if (itemScore < minScoreThreshold) continue;
+
+      if (selectedPeriodFilter) {
+        const p = (item.period || "").toLowerCase();
+        if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) continue;
+        if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) continue;
+        if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) continue;
+        if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) continue;
+        if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) continue;
+      }
+
+      totalMatchingCount++;
+
+      if (!mapBounds.contains([item.lat, item.lng])) continue;
+
+      const pt = map.latLngToContainerPoint([item.lat, item.lng]);
+
+      let markerColor = categoryColors[item.category_id] || '#64748b';
+      if (currentMapColorMode === 'score') {
+        if (itemScore >= 80) markerColor = '#dc2626';
+        else if (itemScore >= 68) markerColor = '#ea580c';
+        else if (itemScore >= 55) markerColor = '#f59e0b';
+        else markerColor = '#0284c7';
+      }
+
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = markerColor;
+      ctx.fill();
+
+      if (currentZoom >= 11) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      currentVisibleItems.push({ item, x: pt.x, y: pt.y });
+    }
   }
 
   const statEl = document.getElementById('stat-fossils');
