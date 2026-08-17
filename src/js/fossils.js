@@ -1,4 +1,5 @@
 // Hardware-Accelerated 60 FPS Canvas Point Engine for 50,000+ Fossils
+// Features: 2D Spatial Grid Indexing & Zero-DOM Direct Canvas Rendering
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
@@ -10,6 +11,10 @@ export let selectedPeriodFilter = "";
 
 let canvasOverlayElement = null;
 let currentVisibleItems = [];
+
+// 2D Spatial Grid Indexing (0.5 degree cells) for sub-millisecond viewport queries
+let spatialGrid = new Map();
+const GRID_SIZE = 0.5;
 
 const categoryColors = {
   'dinosaurs_reptiles': '#ef4444',
@@ -73,8 +78,46 @@ function syncCanvasSize() {
   renderFossils();
 }
 
+function buildSpatialGrid(data) {
+  spatialGrid.clear();
+  for (let i = 0; i < data.length; i++) {
+    const item = data[i];
+    const gridX = Math.floor(item.lat / GRID_SIZE);
+    const gridY = Math.floor(item.lng / GRID_SIZE);
+    const key = `${gridX}_${gridY}`;
+    if (!spatialGrid.has(key)) {
+      spatialGrid.set(key, []);
+    }
+    spatialGrid.get(key).push(item);
+  }
+}
+
+function getCandidatesInViewport(mapBounds) {
+  if (spatialGrid.size === 0) return fossilsData;
+
+  const minX = Math.floor(mapBounds.getSouth() / GRID_SIZE);
+  const maxX = Math.floor(mapBounds.getNorth() / GRID_SIZE);
+  const minY = Math.floor(mapBounds.getWest() / GRID_SIZE);
+  const maxY = Math.floor(mapBounds.getEast() / GRID_SIZE);
+
+  const candidateItems = [];
+  for (let x = minX; x <= maxX; x++) {
+    for (let y = minY; y <= maxY; y++) {
+      const key = `${x}_${y}`;
+      const cellItems = spatialGrid.get(key);
+      if (cellItems) {
+        for (let i = 0; i < cellItems.length; i++) {
+          candidateItems.push(cellItems[i]);
+        }
+      }
+    }
+  }
+  return candidateItems;
+}
+
 export function setFossilsData(data, autoFit = true) {
   fossilsData = data || [];
+  buildSpatialGrid(fossilsData);
   renderFossils();
 
   if (autoFit && data && data.length > 0 && map) {
@@ -115,17 +158,20 @@ export function renderFossils() {
 
   ctx.clearRect(0, 0, size.x, size.y);
 
-  const mapBounds = map.getBounds().pad(0.1);
+  const mapBounds = map.getBounds().pad(0.08);
   const currentZoom = map.getZoom();
 
-  // Ultra-crisp point radius scaling
+  // Crisp point radius scaling
   const r = currentZoom >= 13 ? 6.0 : (currentZoom >= 10 ? 4.0 : (currentZoom >= 8 ? 2.5 : 1.8));
+
+  // Query 2D spatial grid index for sub-millisecond candidate retrieval
+  const candidates = getCandidatesInViewport(mapBounds);
 
   let totalMatchingCount = 0;
   currentVisibleItems = [];
 
-  for (let i = 0; i < fossilsData.length; i++) {
-    const item = fossilsData[i];
+  for (let i = 0; i < candidates.length; i++) {
+    const item = candidates[i];
 
     if (!activeCategories.has(item.category_id)) continue;
 
@@ -160,7 +206,7 @@ export function renderFossils() {
       else markerColor = '#0284c7';
     }
 
-    // Direct 60 FPS Hardware-Accelerated Canvas Draw Pass
+    // Direct Hardware-Accelerated Canvas Draw Pass
     ctx.beginPath();
     ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
     ctx.fillStyle = markerColor;
