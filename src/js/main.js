@@ -9,8 +9,17 @@ import { map, initMap, flyToLoc } from './map.js';
 import { initFossils, setFossilsData } from './fossils.js';
 import { setGeologyData } from './geology.js';
 import { initEnvironmentalLayers } from './layers.js';
-import { initGPSHandlers } from './gps.js';
+import { initGPSHandlers, locateUserOnMap, togglePointSelectionMode, openCustomPointPopup } from './gps.js';
 import { initPersonalFindings } from './personal.js';
+import { downloadGPXExport, downloadKMLExport, generateCurrentLocationReport, generateCustomLocationReport } from './export.js';
+
+window.locateUserOnMap = locateUserOnMap;
+window.togglePointSelectionMode = togglePointSelectionMode;
+window.openCustomPointPopup = openCustomPointPopup;
+window.downloadGPXExport = downloadGPXExport;
+window.downloadKMLExport = downloadKMLExport;
+window.generateCurrentLocationReport = generateCurrentLocationReport;
+window.generateCustomLocationReport = generateCustomLocationReport;
 
 let loadedDepartmentsCache = new Map();
 let currentActiveMode = 'all';
