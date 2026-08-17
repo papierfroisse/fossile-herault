@@ -6,13 +6,17 @@ import '../styles/mobile.css';
 
 import { ALL_DEPARTMENTS } from './departments.js';
 import { map, initMap, flyToLoc } from './map.js';
-import { initFossils, setFossilsData } from './fossils.js';
-import { setGeologyData } from './geology.js';
-import { initEnvironmentalLayers } from './layers.js';
+import { initFossils, setFossilsData, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
+import { setGeologyData, switchMapColorMode, updateScoreFilter, toggleSlopeFilter } from './geology.js';
+import { initEnvironmentalLayers, toggleReservesLayer, toggleRiversLayer, toggleQuarriesLayer } from './layers.js';
 import { initGPSHandlers, locateUserOnMap, togglePointSelectionMode, openCustomPointPopup } from './gps.js';
-import { initPersonalFindings } from './personal.js';
+import { initPersonalFindings, openAddPersonalFindingModal, closeAddPersonalFindingModal, savePersonalFinding, deletePersonalFinding } from './personal.js';
 import { downloadGPXExport, downloadKMLExport, generateCurrentLocationReport, generateCustomLocationReport } from './export.js';
+import { toggleSidebar, toggleMobileSidebar, toggleMobileMapMode, openGearModal, closeGearModal, openGuideModal, closeGuideModal } from './ui.js';
+import { handleSearch, loadWikiPreview } from './search.js';
+import { selectPaleoEra, handlePaleoSliderChange } from './paleogeography.js';
 
+// Expose all UI event handlers on window for inline HTML onclick/onchange handlers
 window.locateUserOnMap = locateUserOnMap;
 window.togglePointSelectionMode = togglePointSelectionMode;
 window.openCustomPointPopup = openCustomPointPopup;
@@ -20,6 +24,37 @@ window.downloadGPXExport = downloadGPXExport;
 window.downloadKMLExport = downloadKMLExport;
 window.generateCurrentLocationReport = generateCurrentLocationReport;
 window.generateCustomLocationReport = generateCustomLocationReport;
+
+window.toggleSidebar = toggleSidebar;
+window.toggleMobileSidebar = toggleMobileSidebar;
+window.toggleMobileMapMode = toggleMobileMapMode;
+window.openGearModal = openGearModal;
+window.closeGearModal = closeGearModal;
+window.openGuideModal = openGuideModal;
+window.closeGuideModal = closeGuideModal;
+
+window.handleSearch = handleSearch;
+window.loadWikiPreview = loadWikiPreview;
+
+window.selectPaleoEra = selectPaleoEra;
+window.handlePaleoSliderChange = handlePaleoSliderChange;
+
+window.switchMapColorMode = switchMapColorMode;
+window.updateScoreFilter = updateScoreFilter;
+window.toggleSlopeFilter = toggleSlopeFilter;
+
+window.toggleReservesLayer = toggleReservesLayer;
+window.toggleRiversLayer = toggleRiversLayer;
+window.toggleQuarriesLayer = toggleQuarriesLayer;
+
+window.toggleCategory = toggleCategory;
+window.toggleSourceFilter = toggleSourceFilter;
+window.filterByPeriod = filterByPeriod;
+
+window.openAddPersonalFindingModal = openAddPersonalFindingModal;
+window.closeAddPersonalFindingModal = closeAddPersonalFindingModal;
+window.savePersonalFinding = savePersonalFinding;
+window.deletePersonalFinding = deletePersonalFinding;
 
 let loadedDepartmentsCache = new Map();
 let currentActiveMode = 'all';
