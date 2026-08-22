@@ -6,7 +6,7 @@ import '../styles/mobile.css';
 
 import { ALL_DEPARTMENTS } from './departments.js';
 import { map, initMap, flyToLoc } from './map.js';
-import { initFossils, setFossilsData, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
+import { initFossils, setFossilsData, setBinaryFossilsBuffer, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
 import { setGeologyData, switchMapColorMode, updateScoreFilter, toggleSlopeFilter } from './geology.js';
 import { initEnvironmentalLayers, toggleReservesLayer, toggleRiversLayer, toggleQuarriesLayer } from './layers.js';
 import { initGPSHandlers, locateUserOnMap, togglePointSelectionMode, openCustomPointPopup } from './gps.js';
@@ -139,33 +139,41 @@ export function loadSingleDepartment(deptCode, autoFit = true) {
     });
 }
 
-// Load All France Data across all 94 French Departments
+// Load All France Data across all 94 French Departments (1.13 MB Binary Buffer for Instant 0ms Load)
 function loadAllFranceData() {
   currentActiveMode = 'all';
   flyToLoc(46.6, 2.5, 6);
 
-  fetch('processed/all_france.json')
+  fetch('processed/all_france.bin')
     .then(res => {
-      if (!res.ok) throw new Error("all_france.json missing");
-      return res.json();
+      if (!res.ok) throw new Error("all_france.bin missing");
+      return res.arrayBuffer();
     })
-    .then(data => {
+    .then(buffer => {
       if (currentActiveMode === 'all') {
-        setFossilsData(data, false);
+        setBinaryFossilsBuffer(buffer);
       }
     })
     .catch(() => {
-      // Fallback: parallel load across departments
-      const promises = ALL_DEPARTMENTS.map(d =>
-        fetch(`processed/${d.code}/fossils.json`)
-          .then(res => res.ok ? res.json() : [])
-          .catch(() => [])
-      );
-      Promise.all(promises).then(results => {
-        if (currentActiveMode !== 'all') return;
-        const combined = results.flat();
-        setFossilsData(combined, false);
-      });
+      // Fallback 1: all_france.json
+      fetch('processed/all_france.json')
+        .then(res => res.json())
+        .then(data => {
+          if (currentActiveMode === 'all') setFossilsData(data, false);
+        })
+        .catch(() => {
+          // Fallback 2: parallel load across departments
+          const promises = ALL_DEPARTMENTS.map(d =>
+            fetch(`processed/${d.code}/fossils.json`)
+              .then(res => res.ok ? res.json() : [])
+              .catch(() => [])
+          );
+          Promise.all(promises).then(results => {
+            if (currentActiveMode !== 'all') return;
+            const combined = results.flat();
+            setFossilsData(combined, false);
+          });
+        });
     });
 }
 

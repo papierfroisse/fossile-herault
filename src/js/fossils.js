@@ -115,6 +115,36 @@ function getCandidatesInViewport(mapBounds) {
   return candidateItems;
 }
 
+export function setBinaryFossilsBuffer(buffer) {
+  if (!buffer) return;
+  const floatView = new Float32Array(buffer);
+  const total = Math.floor(floatView.length / 6);
+  const cats = ['dinosaurs_reptiles', 'molluscs', 'plants', 'arthropods', 'mammals', 'fish', 'others'];
+  const srcs = ['MNHN', 'PBDB', 'BRGM'];
+  const periods = ['Carbonifère', 'Permien', 'Trias', 'Jurassique', 'Crétacé', 'Cénozoïque', 'Ordovicien', 'Mésozoïque'];
+
+  const items = new Array(total);
+  for (let i = 0; i < total; i++) {
+    const off = i * 6;
+    const catIdx = Math.round(floatView[off + 2]);
+    const srcIdx = Math.round(floatView[off + 5]);
+    const pIdx = Math.round(floatView[off + 4]);
+
+    items[i] = {
+      id: i,
+      name: 'Fossile Certifié',
+      lat: floatView[off],
+      lng: floatView[off + 1],
+      category_id: cats[catIdx] || 'others',
+      score_potentiel: Math.round(floatView[off + 3]),
+      period: periods[pIdx] || 'Mésozoïque',
+      source: srcs[srcIdx] || 'PBDB'
+    };
+  }
+
+  setFossilsData(items, false);
+}
+
 export function setFossilsData(data, autoFit = true) {
   fossilsData = data || [];
   buildSpatialGrid(fossilsData);
