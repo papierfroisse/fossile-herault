@@ -1,184 +1,181 @@
-// Hardware-Accelerated 60 FPS Canvas Point Engine for 50,000+ Fossils
-// Features: 2D Spatial Grid Indexing, Low-Zoom Density Clusters & Zero-DOM Direct Canvas Rendering
+// fossils.js — High-Performance Canvas Point Engine for 50,000+ Fossils
+// Architecture:
+//   - Pre-computed clusters (~296 entries) for country zoom (< 8): renders in < 1ms
+//   - Typed Array (Float32Array) for detail zoom (>= 8): lazy-loaded, zero GC pressure
+//   - Legacy object mode for single department loads (< 2000 items)
+
 import { map } from './map.js';
 import { loadWikiPreview } from './search.js';
 import { minScoreThreshold, currentMapColorMode } from './geology.js';
 
-export let fossilsData = [];
-export let activeCategories = new Set(['dinosaurs_reptiles', 'molluscs', 'mammals', 'plants', 'arthropods', 'fish', 'others']);
-export let activeSources = new Set(['MNHN', 'PBDB', 'BRGM']);
+// ─── Lookup Tables (numeric index → display values) ─────────────
+const CATEGORIES = ['dinosaurs_reptiles', 'molluscs', 'plants', 'arthropods', 'mammals', 'fish', 'others'];
+const SOURCES = ['MNHN', 'PBDB', 'BRGM'];
+const PERIOD_LABELS = ['Carbonifère', 'Permien', 'Trias', 'Jurassique', 'Crétacé', 'Cénozoïque', 'Ordovicien', 'Mésozoïque'];
+const CAT_COLORS = ['#ef4444', '#0284c7', '#16a34a', '#9333ea', '#d97706', '#0d9488', '#64748b'];
+const CAT_LABELS = ['Dinosaures / Reptiles', 'Mollusques / Ammonites', 'Plantes / Végétaux', 'Trilobites / Arthropodes', 'Mammifères', 'Poissons', 'Autres'];
+const CAT_ICONS = ['fa-dragon', 'fa-ring', 'fa-leaf', 'fa-bug', 'fa-bone', 'fa-fish', 'fa-circle-dot'];
+
+// Legacy object lookups (for popup rendering)
+const categoryColors = {}; const categoryLabels = {}; const categoryIcons = {};
+CATEGORIES.forEach((c, i) => { categoryColors[c] = CAT_COLORS[i]; categoryLabels[c] = CAT_LABELS[i]; categoryIcons[c] = CAT_ICONS[i]; });
+
+// ─── Active Filters ─────────────────────────────────────────────
+export let activeCategories = new Set(CATEGORIES);
+export let activeSources = new Set(SOURCES);
 export let selectedPeriodFilter = "";
 
-let canvasOverlayElement = null;
-let currentVisibleItems = [];
-let renderScheduled = false;
+// ─── Data Storage ───────────────────────────────────────────────
+// Mode A: Clusters + lazy-loaded Float32Array ("Toute la France" — 50k items)
+let clusters = null;       // Array of [lat, lng, count, domCat, catCounts[7], srcCounts[3]]
+let dataView = null;       // Float32Array: 6 floats per item (lat, lng, cat, score, period, source)
+let dataCount = 0;
+let detailLoaded = false;
+let detailLoading = false;
+let typedMode = false;
 
-// 2D Spatial Grid Indexing (0.5 degree cells) for sub-millisecond viewport queries
+// Mode B: Legacy object array (single department — small datasets)
+export let fossilsData = [];
+
+// Spatial grid index (stores item indices)
 let spatialGrid = new Map();
 const GRID_SIZE = 0.5;
 
-const categoryColors = {
-  'dinosaurs_reptiles': '#ef4444',
-  'molluscs':           '#0284c7',
-  'plants':             '#16a34a',
-  'arthropods':         '#9333ea',
-  'mammals':            '#d97706',
-  'fish':               '#0d9488',
-  'others':             '#64748b'
-};
+// ─── Canvas ─────────────────────────────────────────────────────
+let canvasEl = null;
+let visibleItems = [];
+let renderScheduled = false;
+const PI2 = Math.PI * 2;
 
-const categoryLabels = {
-  'dinosaurs_reptiles': 'Dinosaures / Reptiles',
-  'molluscs':           'Mollusques / Ammonites',
-  'plants':             'Plantes / Végétaux',
-  'arthropods':         'Trilobites / Arthropodes',
-  'mammals':            'Mammifères',
-  'fish':               'Poissons',
-  'others':             'Autres'
-};
-
-const categoryIcons = {
-  'dinosaurs_reptiles': 'fa-dragon',
-  'molluscs':           'fa-ring',
-  'plants':             'fa-leaf',
-  'arthropods':         'fa-bug',
-  'mammals':            'fa-bone',
-  'fish':               'fa-fish',
-  'others':             'fa-circle-dot'
-};
-
+// ─── Init ───────────────────────────────────────────────────────
 export function initFossils() {
   if (!map) return;
 
-  // Create hardware-accelerated Canvas container
   const pane = map.getPane('fossilsPane') || map.createPane('fossilsPane');
   pane.style.zIndex = 650;
 
-  canvasOverlayElement = L.DomUtil.create('canvas', 'fossils-canvas-overlay');
-  canvasOverlayElement.style.position = 'absolute';
-  canvasOverlayElement.style.top = '0';
-  canvasOverlayElement.style.left = '0';
-  canvasOverlayElement.style.pointerEvents = 'auto';
-  pane.appendChild(canvasOverlayElement);
+  canvasEl = L.DomUtil.create('canvas', 'fossils-canvas-overlay');
+  canvasEl.style.cssText = 'position:absolute;top:0;left:0;pointer-events:auto;';
+  pane.appendChild(canvasEl);
 
   map.on('moveend', scheduleRender);
-  map.on('zoomend', scheduleRender);
+  map.on('zoomend', onZoomChange);
   map.on('resize', syncCanvasSize);
   map.on('click', handleMapPointClick);
 
   syncCanvasSize();
-
-  // Attach global handler for inline Wiki preview calls in popups
   window.loadWikiPreview = loadWikiPreview;
+}
+
+function onZoomChange() {
+  if (map.getZoom() >= 8 && typedMode && !detailLoaded && !detailLoading) {
+    loadDetailData();
+  }
+  scheduleRender();
 }
 
 function scheduleRender() {
   if (renderScheduled) return;
   renderScheduled = true;
-  requestAnimationFrame(() => {
-    renderScheduled = false;
-    renderFossils();
-  });
+  requestAnimationFrame(() => { renderScheduled = false; renderFossils(); });
 }
 
 function syncCanvasSize() {
-  if (!map || !canvasOverlayElement) return;
-  const size = map.getSize();
-  canvasOverlayElement.width = size.x;
-  canvasOverlayElement.height = size.y;
+  if (!map || !canvasEl) return;
+  const s = map.getSize();
+  canvasEl.width = s.x;
+  canvasEl.height = s.y;
   scheduleRender();
 }
 
-function buildSpatialGrid(data) {
-  spatialGrid.clear();
-  for (let i = 0; i < data.length; i++) {
-    const item = data[i];
-    const gridX = Math.floor(item.lat / GRID_SIZE);
-    const gridY = Math.floor(item.lng / GRID_SIZE);
-    const key = `${gridX}_${gridY}`;
-    if (!spatialGrid.has(key)) {
-      spatialGrid.set(key, []);
-    }
-    spatialGrid.get(key).push(item);
-  }
+// ─── Data Entry Points ──────────────────────────────────────────
+
+/** Load pre-computed clusters for instant country-level rendering */
+export function setClusters(data) {
+  clusters = data;
+  typedMode = true;
+  fossilsData = [];
+  detailLoaded = false;
+  detailLoading = false;
+  scheduleRender();
 }
 
-function getCandidatesInViewport(mapBounds) {
-  if (spatialGrid.size === 0) return fossilsData;
-
-  const minX = Math.floor(mapBounds.getSouth() / GRID_SIZE);
-  const maxX = Math.floor(mapBounds.getNorth() / GRID_SIZE);
-  const minY = Math.floor(mapBounds.getWest() / GRID_SIZE);
-  const maxY = Math.floor(mapBounds.getEast() / GRID_SIZE);
-
-  const candidateItems = [];
-  for (let x = minX; x <= maxX; x++) {
-    for (let y = minY; y <= maxY; y++) {
-      const key = `${x}_${y}`;
-      const cellItems = spatialGrid.get(key);
-      if (cellItems) {
-        for (let i = 0; i < cellItems.length; i++) {
-          candidateItems.push(cellItems[i]);
-        }
-      }
-    }
-  }
-  return candidateItems;
-}
-
+/** Backward compat: directly set binary buffer (skips lazy loading) */
 export function setBinaryFossilsBuffer(buffer) {
-  if (!buffer) return;
-  const floatView = new Float32Array(buffer);
-  const total = Math.floor(floatView.length / 6);
-  const cats = ['dinosaurs_reptiles', 'molluscs', 'plants', 'arthropods', 'mammals', 'fish', 'others'];
-  const srcs = ['MNHN', 'PBDB', 'BRGM'];
-  const periods = ['Carbonifère', 'Permien', 'Trias', 'Jurassique', 'Crétacé', 'Cénozoïque', 'Ordovicien', 'Mésozoïque'];
-
-  const items = new Array(total);
-  for (let i = 0; i < total; i++) {
-    const off = i * 6;
-    const catIdx = Math.round(floatView[off + 2]);
-    const srcIdx = Math.round(floatView[off + 5]);
-    const pIdx = Math.round(floatView[off + 4]);
-
-    items[i] = {
-      id: i,
-      name: 'Fossile Certifié',
-      lat: floatView[off],
-      lng: floatView[off + 1],
-      category_id: cats[catIdx] || 'others',
-      score_potentiel: Math.round(floatView[off + 3]),
-      period: periods[pIdx] || 'Mésozoïque',
-      source: srcs[srcIdx] || 'PBDB'
-    };
-  }
-
-  setFossilsData(items, false);
+  dataView = new Float32Array(buffer);
+  dataCount = Math.floor(dataView.length / 6);
+  typedMode = true;
+  detailLoaded = true;
+  buildTypedGrid();
+  scheduleRender();
 }
 
+/** Legacy: set array of objects for single department mode */
 export function setFossilsData(data, autoFit = true) {
   fossilsData = data || [];
-  buildSpatialGrid(fossilsData);
+  typedMode = false;
+  clusters = null;
+  dataView = null;
+  dataCount = 0;
+  detailLoaded = false;
+
+  buildLegacyGrid();
   scheduleRender();
 
-  if (autoFit && data && data.length > 0 && map) {
-    const latLngs = data.map(item => [item.lat, item.lng]);
-    const bounds = L.latLngBounds(latLngs);
-    if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
-    }
+  if (autoFit && fossilsData.length > 0 && map) {
+    const lls = fossilsData.map(i => [i.lat, i.lng]);
+    const b = L.latLngBounds(lls);
+    if (b.isValid()) map.fitBounds(b, { padding: [40, 40], maxZoom: 13 });
   }
 }
 
+// ─── Lazy Detail Data Loading ───────────────────────────────────
+function loadDetailData() {
+  detailLoading = true;
+  fetch('processed/all_france.bin')
+    .then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+    .then(buf => {
+      dataView = new Float32Array(buf);
+      dataCount = Math.floor(dataView.length / 6);
+      buildTypedGrid();
+      detailLoaded = true;
+      detailLoading = false;
+      scheduleRender();
+    })
+    .catch(() => { detailLoading = false; });
+}
+
+// ─── Spatial Grid Builders ──────────────────────────────────────
+function buildTypedGrid() {
+  spatialGrid.clear();
+  for (let i = 0; i < dataCount; i++) {
+    const off = i * 6;
+    const key = `${Math.floor(dataView[off] / GRID_SIZE)}_${Math.floor(dataView[off + 1] / GRID_SIZE)}`;
+    let cell = spatialGrid.get(key);
+    if (!cell) { cell = []; spatialGrid.set(key, cell); }
+    cell.push(i);
+  }
+}
+
+function buildLegacyGrid() {
+  spatialGrid.clear();
+  for (let i = 0; i < fossilsData.length; i++) {
+    const it = fossilsData[i];
+    const key = `${Math.floor(it.lat / GRID_SIZE)}_${Math.floor(it.lng / GRID_SIZE)}`;
+    let cell = spatialGrid.get(key);
+    if (!cell) { cell = []; spatialGrid.set(key, cell); }
+    cell.push(i);
+  }
+}
+
+// ─── Filter Controls ────────────────────────────────────────────
 export function toggleCategory(catId, isChecked) {
-  if (isChecked) activeCategories.add(catId);
-  else activeCategories.delete(catId);
+  if (isChecked) activeCategories.add(catId); else activeCategories.delete(catId);
   scheduleRender();
 }
 
 export function toggleSourceFilter(source, isChecked) {
-  if (isChecked) activeSources.add(source);
-  else activeSources.delete(source);
+  if (isChecked) activeSources.add(source); else activeSources.delete(source);
   scheduleRender();
 }
 
@@ -187,232 +184,356 @@ export function filterByPeriod(val) {
   scheduleRender();
 }
 
-// Fast inline period filter check (avoids repeated string allocations)
-function matchesPeriodFilter(period) {
-  if (!selectedPeriodFilter) return true;
-  const p = (period || '').toLowerCase();
-  switch (selectedPeriodFilter) {
-    case 'permian': return p.includes('permian') || p.includes('permien');
-    case 'jurassic': return p.includes('jurassic') || p.includes('jurassique');
-    case 'cretaceous': return p.includes('cretaceous') || p.includes('crétacé');
-    case 'ordovician_devonian': return p.includes('ordovician') || p.includes('devonian') || p.includes('carboniferous') || p.includes('silurian');
-    case 'cenozoic': return p.includes('neogene') || p.includes('pliocene') || p.includes('eocene') || p.includes('miocene') || p.includes('paleogene') || p.includes('oligocene');
-    default: return true;
+// ─── Projection & Filter Helpers ────────────────────────────────
+function getProj(bounds) {
+  const nw = bounds.getNorthWest(), se = bounds.getSouthEast();
+  const pNW = map.latLngToContainerPoint(nw), pSE = map.latLngToContainerPoint(se);
+  return {
+    lngMin: nw.lng, latMax: nw.lat,
+    pxL: pNW.x, pxT: pNW.y,
+    sX: (pSE.x - pNW.x) / (se.lng - nw.lng),
+    sY: (pSE.y - pNW.y) / (nw.lat - se.lat)
+  };
+}
+
+function getMasks() {
+  const cm = new Uint8Array(7);
+  CATEGORIES.forEach((c, i) => { cm[i] = activeCategories.has(c) ? 1 : 0; });
+  const sm = new Uint8Array(3);
+  SOURCES.forEach((s, i) => { sm[i] = activeSources.has(s) ? 1 : 0; });
+  return { cm, sm };
+}
+
+// ─── Main Render Dispatch ───────────────────────────────────────
+export function renderFossils() {
+  if (!canvasEl || !map) return;
+
+  const ctx = canvasEl.getContext('2d');
+  const sz = map.getSize();
+  L.DomUtil.setPosition(canvasEl, map.containerPointToLayerPoint([0, 0]));
+  ctx.clearRect(0, 0, sz.x, sz.y);
+
+  const zoom = map.getZoom();
+
+  if (typedMode) {
+    if (zoom < 8 || !detailLoaded) {
+      drawClusters(ctx);
+      if (zoom >= 8 && !detailLoaded && !detailLoading) loadDetailData();
+    } else {
+      drawTypedPoints(ctx, zoom);
+    }
+  } else if (fossilsData.length > 0) {
+    drawLegacyPoints(ctx, zoom);
   }
 }
 
-export function renderFossils() {
-  if (!canvasOverlayElement || !map) return;
+// ─── Cluster Renderer (zoom < 8, ~296 clusters → < 1ms) ────────
+function drawClusters(ctx) {
+  if (!clusters || clusters.length === 0) return;
 
-  const ctx = canvasOverlayElement.getContext('2d');
-  const size = map.getSize();
+  const bounds = map.getBounds().pad(0.05);
+  const { cm, sm } = getMasks();
+  const p = getProj(bounds);
+  const bS = bounds.getSouth(), bN = bounds.getNorth(), bW = bounds.getWest(), bE = bounds.getEast();
 
-  // Keep canvas position aligned with Leaflet map container
-  const topLeft = map.containerPointToLayerPoint([0, 0]);
-  L.DomUtil.setPosition(canvasOverlayElement, topLeft);
+  let total = 0;
+  const items = [];
+  const g = [[], [], []]; // red, orange, blue
 
-  ctx.clearRect(0, 0, size.x, size.y);
+  for (let i = 0, len = clusters.length; i < len; i++) {
+    const c = clusters[i];
+    const cc = c[4], sc = c[5];
 
-  const mapBounds = map.getBounds().pad(0.08);
-  const currentZoom = map.getZoom();
+    // Filter by active categories
+    let fc = 0;
+    for (let j = 0; j < 7; j++) if (cm[j]) fc += (cc[j] || 0);
+    if (fc === 0) continue;
 
-  // Pre-compute Mercator projection constants once (avoids 50k calls to latLngToContainerPoint)
-  const nw = mapBounds.getNorthWest();
-  const se = mapBounds.getSouthEast();
-  const ptNW = map.latLngToContainerPoint(nw);
-  const ptSE = map.latLngToContainerPoint(se);
-  const pxWidth = ptSE.x - ptNW.x;
-  const pxHeight = ptSE.y - ptNW.y;
-  const lngSpan = se.lng - nw.lng;
-  const latSpan = nw.lat - se.lat; // north > south
+    // Filter by active sources
+    let hs = false;
+    for (let j = 0; j < 3; j++) if (sm[j] && (sc[j] || 0) > 0) { hs = true; break; }
+    if (!hs) continue;
 
-  // Inline lat/lng to pixel — 100x faster than latLngToContainerPoint per point
-  const lngMin = nw.lng;
-  const latMax = nw.lat;
-  const pxLeft = ptNW.x;
-  const pxTop = ptNW.y;
-  const scaleX = pxWidth / lngSpan;
-  const scaleY = pxHeight / latSpan;
+    total += fc;
 
-  // Crisp point radius scaling
-  const r = currentZoom >= 13 ? 6.0 : (currentZoom >= 10 ? 4.0 : (currentZoom >= 8 ? 2.5 : 1.8));
+    const lat = c[0], lng = c[1];
+    if (lat < bS || lat > bN || lng < bW || lng > bE) continue;
 
-  // Query 2D spatial grid index for sub-millisecond candidate retrieval
-  const candidates = getCandidatesInViewport(mapBounds);
+    const px = p.pxL + (lng - p.lngMin) * p.sX;
+    const py = p.pxT + (p.latMax - lat) * p.sY;
+    const r = Math.min(16, 4 + Math.log2(fc) * 2.5);
 
-  let totalMatchingCount = 0;
-  const visibleItems = [];
+    const gi = fc > 80 ? 0 : (fc > 20 ? 1 : 2);
+    g[gi].push(px, py, r);
 
-  const bSouth = mapBounds.getSouth();
-  const bNorth = mapBounds.getNorth();
-  const bWest = mapBounds.getWest();
-  const bEast = mapBounds.getEast();
+    items.push({ x: px, y: py, isCluster: true, item: { lat, lng, name: `${fc} fossiles`, count: fc, category_id: CATEGORIES[c[3]] || 'others', score_potentiel: fc } });
+  }
 
-  // Low Zoom Level (Zoom < 7): Screen density aggregation for clean country overview
-  if (currentZoom < 7) {
-    const bucketSize = 30;
-    const densityMap = new Map();
+  // Batched draw by color group
+  const fills = ['rgba(239,68,68,0.85)', 'rgba(249,115,22,0.8)', 'rgba(56,189,248,0.75)'];
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = 1;
 
-    for (let i = 0, len = candidates.length; i < len; i++) {
-      const item = candidates[i];
-      if (!activeCategories.has(item.category_id)) continue;
-      if (!activeSources.has(item.source || 'PBDB')) continue;
+  for (let gi = 0; gi < 3; gi++) {
+    const d = g[gi];
+    if (!d.length) continue;
+    ctx.fillStyle = fills[gi];
+    for (let j = 0; j < d.length; j += 3) {
+      ctx.beginPath();
+      ctx.arc(d[j], d[j + 1], d[j + 2], 0, PI2);
+      ctx.fill();
+      ctx.stroke();
+    }
+  }
 
-      const itemScore = item.score_potentiel || 60;
-      if (itemScore < minScoreThreshold) continue;
-      if (!matchesPeriodFilter(item.period)) continue;
+  visibleItems = items;
+  const el = document.getElementById('stat-fossils');
+  if (el) el.innerText = total.toLocaleString('fr-FR');
+}
 
-      totalMatchingCount++;
+// ─── Typed Array Detail Renderer (zoom >= 8, Float32Array) ──────
+function drawTypedPoints(ctx, zoom) {
+  if (!dataView || dataCount === 0) return;
 
-      const lat = item.lat, lng = item.lng;
-      if (lat < bSouth || lat > bNorth || lng < bWest || lng > bEast) continue;
+  const bounds = map.getBounds().pad(0.05);
+  const { cm, sm } = getMasks();
+  const pr = getProj(bounds);
+  const bS = bounds.getSouth(), bN = bounds.getNorth(), bW = bounds.getWest(), bE = bounds.getEast();
 
-      // Fast inline projection
-      const px = pxLeft + (lng - lngMin) * scaleX;
-      const py = pxTop + (latMax - lat) * scaleY;
-      const bx = (px / bucketSize) | 0;
-      const by = (py / bucketSize) | 0;
-      const key = bx * 10000 + by; // numeric key = faster Map lookup
+  const r = zoom >= 13 ? 6 : (zoom >= 10 ? 4 : 2.5);
+  const doStroke = zoom >= 11;
 
-      let b = densityMap.get(key);
-      if (!b) {
-        b = { sumX: 0, sumY: 0, count: 0, sampleItem: item };
-        densityMap.set(key, b);
+  const minGx = Math.floor(bS / GRID_SIZE), maxGx = Math.floor(bN / GRID_SIZE);
+  const minGy = Math.floor(bW / GRID_SIZE), maxGy = Math.floor(bE / GRID_SIZE);
+
+  let total = 0;
+  const items = [];
+  const colorBuckets = new Map();
+
+  for (let gx = minGx; gx <= maxGx; gx++) {
+    for (let gy = minGy; gy <= maxGy; gy++) {
+      const cell = spatialGrid.get(`${gx}_${gy}`);
+      if (!cell) continue;
+
+      for (let ci = 0, cLen = cell.length; ci < cLen; ci++) {
+        const idx = cell[ci];
+        const off = idx * 6;
+        const lat = dataView[off], lng = dataView[off + 1];
+        const cat = Math.round(dataView[off + 2]);
+        const score = Math.round(dataView[off + 3]);
+        const src = Math.round(dataView[off + 5]);
+
+        if (!cm[cat] || !sm[src]) continue;
+        if (score < minScoreThreshold) continue;
+
+        total++;
+
+        if (lat < bS || lat > bN || lng < bW || lng > bE) continue;
+
+        const px = pr.pxL + (lng - pr.lngMin) * pr.sX;
+        const py = pr.pxT + (pr.latMax - lat) * pr.sY;
+
+        let color;
+        if (currentMapColorMode === 'score') {
+          color = score >= 80 ? '#dc2626' : (score >= 68 ? '#ea580c' : (score >= 55 ? '#f59e0b' : '#0284c7'));
+        } else {
+          color = CAT_COLORS[cat] || '#64748b';
+        }
+
+        let b = colorBuckets.get(color);
+        if (!b) { b = []; colorBuckets.set(color, b); }
+        b.push(px, py);
+        items.push({ idx, x: px, y: py });
       }
-      b.sumX += px;
-      b.sumY += py;
-      b.count++;
+    }
+  }
+
+  // Batched render by color
+  colorBuckets.forEach((pts, color) => {
+    ctx.fillStyle = color;
+    if (doStroke) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; }
+    for (let j = 0; j < pts.length; j += 2) {
+      ctx.beginPath();
+      ctx.arc(pts[j], pts[j + 1], r, 0, PI2);
+      ctx.fill();
+      if (doStroke) ctx.stroke();
+    }
+  });
+
+  visibleItems = items;
+  const el = document.getElementById('stat-fossils');
+  if (el) el.innerText = total.toLocaleString('fr-FR');
+}
+
+// ─── Legacy Object Renderer (single department, small datasets) ─
+function drawLegacyPoints(ctx, zoom) {
+  const bounds = map.getBounds().pad(0.05);
+  const pr = getProj(bounds);
+  const bS = bounds.getSouth(), bN = bounds.getNorth(), bW = bounds.getWest(), bE = bounds.getEast();
+
+  const r = zoom >= 13 ? 6 : (zoom >= 10 ? 4 : (zoom >= 8 ? 2.5 : 1.8));
+  const doStroke = zoom >= 11;
+
+  const minGx = Math.floor(bS / GRID_SIZE), maxGx = Math.floor(bN / GRID_SIZE);
+  const minGy = Math.floor(bW / GRID_SIZE), maxGy = Math.floor(bE / GRID_SIZE);
+
+  let total = 0;
+  const items = [];
+
+  if (zoom < 7) {
+    // Density clustering for small datasets at country zoom
+    const bktSz = 30;
+    const dm = new Map();
+
+    for (let gx = minGx; gx <= maxGx; gx++) {
+      for (let gy = minGy; gy <= maxGy; gy++) {
+        const cell = spatialGrid.get(`${gx}_${gy}`);
+        if (!cell) continue;
+        for (let ci = 0; ci < cell.length; ci++) {
+          const item = fossilsData[cell[ci]];
+          if (!activeCategories.has(item.category_id)) continue;
+          if (!activeSources.has(item.source || 'PBDB')) continue;
+          if ((item.score_potentiel || 60) < minScoreThreshold) continue;
+          total++;
+          const lat = item.lat, lng = item.lng;
+          if (lat < bS || lat > bN || lng < bW || lng > bE) continue;
+          const px = pr.pxL + (lng - pr.lngMin) * pr.sX;
+          const py = pr.pxT + (pr.latMax - lat) * pr.sY;
+          const key = ((px / bktSz) | 0) * 10000 + ((py / bktSz) | 0);
+          let b = dm.get(key);
+          if (!b) { b = { sx: 0, sy: 0, n: 0, sample: item }; dm.set(key, b); }
+          b.sx += px; b.sy += py; b.n++;
+        }
+      }
     }
 
-    // Batch render density spots by color for minimal context switches
-    const colorGroups = [[], [], []];
-    densityMap.forEach(b => {
-      const idx = b.count > 50 ? 0 : (b.count > 15 ? 1 : 2);
-      colorGroups[idx].push(b);
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = 1;
+    dm.forEach(b => {
+      const ax = b.sx / b.n, ay = b.sy / b.n;
+      const rad = Math.min(14, 3 + Math.log2(b.n) * 2.2);
+      ctx.beginPath();
+      ctx.arc(ax, ay, rad, 0, PI2);
+      ctx.fillStyle = b.n > 50 ? 'rgba(239,68,68,0.85)' : (b.n > 15 ? 'rgba(249,115,22,0.8)' : 'rgba(56,189,248,0.75)');
+      ctx.fill();
+      ctx.stroke();
+      items.push({ item: b.sample, x: ax, y: ay });
     });
 
-    const colors = ['rgba(239, 68, 68, 0.85)', 'rgba(249, 115, 22, 0.8)', 'rgba(56, 189, 248, 0.75)'];
-    for (let g = 0; g < 3; g++) {
-      const group = colorGroups[g];
-      if (group.length === 0) continue;
-      ctx.fillStyle = colors[g];
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.lineWidth = 1;
-      for (let j = 0; j < group.length; j++) {
-        const b = group[j];
-        const avgX = b.sumX / b.count;
-        const avgY = b.sumY / b.count;
-        const radius = Math.min(14, 3 + Math.log2(b.count) * 2.2);
-        ctx.beginPath();
-        ctx.arc(avgX, avgY, radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        visibleItems.push({ item: b.sampleItem, x: avgX, y: avgY });
-      }
-    }
-
   } else {
-    // Zoom >= 7: Exact GPS Individual Canvas Markers
-    // Group by color for batched rendering (minimizes fillStyle switches)
+    // Individual points
     const colorBuckets = new Map();
-    const doStroke = currentZoom >= 11;
 
-    for (let i = 0, len = candidates.length; i < len; i++) {
-      const item = candidates[i];
-      if (!activeCategories.has(item.category_id)) continue;
+    for (let gx = minGx; gx <= maxGx; gx++) {
+      for (let gy = minGy; gy <= maxGy; gy++) {
+        const cell = spatialGrid.get(`${gx}_${gy}`);
+        if (!cell) continue;
+        for (let ci = 0; ci < cell.length; ci++) {
+          const item = fossilsData[cell[ci]];
+          if (!activeCategories.has(item.category_id)) continue;
+          if (!activeSources.has(item.source || 'PBDB')) continue;
+          const score = item.score_potentiel || 60;
+          if (score < minScoreThreshold) continue;
+          total++;
+          const lat = item.lat, lng = item.lng;
+          if (lat < bS || lat > bN || lng < bW || lng > bE) continue;
+          const px = pr.pxL + (lng - pr.lngMin) * pr.sX;
+          const py = pr.pxT + (pr.latMax - lat) * pr.sY;
 
-      const src = item.source || 'PBDB';
-      if (!activeSources.has(src)) continue;
+          let color = categoryColors[item.category_id] || '#64748b';
+          if (currentMapColorMode === 'score') {
+            color = score >= 80 ? '#dc2626' : (score >= 68 ? '#ea580c' : (score >= 55 ? '#f59e0b' : '#0284c7'));
+          }
 
-      const itemScore = item.score_potentiel || 60;
-      if (itemScore < minScoreThreshold) continue;
-      if (!matchesPeriodFilter(item.period)) continue;
-
-      totalMatchingCount++;
-
-      const lat = item.lat, lng = item.lng;
-      if (lat < bSouth || lat > bNorth || lng < bWest || lng > bEast) continue;
-
-      // Fast inline projection
-      const px = pxLeft + (lng - lngMin) * scaleX;
-      const py = pxTop + (latMax - lat) * scaleY;
-
-      let markerColor;
-      if (currentMapColorMode === 'score') {
-        markerColor = itemScore >= 80 ? '#dc2626' : (itemScore >= 68 ? '#ea580c' : (itemScore >= 55 ? '#f59e0b' : '#0284c7'));
-      } else {
-        markerColor = categoryColors[item.category_id] || '#64748b';
+          let b = colorBuckets.get(color);
+          if (!b) { b = []; colorBuckets.set(color, b); }
+          b.push(px, py);
+          items.push({ item, x: px, y: py });
+        }
       }
-
-      let bucket = colorBuckets.get(markerColor);
-      if (!bucket) {
-        bucket = [];
-        colorBuckets.set(markerColor, bucket);
-      }
-      bucket.push(px, py); // flat array for speed
-      visibleItems.push({ item, x: px, y: py });
     }
 
-    // Batch render by color
-    const TWO_PI = Math.PI * 2;
     colorBuckets.forEach((pts, color) => {
       ctx.fillStyle = color;
-      if (doStroke) {
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1;
-      }
+      if (doStroke) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; }
       for (let j = 0; j < pts.length; j += 2) {
         ctx.beginPath();
-        ctx.arc(pts[j], pts[j + 1], r, 0, TWO_PI);
+        ctx.arc(pts[j], pts[j + 1], r, 0, PI2);
         ctx.fill();
         if (doStroke) ctx.stroke();
       }
     });
   }
 
-  currentVisibleItems = visibleItems;
-
-  const statEl = document.getElementById('stat-fossils');
-  if (statEl) statEl.innerText = totalMatchingCount.toLocaleString('fr-FR');
+  visibleItems = items;
+  const el = document.getElementById('stat-fossils');
+  if (el) el.innerText = total.toLocaleString('fr-FR');
 }
 
-// Instant Spatial Click Handler (On-demand popup generation)
+// ─── Click Handler ──────────────────────────────────────────────
 function handleMapPointClick(e) {
-  if (!currentVisibleItems || currentVisibleItems.length === 0) return;
+  if (!visibleItems || visibleItems.length === 0) return;
 
-  const clickPt = e.containerPoint;
+  const cp = e.containerPoint;
   let closest = null;
-  let minDist = 18; // 18px click radius tolerance
+  let minDist = 18;
 
-  for (let i = 0; i < currentVisibleItems.length; i++) {
-    const entry = currentVisibleItems[i];
-    const dx = entry.x - clickPt.x;
-    const dy = entry.y - clickPt.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < minDist) {
-      minDist = dist;
-      closest = entry.item;
-    }
+  for (let i = 0; i < visibleItems.length; i++) {
+    const vi = visibleItems[i];
+    const dx = vi.x - cp.x, dy = vi.y - cp.y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    if (d < minDist) { minDist = d; closest = vi; }
   }
 
-  if (closest) {
-    openFossilPopup(closest, e.latlng);
+  if (!closest) return;
+
+  let item;
+  if (closest.isCluster) {
+    item = closest.item;
+  } else if (closest.idx !== undefined && dataView) {
+    item = itemFromIndex(closest.idx);
+  } else if (closest.item) {
+    item = closest.item;
   }
+
+  if (item) openFossilPopup(item, e.latlng);
 }
 
+/** Create a full JS object on demand (only when user clicks a point) */
+function itemFromIndex(idx) {
+  const off = idx * 6;
+  const cat = Math.round(dataView[off + 2]);
+  const src = Math.round(dataView[off + 5]);
+  const per = Math.round(dataView[off + 4]);
+  return {
+    id: idx,
+    name: 'Fossile Certifié',
+    lat: dataView[off],
+    lng: dataView[off + 1],
+    category_id: CATEGORIES[cat] || 'others',
+    category_name: CAT_LABELS[cat] || 'Autre',
+    color: CAT_COLORS[cat] || '#64748b',
+    score_potentiel: Math.round(dataView[off + 3]),
+    period: PERIOD_LABELS[per] || 'Mésozoïque',
+    source: SOURCES[src] || 'PBDB',
+    precision_gps: '📍 Point GPS Certifié'
+  };
+}
+
+// ─── Popup ──────────────────────────────────────────────────────
 function openFossilPopup(item, latlng) {
-  const itemScore = item.score_potentiel || 60;
+  const itemScore = item.score_potentiel || item.count || 60;
   const src = item.source || 'PBDB';
-  const iconConfigColor = categoryColors[item.category_id] || '#64748b';
-  const iconLabel = categoryLabels[item.category_id] || 'Autre Fossile';
+  const iconColor = categoryColors[item.category_id] || '#64748b';
+  const iconLabel = categoryLabels[item.category_id] || item.category_name || 'Fossile';
   const faIcon = categoryIcons[item.category_id] || 'fa-circle-dot';
 
   const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' fossil')}`;
   const googleWebUrl = `https://www.google.com/search?q=${encodeURIComponent(item.name + ' fossile')}`;
-  const cleanName = item.name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+  const cleanName = (item.name || '').replace(/[^a-zA-Z0-9 ]/g, "").trim();
 
   const precisionBadge = item.precision_gps || '🎯 Point GPS Certifié';
-  const precisionColor = (item.precision_code === 'high' || precisionBadge.includes('Certifié')) ? '#10b981' : '#f59e0b';
+  const precisionColor = precisionBadge.includes('Certifié') ? '#10b981' : '#f59e0b';
 
   const sourceBadges = {
     'MNHN': '<span style="background:rgba(168,85,247,0.2); color:#c084fc; border:1px solid rgba(168,85,247,0.5); padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">🏛️ Collection Muséum (MNHN Paris)</span>',
@@ -428,25 +549,17 @@ function openFossilPopup(item, latlng) {
     <div style="margin-bottom:6px;">${srcBadge}</div>
     <div class="popup-meta">
       <b>Potentiel Prédictif ML :</b> <span style="color:#f97316; font-weight:bold; font-size:1.02rem;">${itemScore} / 100</span><br>
-      <b>Type :</b> <span style="color:${iconConfigColor}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name || iconLabel}</span><br>
+      <b>Type :</b> <span style="color:${iconColor}; font-weight:600;"><i class="fa-solid ${faIcon}"></i> ${item.category_name || iconLabel}</span><br>
       <b>Précision Spatiale :</b> <span style="color:${precisionColor}; font-weight:600;">${precisionBadge}</span>${catalogTag}<br>
       <b>Période :</b> ${item.period || 'Non spécifiée'}<br>
       <b>Formation :</b> ${item.formation || 'Lithologie locale'}<br>
       <b>Coordonnées GPS :</b> ${item.lat.toFixed(4)}, ${item.lng.toFixed(4)}
     </div>
-
     <div id="wiki-box-${item.id}" style="margin-top:8px; font-size:0.78rem; color:#cbd5e1; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); display:none;"></div>
-
     <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
-      <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">
-        🖼️ Photos Google
-      </a>
-      <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">
-        🔍 Recherche Web
-      </a>
-      <button onclick="loadWikiPreview('${cleanName}', ${item.id})" class="popup-tag" style="background:#15803d; color:#fff; border-color:#15803d; cursor:pointer;">
-        📖 Aperçu Wikipédia
-      </button>
+      <a href="${googleImagesUrl}" target="_blank" class="popup-tag" style="background:#0284c7; color:#fff; border-color:#0284c7;">🖼️ Photos Google</a>
+      <a href="${googleWebUrl}" target="_blank" class="popup-tag" style="background:#475569; color:#fff; border-color:#475569;">🔍 Recherche Web</a>
+      <button onclick="loadWikiPreview('${cleanName}', ${item.id})" class="popup-tag" style="background:#15803d; color:#fff; border-color:#15803d; cursor:pointer;">📖 Aperçu Wikipédia</button>
     </div>
   `;
 
