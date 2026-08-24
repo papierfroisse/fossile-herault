@@ -11,6 +11,7 @@ export let selectedPeriodFilter = "";
 
 let canvasOverlayElement = null;
 let currentVisibleItems = [];
+let renderScheduled = false;
 
 // 2D Spatial Grid Indexing (0.5 degree cells) for sub-millisecond viewport queries
 let spatialGrid = new Map();
@@ -60,7 +61,8 @@ export function initFossils() {
   canvasOverlayElement.style.pointerEvents = 'auto';
   pane.appendChild(canvasOverlayElement);
 
-  map.on('move', renderFossils);
+  map.on('moveend', scheduleRender);
+  map.on('zoomend', scheduleRender);
   map.on('resize', syncCanvasSize);
   map.on('click', handleMapPointClick);
 
@@ -70,12 +72,21 @@ export function initFossils() {
   window.loadWikiPreview = loadWikiPreview;
 }
 
+function scheduleRender() {
+  if (renderScheduled) return;
+  renderScheduled = true;
+  requestAnimationFrame(() => {
+    renderScheduled = false;
+    renderFossils();
+  });
+}
+
 function syncCanvasSize() {
   if (!map || !canvasOverlayElement) return;
   const size = map.getSize();
   canvasOverlayElement.width = size.x;
   canvasOverlayElement.height = size.y;
-  renderFossils();
+  scheduleRender();
 }
 
 function buildSpatialGrid(data) {
@@ -148,7 +159,7 @@ export function setBinaryFossilsBuffer(buffer) {
 export function setFossilsData(data, autoFit = true) {
   fossilsData = data || [];
   buildSpatialGrid(fossilsData);
-  renderFossils();
+  scheduleRender();
 
   if (autoFit && data && data.length > 0 && map) {
     const latLngs = data.map(item => [item.lat, item.lng]);
@@ -162,18 +173,32 @@ export function setFossilsData(data, autoFit = true) {
 export function toggleCategory(catId, isChecked) {
   if (isChecked) activeCategories.add(catId);
   else activeCategories.delete(catId);
-  renderFossils();
+  scheduleRender();
 }
 
 export function toggleSourceFilter(source, isChecked) {
   if (isChecked) activeSources.add(source);
   else activeSources.delete(source);
-  renderFossils();
+  scheduleRender();
 }
 
 export function filterByPeriod(val) {
   selectedPeriodFilter = val;
-  renderFossils();
+  scheduleRender();
+}
+
+// Fast inline period filter check (avoids repeated string allocations)
+function matchesPeriodFilter(period) {
+  if (!selectedPeriodFilter) return true;
+  const p = (period || '').toLowerCase();
+  switch (selectedPeriodFilter) {
+    case 'permian': return p.includes('permian') || p.includes('permien');
+    case 'jurassic': return p.includes('jurassic') || p.includes('jurassique');
+    case 'cretaceous': return p.includes('cretaceous') || p.includes('crétacé');
+    case 'ordovician_devonian': return p.includes('ordovician') || p.includes('devonian') || p.includes('carboniferous') || p.includes('silurian');
+    case 'cenozoic': return p.includes('neogene') || p.includes('pliocene') || p.includes('eocene') || p.includes('miocene') || p.includes('paleogene') || p.includes('oligocene');
+    default: return true;
+  }
 }
 
 export function renderFossils() {
@@ -191,6 +216,24 @@ export function renderFossils() {
   const mapBounds = map.getBounds().pad(0.08);
   const currentZoom = map.getZoom();
 
+  // Pre-compute Mercator projection constants once (avoids 50k calls to latLngToContainerPoint)
+  const nw = mapBounds.getNorthWest();
+  const se = mapBounds.getSouthEast();
+  const ptNW = map.latLngToContainerPoint(nw);
+  const ptSE = map.latLngToContainerPoint(se);
+  const pxWidth = ptSE.x - ptNW.x;
+  const pxHeight = ptSE.y - ptNW.y;
+  const lngSpan = se.lng - nw.lng;
+  const latSpan = nw.lat - se.lat; // north > south
+
+  // Inline lat/lng to pixel — 100x faster than latLngToContainerPoint per point
+  const lngMin = nw.lng;
+  const latMax = nw.lat;
+  const pxLeft = ptNW.x;
+  const pxTop = ptNW.y;
+  const scaleX = pxWidth / lngSpan;
+  const scaleY = pxHeight / latSpan;
+
   // Crisp point radius scaling
   const r = currentZoom >= 13 ? 6.0 : (currentZoom >= 10 ? 4.0 : (currentZoom >= 8 ? 2.5 : 1.8));
 
@@ -198,71 +241,84 @@ export function renderFossils() {
   const candidates = getCandidatesInViewport(mapBounds);
 
   let totalMatchingCount = 0;
-  currentVisibleItems = [];
+  const visibleItems = [];
+
+  const bSouth = mapBounds.getSouth();
+  const bNorth = mapBounds.getNorth();
+  const bWest = mapBounds.getWest();
+  const bEast = mapBounds.getEast();
 
   // Low Zoom Level (Zoom < 7): Screen density aggregation for clean country overview
   if (currentZoom < 7) {
-    const bucketSize = 30; // 30px screen buckets
+    const bucketSize = 30;
     const densityMap = new Map();
 
-    for (let i = 0; i < candidates.length; i++) {
+    for (let i = 0, len = candidates.length; i < len; i++) {
       const item = candidates[i];
       if (!activeCategories.has(item.category_id)) continue;
       if (!activeSources.has(item.source || 'PBDB')) continue;
 
       const itemScore = item.score_potentiel || 60;
       if (itemScore < minScoreThreshold) continue;
-
-      if (selectedPeriodFilter) {
-        const p = (item.period || "").toLowerCase();
-        if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) continue;
-        if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) continue;
-        if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) continue;
-        if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) continue;
-        if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) continue;
-      }
+      if (!matchesPeriodFilter(item.period)) continue;
 
       totalMatchingCount++;
 
-      if (!mapBounds.contains([item.lat, item.lng])) continue;
+      const lat = item.lat, lng = item.lng;
+      if (lat < bSouth || lat > bNorth || lng < bWest || lng > bEast) continue;
 
-      const pt = map.latLngToContainerPoint([item.lat, item.lng]);
-      const bx = Math.floor(pt.x / bucketSize);
-      const by = Math.floor(pt.y / bucketSize);
-      const key = `${bx}_${by}`;
+      // Fast inline projection
+      const px = pxLeft + (lng - lngMin) * scaleX;
+      const py = pxTop + (latMax - lat) * scaleY;
+      const bx = (px / bucketSize) | 0;
+      const by = (py / bucketSize) | 0;
+      const key = bx * 10000 + by; // numeric key = faster Map lookup
 
-      if (!densityMap.has(key)) {
-        densityMap.set(key, { sumX: 0, sumY: 0, count: 0, sampleItem: item });
+      let b = densityMap.get(key);
+      if (!b) {
+        b = { sumX: 0, sumY: 0, count: 0, sampleItem: item };
+        densityMap.set(key, b);
       }
-      const b = densityMap.get(key);
-      b.sumX += pt.x;
-      b.sumY += pt.y;
+      b.sumX += px;
+      b.sumY += py;
       b.count++;
     }
 
-    // Render density spots
+    // Batch render density spots by color for minimal context switches
+    const colorGroups = [[], [], []];
     densityMap.forEach(b => {
-      const avgX = b.sumX / b.count;
-      const avgY = b.sumY / b.count;
-      const radius = Math.min(14, 3 + Math.log2(b.count) * 2.2);
+      const idx = b.count > 50 ? 0 : (b.count > 15 ? 1 : 2);
+      colorGroups[idx].push(b);
+    });
 
-      ctx.beginPath();
-      ctx.arc(avgX, avgY, radius, 0, Math.PI * 2);
-      ctx.fillStyle = b.count > 50 ? 'rgba(239, 68, 68, 0.85)' : (b.count > 15 ? 'rgba(249, 115, 22, 0.8)' : 'rgba(56, 189, 248, 0.75)');
-      ctx.fill();
-
+    const colors = ['rgba(239, 68, 68, 0.85)', 'rgba(249, 115, 22, 0.8)', 'rgba(56, 189, 248, 0.75)'];
+    for (let g = 0; g < 3; g++) {
+      const group = colorGroups[g];
+      if (group.length === 0) continue;
+      ctx.fillStyle = colors[g];
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.lineWidth = 1;
-      ctx.stroke();
-
-      currentVisibleItems.push({ item: b.sampleItem, x: avgX, y: avgY });
-    });
+      for (let j = 0; j < group.length; j++) {
+        const b = group[j];
+        const avgX = b.sumX / b.count;
+        const avgY = b.sumY / b.count;
+        const radius = Math.min(14, 3 + Math.log2(b.count) * 2.2);
+        ctx.beginPath();
+        ctx.arc(avgX, avgY, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        visibleItems.push({ item: b.sampleItem, x: avgX, y: avgY });
+      }
+    }
 
   } else {
     // Zoom >= 7: Exact GPS Individual Canvas Markers
-    for (let i = 0; i < candidates.length; i++) {
-      const item = candidates[i];
+    // Group by color for batched rendering (minimizes fillStyle switches)
+    const colorBuckets = new Map();
+    const doStroke = currentZoom >= 11;
 
+    for (let i = 0, len = candidates.length; i < len; i++) {
+      const item = candidates[i];
       if (!activeCategories.has(item.category_id)) continue;
 
       const src = item.source || 'PBDB';
@@ -270,44 +326,51 @@ export function renderFossils() {
 
       const itemScore = item.score_potentiel || 60;
       if (itemScore < minScoreThreshold) continue;
-
-      if (selectedPeriodFilter) {
-        const p = (item.period || "").toLowerCase();
-        if (selectedPeriodFilter === 'permian' && !p.includes('permian') && !p.includes('permien')) continue;
-        if (selectedPeriodFilter === 'jurassic' && !p.includes('jurassic') && !p.includes('jurassique')) continue;
-        if (selectedPeriodFilter === 'cretaceous' && !p.includes('cretaceous') && !p.includes('crétacé')) continue;
-        if (selectedPeriodFilter === 'ordovician_devonian' && !p.includes('ordovician') && !p.includes('devonian') && !p.includes('carboniferous') && !p.includes('silurian')) continue;
-        if (selectedPeriodFilter === 'cenozoic' && !p.includes('neogene') && !p.includes('pliocene') && !p.includes('eocene') && !p.includes('miocene') && !p.includes('paleogene') && !p.includes('oligocene')) continue;
-      }
+      if (!matchesPeriodFilter(item.period)) continue;
 
       totalMatchingCount++;
 
-      if (!mapBounds.contains([item.lat, item.lng])) continue;
+      const lat = item.lat, lng = item.lng;
+      if (lat < bSouth || lat > bNorth || lng < bWest || lng > bEast) continue;
 
-      const pt = map.latLngToContainerPoint([item.lat, item.lng]);
+      // Fast inline projection
+      const px = pxLeft + (lng - lngMin) * scaleX;
+      const py = pxTop + (latMax - lat) * scaleY;
 
-      let markerColor = categoryColors[item.category_id] || '#64748b';
+      let markerColor;
       if (currentMapColorMode === 'score') {
-        if (itemScore >= 80) markerColor = '#dc2626';
-        else if (itemScore >= 68) markerColor = '#ea580c';
-        else if (itemScore >= 55) markerColor = '#f59e0b';
-        else markerColor = '#0284c7';
+        markerColor = itemScore >= 80 ? '#dc2626' : (itemScore >= 68 ? '#ea580c' : (itemScore >= 55 ? '#f59e0b' : '#0284c7'));
+      } else {
+        markerColor = categoryColors[item.category_id] || '#64748b';
       }
 
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = markerColor;
-      ctx.fill();
+      let bucket = colorBuckets.get(markerColor);
+      if (!bucket) {
+        bucket = [];
+        colorBuckets.set(markerColor, bucket);
+      }
+      bucket.push(px, py); // flat array for speed
+      visibleItems.push({ item, x: px, y: py });
+    }
 
-      if (currentZoom >= 11) {
+    // Batch render by color
+    const TWO_PI = Math.PI * 2;
+    colorBuckets.forEach((pts, color) => {
+      ctx.fillStyle = color;
+      if (doStroke) {
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1;
-        ctx.stroke();
       }
-
-      currentVisibleItems.push({ item, x: pt.x, y: pt.y });
-    }
+      for (let j = 0; j < pts.length; j += 2) {
+        ctx.beginPath();
+        ctx.arc(pts[j], pts[j + 1], r, 0, TWO_PI);
+        ctx.fill();
+        if (doStroke) ctx.stroke();
+      }
+    });
   }
+
+  currentVisibleItems = visibleItems;
 
   const statEl = document.getElementById('stat-fossils');
   if (statEl) statEl.innerText = totalMatchingCount.toLocaleString('fr-FR');
