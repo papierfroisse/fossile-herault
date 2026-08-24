@@ -6,7 +6,7 @@ import '../styles/mobile.css';
 
 import { ALL_DEPARTMENTS } from './departments.js';
 import { map, initMap, flyToLoc } from './map.js';
-import { initFossils, setFossilsData, setClusters, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
+import { initFossils, setFossilsData, setClusters, ensureDetailLoaded, toggleCategory, toggleSourceFilter, filterByPeriod } from './fossils.js';
 import { setGeologyData, switchMapColorMode, updateScoreFilter, toggleSlopeFilter } from './geology.js';
 import { initEnvironmentalLayers, toggleReservesLayer, toggleRiversLayer, toggleQuarriesLayer } from './layers.js';
 import { initGPSHandlers, locateUserOnMap, togglePointSelectionMode, openCustomPointPopup } from './gps.js';
@@ -92,55 +92,10 @@ export function loadSingleDepartment(deptCode, autoFit = true) {
     flyToLoc(dept.center[0], dept.center[1], 10);
   }
 
-  if (loadedDepartmentsCache.has(deptCode)) {
-    setFossilsData(loadedDepartmentsCache.get(deptCode), autoFit);
-    return;
-  }
-
-  fetch(`processed/${deptCode}/fossils.json`)
-    .then(res => {
-      if (!res.ok) throw new Error("Dataset not pre-packaged");
-      return res.json();
-    })
-    .then(data => {
-      loadedDepartmentsCache.set(deptCode, data);
-      setFossilsData(data, autoFit);
-    })
-    .catch(() => {
-      // Live PBDB Fallback query if dataset is missing
-      const b = dept.bounds;
-      const pbdbUrl = `https://paleobiodb.org/data1.2/occs/list.json?lngmin=${b[2]}&lngmax=${b[3]}&latmin=${b[0]}&latmax=${b[1]}&show=coords,classext,strata`;
-      fetch(pbdbUrl)
-        .then(r => r.json())
-        .then(data => {
-          if (data && data.records) {
-            const formatted = data.records.map(r => {
-              const cat = cleanCategoryJS(r.phl, r.cll, r.odl, r.fml, r.gnn, r.tno || r.mno);
-              return {
-                id: r.oid,
-                name: r.tno || r.mno || "Fossile PBDB",
-                lat: r.lat,
-                lng: r.lng,
-                phylum: r.phl || "PBDB Record",
-                class_name: r.cll || "Paleontology",
-                period: r.dpt || r.eon || "Mésozoïque",
-                formation: r.sfm || r.fmt || dept.name,
-                category_id: cat.category_id,
-                category_name: cat.category_name,
-                color: cat.color,
-                precision_gps: "📍 Point GPS Certifié PBDB",
-                source: "PBDB"
-              };
-            });
-            loadedDepartmentsCache.set(deptCode, formatted);
-            setFossilsData(formatted, autoFit);
-          }
-        });
-    });
+  ensureDetailLoaded();
 }
 
-// Load All France: fetch 14KB pre-computed clusters for instant startup
-// Detail data (1.13 MB binary) is lazy-loaded only when user zooms to level 8+
+// Load All France: fly to country center and ensure clusters are loaded
 function loadAllFranceData() {
   currentActiveMode = 'all';
   flyToLoc(46.6, 2.5, 6);
@@ -151,19 +106,9 @@ function loadAllFranceData() {
       return res.json();
     })
     .then(data => {
-      if (currentActiveMode === 'all') {
-        setClusters(data);
-      }
+      setClusters(data);
     })
-    .catch(() => {
-      // Fallback: try loading full JSON (slower)
-      fetch('processed/all_france.json')
-        .then(res => res.json())
-        .then(data => {
-          if (currentActiveMode === 'all') setFossilsData(data, false);
-        })
-        .catch(() => {});
-    });
+    .catch(() => {});
 }
 
 window.changeDepartment = function(deptCode) {
