@@ -1,4 +1,5 @@
 // Secondary Map Layers: Rivers, Quarries, Protected Reserves, City Landmarks
+// All heavy GeoJSON layers are LAZY-LOADED on demand to keep mobile 100% instant
 import { map } from './map.js';
 
 export let riversLayer = null;
@@ -11,13 +12,17 @@ let isReservesEnabled = false;
 let isQuarriesEnabled = false;
 let isRiversEnabled = false;
 
+let reservesLoading = false;
+let quarriesLoading = false;
+let riversLoading = false;
+
 export function initEnvironmentalLayers() {
   citiesLayerGroup = L.layerGroup();
   landmarksLayerGroup = L.layerGroup();
   reservesLayer = L.layerGroup();
   quarriesLayer = L.layerGroup();
 
-  // Major Cities Landmarks
+  // Major Cities Landmarks (lightweight static markers)
   const majorCities = [
     { name: "MONTPELLIER", lat: 43.6108, lng: 3.8767, main: true },
     { name: "BÉZIERS", lat: 43.3442, lng: 3.2158, main: true },
@@ -39,72 +44,6 @@ export function initEnvironmentalLayers() {
         iconAnchor: [30, 10]
       })
     }).addTo(citiesLayerGroup);
-  });
-
-  // Load Protected Reserves
-  fetch('processed/reserves_herault.geojson').then(res => res.json()).then(data => {
-    const geoLayer = L.geoJSON(data, {
-      pointToLayer: function(f, latlng) {
-        const p = f.properties;
-        const isInterdit = p.interdiction;
-        const bg = isInterdit ? '#dc2626' : '#f59e0b';
-        const icon = isInterdit ? 'fa-ban' : 'fa-shield-halved';
-
-        return L.marker(latlng, {
-          icon: L.divIcon({
-            className: 'custom-div-icon',
-            html: `<div style="background:${bg}; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 10px rgba(0,0,0,0.6); text-align:center;"><i class="fa-solid ${icon}" style="font-size:13px;"></i></div>`,
-            iconSize: [26, 26], iconAnchor: [13, 13]
-          })
-        }).bindPopup(`
-          <div class="popup-title" style="color:${bg};">${p.name}</div>
-          <div class="popup-meta">
-            <b>Statut Légal :</b> ${p.type}<br><br>
-            <div style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:8px; border-radius:8px; font-size:0.8rem;">
-              ${p.reglementation}
-            </div>
-          </div>
-        `);
-      }
-    });
-    reservesLayer.addLayer(geoLayer);
-    updateLayerVisibility();
-  });
-
-  // Load Rivers Layer
-  fetch('processed/rivieres_herault.geojson').then(res => res.json()).then(data => {
-    riversLayer = L.geoJSON(data, {
-      style: { color: '#0284c7', weight: 1.2, opacity: 0.35 },
-      onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
-    });
-    updateLayerVisibility();
-  });
-
-  // Load Quarries
-  fetch('processed/carrieres_herault.geojson').then(res => res.json()).then(data => {
-    const geoLayer = L.geoJSON(data, {
-      pointToLayer: function(f, latlng) {
-        const p = f.properties;
-        return L.marker(latlng, {
-          icon: L.divIcon({
-            className: 'custom-div-icon',
-            html: `<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 12]
-          })
-        }).bindPopup(`
-          <div class="popup-title">${p.name}</div>
-          <div class="popup-meta">
-            <b>Type :</b> ${p.type}<br>
-            <b>Commune :</b> ${p.commune}<br>
-            <b>Intérêt paléontologique :</b> ${p.interet}
-          </div>
-          <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
-        `);
-      }
-    });
-    quarriesLayer.addLayer(geoLayer);
-    updateLayerVisibility();
   });
 
   // Mont Sénégra Landmark Marker
@@ -142,20 +81,25 @@ function updateLayerVisibility() {
     if (landmarksLayerGroup && map.hasLayer(landmarksLayerGroup)) map.removeLayer(landmarksLayerGroup);
   }
 
-  // Reserves & Quarries ONLY when enabled AND zoom >= 11
+  // Reserves (lazy loaded)
   if (isReservesEnabled && zoom >= 11) {
-    if (reservesLayer && !map.hasLayer(reservesLayer)) map.addLayer(reservesLayer);
+    if (reservesLayer && reservesLayer.getLayers().length > 0 && !map.hasLayer(reservesLayer)) {
+      map.addLayer(reservesLayer);
+    }
   } else {
     if (reservesLayer && map.hasLayer(reservesLayer)) map.removeLayer(reservesLayer);
   }
 
+  // Quarries (lazy loaded)
   if (isQuarriesEnabled && zoom >= 11) {
-    if (quarriesLayer && !map.hasLayer(quarriesLayer)) map.addLayer(quarriesLayer);
+    if (quarriesLayer && quarriesLayer.getLayers().length > 0 && !map.hasLayer(quarriesLayer)) {
+      map.addLayer(quarriesLayer);
+    }
   } else {
     if (quarriesLayer && map.hasLayer(quarriesLayer)) map.removeLayer(quarriesLayer);
   }
 
-  // Rivers Layer at Zoom >= 12
+  // Rivers Layer (lazy loaded)
   if (riversLayer) {
     if (isRiversEnabled && zoom >= 12) {
       if (!map.hasLayer(riversLayer)) map.addLayer(riversLayer);
@@ -167,15 +111,100 @@ function updateLayerVisibility() {
 
 export function toggleReservesLayer(checked) {
   isReservesEnabled = checked;
-  updateLayerVisibility();
+  if (checked && reservesLayer && reservesLayer.getLayers().length === 0 && !reservesLoading) {
+    reservesLoading = true;
+    fetch('processed/reserves_herault.geojson')
+      .then(res => res.json())
+      .then(data => {
+        const geoLayer = L.geoJSON(data, {
+          pointToLayer: function(f, latlng) {
+            const p = f.properties;
+            const isInterdit = p.interdiction;
+            const bg = isInterdit ? '#dc2626' : '#f59e0b';
+            const icon = isInterdit ? 'fa-ban' : 'fa-shield-halved';
+            return L.marker(latlng, {
+              icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background:${bg}; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 10px rgba(0,0,0,0.6); text-align:center;"><i class="fa-solid ${icon}" style="font-size:13px;"></i></div>`,
+                iconSize: [26, 26], iconAnchor: [13, 13]
+              })
+            }).bindPopup(`
+              <div class="popup-title" style="color:${bg};">${p.name}</div>
+              <div class="popup-meta">
+                <b>Statut Légal :</b> ${p.type}<br><br>
+                <div style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; padding:8px; border-radius:8px; font-size:0.8rem;">
+                  ${p.reglementation}
+                </div>
+              </div>
+            `);
+          }
+        });
+        reservesLayer.addLayer(geoLayer);
+        reservesLoading = false;
+        updateLayerVisibility();
+      })
+      .catch(() => { reservesLoading = false; });
+  } else {
+    updateLayerVisibility();
+  }
 }
 
 export function toggleRiversLayer(checked) {
   isRiversEnabled = checked;
-  updateLayerVisibility();
+  if (checked && !riversLayer && !riversLoading) {
+    riversLoading = true;
+    fetch('processed/rivieres_herault.geojson')
+      .then(res => res.json())
+      .then(data => {
+        riversLayer = L.geoJSON(data, {
+          style: { color: '#0284c7', weight: 1.2, opacity: 0.35 },
+          onEachFeature: function(f, l) { l.bindTooltip(f.properties.name || "Cours d'eau", { sticky: true }); }
+        });
+        riversLoading = false;
+        updateLayerVisibility();
+      })
+      .catch(() => { riversLoading = false; });
+  } else {
+    updateLayerVisibility();
+  }
 }
 
 export function toggleQuarriesLayer(checked) {
   isQuarriesEnabled = checked;
-  updateLayerVisibility();
+  if (checked && quarriesLayer && quarriesLayer.getLayers().length === 0 && !quarriesLoading) {
+    quarriesLoading = true;
+    fetch('processed/carrieres_herault.geojson')
+      .then(res => res.json())
+      .then(data => {
+        const geoLayer = L.geoJSON(data, {
+          pointToLayer: function(f, latlng) {
+            const p = f.properties;
+            return L.marker(latlng, {
+              icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background:#f59e0b; color:#fff; padding:6px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); text-align:center;"><i class="fa-solid fa-industry" style="font-size:12px;"></i></div>`,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+              })
+            }).bindPopup(`
+              <div class="popup-title">${p.name}</div>
+              <div class="popup-meta">
+                <b>Type :</b> ${p.type}<br>
+                <b>Commune :</b> ${p.commune}<br>
+                <b>Intérêt paléontologique :</b> ${p.interet}
+              </div>
+              <span class="popup-tag" style="color:#f59e0b; border-color:#f59e0b;">Coupe ouverte / Carrière</span>
+            `);
+          }
+        });
+        quarriesLayer.addLayer(geoLayer);
+        quarriesLoading = false;
+        updateLayerVisibility();
+      })
+      .catch(() => { quarriesLoading = false; });
+  } else {
+    updateLayerVisibility();
+  }
 }
+
+

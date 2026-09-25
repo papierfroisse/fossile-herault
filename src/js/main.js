@@ -145,11 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 300);
 
-  fetch('processed/herault_geologie_pentes.geojson')
-    .then(res => res.json())
-    .then(data => setGeologyData(data))
-    .catch(() => {});
-
   // Seasonality static widget (No 404 API calls)
   const currentMonthName = new Date().toLocaleDateString('fr-FR', { month: 'long' });
   const capitalizedMonth = currentMonthName.charAt(0).toUpperCase() + currentMonthName.slice(1);

@@ -6,16 +6,28 @@ export function initMap() {
     center: [46.6, 2.5],
     zoom: 6,
     zoomControl: false,
-    renderer: L.canvas()
+    preferCanvas: true,
+    zoomAnimation: true,
+    fadeAnimation: true,
+    markerZoomAnimation: true,
+    touchZoom: true,
+    bounceAtZoomLimits: false,
+    wheelDebounceTime: 40
   });
 
   L.control.zoom({ position: 'topright' }).addTo(map);
 
+  const tileOpts = {
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 2
+  };
+
   // Base Layers
-  const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' });
-  const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Satellite' });
-  const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© CartoDB Voyager' }).addTo(map);
-  const ignCadastre = L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png', { attribution: '© IGN Cadastre France', opacity: 0.7 });
+  const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap', ...tileOpts });
+  const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Satellite', ...tileOpts });
+  const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© CartoDB Voyager', ...tileOpts }).addTo(map);
+  const ignCadastre = L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png', { attribution: '© IGN Cadastre France', opacity: 0.7, ...tileOpts });
 
   const baseMaps = {
     "🗺️ Carte Villes & Villages (CartoDB)": cartoPositron,
