@@ -38,10 +38,27 @@
 ## 🛠️ Stack Technique & Performance
 
 - **Frontend** : Vanilla JavaScript (ES Modules) + HTML5 Canvas Direct 2D Rendering
-- **Bundler & Minification** : Vite.js (Build de production optimisé dans `/assets`)
+- **Bundler** : Vite.js — build depuis les sources (`src/js/main.js`), sortie dans `dist/`
 - **Cartographie** : Leaflet.js (Moteur de base de dalles) + Direct Hardware Canvas Overlay
 - **Sciences de la Donnée** : Ingestion Python (Pandas, GeoPandas, PBDB API, GBIF API)
-- **Déploiement** : GitHub Pages (Statique)
+- **Déploiement** : GitHub Pages publié par GitHub Actions depuis `dist/`
+
+---
+
+## 🚀 Build & Déploiement
+
+```powershell
+npm install
+npx vite build      # lit index.html → src/js/main.js, écrit dans dist/
+```
+
+- **Publication** : `.github/workflows/deploy-pages.yml` construit `dist/` puis
+  le déploie sur GitHub Pages (Pages configuré en `build_type: workflow`).
+- **Données** : `.github/workflows/update_fossils.yml` rafraîchit chaque dimanche
+  les sources MNHN / PBDB / GBIF et commite `processed/`, `public/processed/`
+  puis `dist/`.
+- Les bundles de `assets/` à la racine proviennent de l'ancien déploiement
+  « à la racine » : le site n'en dépend plus, Vite produit `dist/assets/`.
 
 ---
 
@@ -49,10 +66,9 @@
 
 ```
 fossile/
-├── index.html                    # Point d'entrée HTML (Production Bundle)
-├── assets/                       # Assets compilés et minifiés par Vite
-│   ├── index-BV980feS.js         # Entry script compilé
-│   └── index-Dvx1kN6Z.css        # Styles CSS compilés
+├── index.html                    # Page source (entrée : /src/js/main.js)
+├── dist/                         # Build Vite publié sur GitHub Pages
+├── assets/                       # Anciens bundles hérités du déploiement à la racine (obsolètes)
 ├── src/
 │   ├── js/
 │   │   ├── main.js               # Initialisation & orchestreur national
