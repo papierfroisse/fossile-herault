@@ -12,7 +12,11 @@ from pdf_generator import generate_prospecting_pdf
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 PROCESSED_DIR = os.path.join(PROJECT_DIR, "data", "processed")
-INDEX_PATH = os.path.join(PROJECT_DIR, "src", "app", "index.html")
+# Le serveur publie le build courant de Vite (`npx vite build`), et non la
+# page source : `dist/index.html` référence `./assets/index-<hash>.js`, que
+# ce serveur doit donc exposer sous /assets.
+DIST_DIR = os.path.join(PROJECT_DIR, "dist")
+INDEX_PATH = os.path.join(DIST_DIR, "index.html")
 
 app = FastAPI(
     title="🦕 Fossile Web App — Hérault (34)",
@@ -22,6 +26,10 @@ app = FastAPI(
 # Servir les fichiers statiques de données (processed JSON/GeoJSON)
 if os.path.exists(PROCESSED_DIR):
     app.mount("/processed", StaticFiles(directory=PROCESSED_DIR), name="processed")
+
+# Servir les ressources du build (JS et CSS hachés par Vite)
+if os.path.isdir(os.path.join(DIST_DIR, "assets")):
+    app.mount("/assets", StaticFiles(directory=os.path.join(DIST_DIR, "assets")), name="assets")
 
 
 @app.get("/", response_class=HTMLResponse)
