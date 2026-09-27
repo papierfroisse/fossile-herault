@@ -112,6 +112,45 @@ export function setFossilsData(data, autoFit = true) {
   scheduleRender();
 }
 
+// ─── Accès aux points pour les exports (GPX, KML, fiche PDF) ─────
+// Les points vivent dans un Float32Array (6 valeurs : lat, lng, catégorie,
+// score, période, source). Le nom d'origine et la formation ne figurent pas
+// dans le binaire : on restitue les libellés à partir des index.
+/** Point complet n° i, ou null hors bornes. */
+export function getFossil(i) {
+  if (!dataView || i < 0 || i >= dataCount) return null;
+  const off = i * 6;
+  const cat = dataView[off + 2];
+  const period = dataView[off + 4];
+  const source = dataView[off + 5];
+  return {
+    lat: dataView[off],
+    lng: dataView[off + 1],
+    categorie: CATEGORIES[cat] || 'others',
+    category_name: CAT_LABELS[cat] || 'Autres',
+    score: dataView[off + 3],
+    period_index: period,
+    period_name: PERIOD_LABELS[period] || '',
+    source_name: SOURCES[source] || '',
+    formation: null
+  };
+}
+
+/** Parcours tous les points chargés sans allouer de tableau intermédiaire. */
+export function forEachFossil(callback) {
+  for (let i = 0; i < dataCount; i++) callback(getFossil(i), i);
+}
+
+/** Nombre de points actuellement chargés. */
+export function getFossilCount() { return dataCount; }
+
+/** Aperçu des n premiers points (fiche de terrain imprimable). */
+export function getFossilPreview(n) {
+  const liste = [];
+  for (let i = 0; i < Math.min(n, dataCount); i++) liste.push(getFossil(i));
+  return liste;
+}
+
 // ─── Lazy Detail Data Loading ───────────────────────────────────
 function loadDetailData() {
   detailLoading = true;

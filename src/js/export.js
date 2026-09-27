@@ -1,6 +1,6 @@
 // Field Export Utilities (GPX, KML, PDF Printable Report)
 import { map } from './map.js';
-import { fossilsData } from './fossils.js';
+import { forEachFossil, getFossilPreview } from './fossils.js';
 
 export function downloadGPXExport() {
   const center = map.getCenter();
@@ -13,19 +13,17 @@ export function downloadGPXExport() {
     <name>Prospection Fossiles Hérault (${lat.toFixed(3)}, ${lng.toFixed(3)})</name>
   </metadata>`;
 
-  if (fossilsData && fossilsData.length > 0) {
-    fossilsData.forEach(item => {
-      const dist = Math.sqrt(Math.pow(item.lat - lat, 2) + Math.pow((item.lng - lng)*0.73, 2)) * 111.0;
-      if (dist <= 10.0) {
-        gpxXml += `
-  <wpt lat="${item.lat}" lon="${item.lng}">
-    <name>🦖 ${item.name}</name>
-    <desc>Catégorie: ${item.category_name} | Période: ${item.period} | Formation: ${item.formation || 'N/A'}</desc>
+  forEachFossil(item => {
+    const dist = Math.sqrt(Math.pow(item.lat - lat, 2) + Math.pow((item.lng - lng)*0.73, 2)) * 111.0;
+    if (dist <= 10.0) {
+      gpxXml += `
+  <wpt lat="${item.lat.toFixed(6)}" lon="${item.lng.toFixed(6)}">
+    <name>🦖 ${item.category_name}</name>
+    <desc>Catégorie: ${item.category_name} | Période: ${item.period_name} | Source: ${item.source_name}</desc>
     <sym>Fossil</sym>
   </wpt>`;
-      }
-    });
-  }
+    }
+  });
   gpxXml += `\n</gpx>`;
 
   const blob = new Blob([gpxXml], { type: 'application/gpx+xml' });
@@ -45,21 +43,19 @@ export function downloadKMLExport() {
   <Document>
     <name>Prospection Fossiles Hérault (${lat.toFixed(3)}, ${lng.toFixed(3)})</name>`;
 
-  if (fossilsData && fossilsData.length > 0) {
-    fossilsData.forEach(item => {
-      const dist = Math.sqrt(Math.pow(item.lat - lat, 2) + Math.pow((item.lng - lng)*0.73, 2)) * 111.0;
-      if (dist <= 10.0) {
-        kmlXml += `
+  forEachFossil(item => {
+    const dist = Math.sqrt(Math.pow(item.lat - lat, 2) + Math.pow((item.lng - lng)*0.73, 2)) * 111.0;
+    if (dist <= 10.0) {
+      kmlXml += `
     <Placemark>
-      <name>${item.name}</name>
-      <description>Période: ${item.period} | Formation: ${item.formation || 'N/A'}</description>
+      <name>${item.category_name} — ${item.source_name}</name>
+      <description>Période: ${item.period_name} | Score: ${Math.round(item.score)}</description>
       <Point>
-        <coordinates>${item.lng},${item.lat},0</coordinates>
+        <coordinates>${item.lng.toFixed(6)},${item.lat.toFixed(6)},0</coordinates>
       </Point>
     </Placemark>`;
-      }
-    });
-  }
+    }
+  });
   kmlXml += `\n  </Document>\n</kml>`;
 
   const blob = new Blob([kmlXml], { type: 'application/vnd.google-earth.kml+xml' });
@@ -96,7 +92,7 @@ export function generateCustomLocationReport(lat, lng) {
       <div class="box">
         <p class="tag">📌 GISEMENTS FOSSILES CERTIFIÉS À PROXIMITÉ (&lt; 10 km) :</p>
         <ul>
-          ${fossilsData.slice(0, 8).map(f => `<li><b>${f.name}</b> (${f.category_name}) — <i>${f.period}</i></li>`).join('')}
+          ${getFossilPreview(8).map(f => `<li><b>${f.category_name}</b> (${f.source_name}) — <i>${f.period_name}</i></li>`).join('')}
         </ul>
       </div>
       <div class="box" style="background:#fff7ed; border-color:#fdba74;">
