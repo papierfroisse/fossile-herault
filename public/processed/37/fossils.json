@@ -18312,5 +18312,43 @@
     "precision_gps": "📍 Secteur PBDB (~1km)",
     "precision_code": "medium",
     "source": "PBDB"
+  },
+  {
+    "id": "occ:2076887",
+    "name": "Fossile PBDB",
+    "lat": 47.4985,
+    "lng": 0.2505,
+    "phylum": "Chordata",
+    "class_name": "Chondrichthyes",
+    "period": "Mésozoïque",
+    "formation": "Indre-et-Loire",
+    "max_ma": 15.98,
+    "min_ma": 13.82,
+    "category_id": "fish",
+    "category_name": "Poissons & Chondrichthyens",
+    "color": "#0d9488",
+    "icon": "fa-fish",
+    "precision_gps": "📍 Secteur PBDB (~1km)",
+    "precision_code": "medium",
+    "source": "PBDB"
+  },
+  {
+    "id": "occ:2076905",
+    "name": "Fossile PBDB",
+    "lat": 47.4875,
+    "lng": 0.2495,
+    "phylum": "Chordata",
+    "class_name": "Chondrichthyes",
+    "period": "Mésozoïque",
+    "formation": "Indre-et-Loire",
+    "max_ma": 15.98,
+    "min_ma": 13.82,
+    "category_id": "fish",
+    "category_name": "Poissons & Chondrichthyens",
+    "color": "#0d9488",
+    "icon": "fa-fish",
+    "precision_gps": "📍 Secteur PBDB (~1km)",
+    "precision_code": "medium",
+    "source": "PBDB"
   }
 ]

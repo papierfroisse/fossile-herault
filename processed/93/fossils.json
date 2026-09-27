@@ -8120,6 +8120,26 @@
     "mnhn_catalog": "EP999120"
   },
   {
+    "id": "6511908355",
+    "name": "Turritella intermedia",
+    "lat": 48.81107,
+    "lng": 2.34332,
+    "phylum": "Mollusca",
+    "class_name": "Gastropoda",
+    "period": "Mésozoïque",
+    "formation": "Seine-Saint-Denis",
+    "max_ma": 200,
+    "min_ma": 66,
+    "category_id": "molluscs",
+    "category_name": "Mollusques & Ammonites",
+    "color": "#0284c7",
+    "icon": "fa-ring",
+    "precision_gps": "🏛️ Collection Certifiée MNHN",
+    "precision_code": "high",
+    "source": "MNHN",
+    "mnhn_catalog": "913"
+  },
+  {
     "id": "occ:43111",
     "name": "Fossile PBDB",
     "lat": 48.86667,

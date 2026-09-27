@@ -14011,5 +14011,24 @@
     "precision_gps": "📍 Secteur PBDB (~1km)",
     "precision_code": "medium",
     "source": "PBDB"
+  },
+  {
+    "id": "occ:2076822",
+    "name": "Fossile PBDB",
+    "lat": 43.24194,
+    "lng": -1.44056,
+    "phylum": "Echinodermata",
+    "class_name": "Crinoidea",
+    "period": "Mésozoïque",
+    "formation": "Pyrénées-Atlantiques",
+    "max_ma": 399.5,
+    "min_ma": 393.47,
+    "category_id": "others",
+    "category_name": "Autres Fossiles & Spécimens",
+    "color": "#64748b",
+    "icon": "fa-circle-dot",
+    "precision_gps": "📍 Secteur PBDB (~1km)",
+    "precision_code": "medium",
+    "source": "PBDB"
   }
 ]

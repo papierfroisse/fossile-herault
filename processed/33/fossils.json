@@ -18209,5 +18209,24 @@
     "precision_gps": "📍 Secteur PBDB (~1km)",
     "precision_code": "medium",
     "source": "PBDB"
+  },
+  {
+    "id": "occ:2073399",
+    "name": "Fossile PBDB",
+    "lat": 44.806,
+    "lng": -0.59763,
+    "phylum": "Chordata",
+    "class_name": "Osteichthyes",
+    "period": "Mésozoïque",
+    "formation": "Gironde",
+    "max_ma": 23.04,
+    "min_ma": 5.333,
+    "category_id": "others",
+    "category_name": "Autres Fossiles & Spécimens",
+    "color": "#64748b",
+    "icon": "fa-circle-dot",
+    "precision_gps": "📍 Secteur PBDB (~1km)",
+    "precision_code": "medium",
+    "source": "PBDB"
   }
 ]

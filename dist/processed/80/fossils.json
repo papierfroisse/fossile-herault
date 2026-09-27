@@ -7120,6 +7120,26 @@
     "mnhn_catalog": "EP19905"
   },
   {
+    "id": "6505166459",
+    "name": "Corbis lamellosa",
+    "lat": 49.85274,
+    "lng": 3.04383,
+    "phylum": "Mollusca",
+    "class_name": "Bivalvia",
+    "period": "Mésozoïque",
+    "formation": "Somme",
+    "max_ma": 200,
+    "min_ma": 66,
+    "category_id": "molluscs",
+    "category_name": "Mollusques & Ammonites",
+    "color": "#0284c7",
+    "icon": "fa-ring",
+    "precision_gps": "🏛️ Collection Certifiée MNHN",
+    "precision_code": "high",
+    "source": "MNHN",
+    "mnhn_catalog": "11872"
+  },
+  {
     "id": "occ:295198",
     "name": "Fossile PBDB",
     "lat": 50.26667,
