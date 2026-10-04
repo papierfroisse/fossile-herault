@@ -5160,26 +5160,6 @@
     "mnhn_catalog": "6288751350"
   },
   {
-    "id": "6414694621",
-    "name": "Madrepora lavandulina",
-    "lat": 43.22609,
-    "lng": 1.28774,
-    "phylum": "Cnidaria",
-    "class_name": "Anthozoa",
-    "period": "Mésozoïque",
-    "formation": "Ariège",
-    "max_ma": 200,
-    "min_ma": 66,
-    "category_id": "others",
-    "category_name": "Autres Fossiles & Spécimens",
-    "color": "#64748b",
-    "icon": "fa-circle-dot",
-    "precision_gps": "🏛️ Collection Certifiée MNHN",
-    "precision_code": "high",
-    "source": "MNHN",
-    "mnhn_catalog": "802348"
-  },
-  {
     "id": "occ:272656",
     "name": "Fossile PBDB",
     "lat": 42.94167,

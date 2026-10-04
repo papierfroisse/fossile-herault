@@ -5840,26 +5840,6 @@
     "mnhn_catalog": "6288749755"
   },
   {
-    "id": "6414694563",
-    "name": "Cyclolites gigantea",
-    "lat": 44.54729,
-    "lng": 3.23465,
-    "phylum": "Cnidaria",
-    "class_name": "Anthozoa",
-    "period": "Mésozoïque",
-    "formation": "Lozère",
-    "max_ma": 200,
-    "min_ma": 66,
-    "category_id": "others",
-    "category_name": "Autres Fossiles & Spécimens",
-    "color": "#64748b",
-    "icon": "fa-circle-dot",
-    "precision_gps": "🏛️ Collection Certifiée MNHN",
-    "precision_code": "high",
-    "source": "MNHN",
-    "mnhn_catalog": "802275"
-  },
-  {
     "id": "6442479308",
     "name": "Hildoceras semipolitum",
     "lat": 44.5179,

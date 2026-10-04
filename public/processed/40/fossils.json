@@ -17642,5 +17642,24 @@
     "precision_gps": "📍 Secteur PBDB (~1km)",
     "precision_code": "medium",
     "source": "PBDB"
+  },
+  {
+    "id": "occ:2077344",
+    "name": "Fossile PBDB",
+    "lat": 43.63231,
+    "lng": -0.69436,
+    "phylum": "Chordata",
+    "class_name": "Mammalia",
+    "period": "Mésozoïque",
+    "formation": "Landes",
+    "max_ma": 0.129,
+    "min_ma": 0.0117,
+    "category_id": "mammals",
+    "category_name": "Mammifères",
+    "color": "#d97706",
+    "icon": "fa-bone",
+    "precision_gps": "📍 Secteur PBDB (~1km)",
+    "precision_code": "medium",
+    "source": "PBDB"
   }
 ]

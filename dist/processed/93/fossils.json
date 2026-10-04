@@ -8040,26 +8040,6 @@
     "mnhn_catalog": "36763"
   },
   {
-    "id": "6414694590",
-    "name": "Turbinolia sulcata",
-    "lat": 48.8528,
-    "lng": 2.3495,
-    "phylum": "Cnidaria",
-    "class_name": "Anthozoa",
-    "period": "Mésozoïque",
-    "formation": "Seine-Saint-Denis",
-    "max_ma": 200,
-    "min_ma": 66,
-    "category_id": "others",
-    "category_name": "Autres Fossiles & Spécimens",
-    "color": "#64748b",
-    "icon": "fa-circle-dot",
-    "precision_gps": "🏛️ Collection Certifiée MNHN",
-    "precision_code": "high",
-    "source": "MNHN",
-    "mnhn_catalog": "802311"
-  },
-  {
     "id": "6442478990",
     "name": "Gryphaea Lamarck,",
     "lat": 48.855,
