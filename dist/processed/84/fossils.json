@@ -11766,5 +11766,24 @@
     "precision_gps": "📍 Secteur PBDB (~1km)",
     "precision_code": "medium",
     "source": "PBDB"
+  },
+  {
+    "id": "occ:2077475",
+    "name": "Fossile PBDB",
+    "lat": 44.15,
+    "lng": 5.31,
+    "phylum": "Mollusca",
+    "class_name": "Cephalopoda",
+    "period": "Mésozoïque",
+    "formation": "Vaucluse",
+    "max_ma": 125.77,
+    "min_ma": 121.4,
+    "category_id": "molluscs",
+    "category_name": "Mollusques & Ammonites",
+    "color": "#0284c7",
+    "icon": "fa-ring",
+    "precision_gps": "📍 Secteur PBDB (~1km)",
+    "precision_code": "medium",
+    "source": "PBDB"
   }
 ]
