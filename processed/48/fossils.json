@@ -5880,6 +5880,26 @@
     "mnhn_catalog": "EP2427"
   },
   {
+    "id": "6867295321",
+    "name": "Pseudogrammoceras Buckman,",
+    "lat": 44.1,
+    "lng": 3.08,
+    "phylum": "Mollusca",
+    "class_name": "Cephalopoda",
+    "period": "Mésozoïque",
+    "formation": "Millau",
+    "max_ma": 200,
+    "min_ma": 66,
+    "category_id": "molluscs",
+    "category_name": "Mollusques & Ammonites",
+    "color": "#0284c7",
+    "icon": "fa-ring",
+    "precision_gps": "🏛️ Collection Certifiée MNHN",
+    "precision_code": "high",
+    "source": "MNHN",
+    "mnhn_catalog": "PI CA 6634"
+  },
+  {
     "id": "occ:142055",
     "name": "Fossile PBDB",
     "lat": 44.5,
